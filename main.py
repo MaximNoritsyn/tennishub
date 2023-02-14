@@ -1,21 +1,13 @@
-from fastapi import FastAPI, Response
-from fastapi.templating import Jinja2Templates
-from auth import authenticate
+from fastapi import FastAPI
+from api.login import router as login_router
+from api.index import router as index_router
 
 app = FastAPI()
-templates = Jinja2Templates(directory="templates")
+
+app.include_router(index_router, prefix="")
+app.include_router(login_router, prefix="/login")
 
 
-@app.get("/")
-def index():
-    return templates.TemplateResponse("index.html", {"request": {}})
-
-
-@app.post("/login")
-async def login(username: str, password: str, response: Response):
-    await authenticate(username, password, response)
-
-
-@app.get("/login")
-async def login_form():
-    return templates.TemplateResponse("login.html", {"request": {}})
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8000)
