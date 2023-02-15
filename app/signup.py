@@ -1,5 +1,4 @@
-from fastapi import Response, Depends, status, HTTPException, Form
-from fastapi.security import HTTPBasic, HTTPBasicCredentials
+from fastapi import Response, status, HTTPException, Form
 from fastapi.templating import Jinja2Templates
 from fastapi.routing import APIRouter
 from app.models.mongobackend import MongoDBBackend
@@ -7,7 +6,6 @@ from app.models.access_token import create_access_token
 
 router = APIRouter()
 templates = Jinja2Templates(directory="templates")
-security = HTTPBasic()
 
 
 @router.post("/")
