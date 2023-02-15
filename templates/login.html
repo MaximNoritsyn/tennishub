@@ -1,22 +1,20 @@
-<!DOCTYPE html>
-<!-- templates/templates.html -->
-<html>
-  <head>
-    <title>Login Page</title>
-    <link rel="stylesheet" type="text/css" href="/static/login.css">
-  </head>
-  <body>
-    <div class="container">
-      <h1>Login Page</h1>
-      <form action="/login" method="post">
+{% extends "base.html" %}
+
+{% block title %}Log in up{% endblock %}
+
+{% block content %}
+    <h1>Login</h1>
+    <form method="post">
+      <div>
         <label for="username">Username:</label>
-        <input type="text" id="username" name="username" required>
-        <br>
+        <input type="text" name="username" required>
+      </div>
+      <div>
         <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required>
-        <br>
-        <input type="submit" value="Submit">
-      </form>
-    </div>
-  </body>
-</html>
+        <input type="password" name="password" required>
+      </div>
+      <div>
+        <button type="submit">Login</button>
+      </div>
+    </form>
+{% endblock %}
