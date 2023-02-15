@@ -16,7 +16,7 @@ async def signup(username: str = Form(), password: str = Form()):
     access_token = create_access_token(username)
     response = Response(content="Logged in")
     response.set_cookie(key="access_token", value=access_token, httponly=True)
-    response.headers["location"] = "/signup/dashboard"
+    response.headers["location"] = "/"
     response.status_code = status.HTTP_302_FOUND
     return response
 
@@ -24,8 +24,3 @@ async def signup(username: str = Form(), password: str = Form()):
 @router.get("/")
 async def signup():
     return templates.TemplateResponse("signup.html", {"request": {}})
-
-
-@router.get("/dashboard")
-async def dashboard():
-    return templates.TemplateResponse("index.html", {})
