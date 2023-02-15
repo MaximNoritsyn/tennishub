@@ -1,4 +1,4 @@
-from fastapi import Response, Depends, status, HTTPException
+from fastapi import Response, Depends, status, HTTPException, Form
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from fastapi.templating import Jinja2Templates
 from fastapi.routing import APIRouter
@@ -11,11 +11,11 @@ security = HTTPBasic()
 
 
 @router.post("/")
-async def signup(credentials: HTTPBasicCredentials = Depends(security)):
+async def signup(username: str = Form(), password: str = Form()):
     backend = MongoDBBackend()
-    if not backend.add_user(credentials.username, credentials.password):
+    if not backend.add_user(username, password):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Incorrect username or password")
-    access_token = create_access_token(credentials.username)
+    access_token = create_access_token(username)
     response = Response(content="Logged in")
     response.set_cookie(key="access_token", value=access_token, httponly=True)
     response.headers["location"] = "/signup/dashboard"
@@ -28,6 +28,6 @@ async def signup():
     return templates.TemplateResponse("signup.html", {"request": {}})
 
 
-@router.get("/signup/dashboard")
+@router.get("/dashboard")
 async def dashboard():
     return templates.TemplateResponse("index.html", {})
