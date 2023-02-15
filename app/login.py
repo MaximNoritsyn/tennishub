@@ -2,26 +2,12 @@ from fastapi import Response, status, HTTPException, Form, Depends
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from fastapi.templating import Jinja2Templates
 from fastapi.routing import APIRouter
-import configparser
-import jwt
-
+from app.models.access_token import create_access_token
 from app.models.mongobackend import MongoDBBackend
 
 router = APIRouter()
 templates = Jinja2Templates(directory="templates")
 security = HTTPBasic()
-
-config = configparser.ConfigParser()
-config.read('config.ini')
-
-SECRET_KEY = config['ACCESS_TOKEN']['SECRET_KEY']
-ALGORITHM = config['ACCESS_TOKEN']['ALGORITHM']
-
-
-def create_access_token(username: str) -> str:
-    to_encode = {"sub": username}
-    encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
-    return encoded_jwt
 
 
 @router.post("/")

@@ -29,9 +29,19 @@ class MongoDBBackend:
             return bcrypt.checkpw(password.encode('utf-8'), hashed_password)
         return False
 
-    def add_user(self, username, password_hash):
-        user = {"username": username, "password_hash": password_hash}
-        self.users.insert_one(user)
+    def add_user(self, username, password):
+        user = self.get_user(username)
+        if user:
+            print(1)
+            print(user)
+            return False
+        else:
+            print(2)
+            print(user)
+            password_hash = bcrypt.hashpw(password.encode(), bcrypt.gensalt())
+            user = {"username": username, "password_hash": password_hash}
+            self.users.insert_one(user)
+            return True
 
     def get_user(self, username):
         return self.users.find_one({"username": username})
