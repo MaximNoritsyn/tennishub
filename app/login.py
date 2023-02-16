@@ -1,6 +1,7 @@
 from fastapi import Response, status, HTTPException, Form
 from fastapi.templating import Jinja2Templates
 from fastapi.routing import APIRouter
+
 from app.models.access_token import create_access_token
 from app.models.mongobackend import MongoDBBackend
 
@@ -17,6 +18,7 @@ async def login(username: str = Form(), password: str = Form()):
     response = Response(content="Logged in")
     response.set_cookie(key="access_token", value=access_token, httponly=True)
     response.headers["location"] = "/"
+    response.set_cookie(key="logged", value="1")
     response.status_code = status.HTTP_302_FOUND
     return response
 
