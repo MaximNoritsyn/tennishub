@@ -18,7 +18,6 @@ async def login(username: str = Form(), password: str = Form()):
     response = Response(content="Logged in")
     response.set_cookie(key="access_token", value=access_token, httponly=True)
     response.headers["location"] = "/"
-    response.set_cookie(key="logged", value="1")
     response.status_code = status.HTTP_302_FOUND
     return response
 
