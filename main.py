@@ -1,11 +1,10 @@
-from fastapi import FastAPI, Response
+from fastapi import FastAPI
 from starlette import status
-from starlette.status import HTTP_307_TEMPORARY_REDIRECT
 
 from app.login import router as login_router
 from app.signup import router as signup_router
 from app.index import router as index_router
-from app.models.access_token import add_username_to_request
+from app.models.cookie import add_username_to_request
 from fastapi.responses import RedirectResponse
 
 app = FastAPI()

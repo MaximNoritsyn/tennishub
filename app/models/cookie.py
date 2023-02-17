@@ -1,11 +1,7 @@
 import jwt
-from fastapi import FastAPI
 from fastapi import HTTPException, status
 from fastapi.requests import Request
-from fastapi.responses import JSONResponse
 import configparser
-
-from starlette.responses import JSONResponse
 
 config = configparser.ConfigParser()
 config.read('config.ini')
@@ -15,7 +11,7 @@ ALGORITHM = config['ACCESS_TOKEN']['ALGORITHM']
 
 
 def create_access_token(username: str) -> str:
-    to_encode = {"sub": username}
+    to_encode = {"username": username}
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
 
@@ -23,7 +19,7 @@ def create_access_token(username: str) -> str:
 def verify_access_token(access_token: str) -> str:
     try:
         payload = jwt.decode(access_token, SECRET_KEY, algorithms=[ALGORITHM])
-        return payload.get("sub")
+        return payload.get("username")
     except jwt.ExpiredSignatureError:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Access token has expired")
     except (jwt.InvalidTokenError, AttributeError):

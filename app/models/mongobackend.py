@@ -32,12 +32,8 @@ class MongoDBBackend:
     def add_user(self, username, password):
         user = self.get_user(username)
         if user:
-            print(1)
-            print(user)
             return False
         else:
-            print(2)
-            print(user)
             password_hash = bcrypt.hashpw(password.encode(), bcrypt.gensalt())
             user = {"username": username, "password_hash": password_hash}
             self.users.insert_one(user)
