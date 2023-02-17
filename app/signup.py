@@ -1,8 +1,10 @@
-from fastapi import Response, status, HTTPException, Form
+from fastapi import Response, status, HTTPException, Form, Request
 from fastapi.templating import Jinja2Templates
 from fastapi.routing import APIRouter
+
 from app.models.mongobackend import MongoDBBackend
 from app.models.cookie import create_access_token
+from app.models.cookie import get_context
 
 router = APIRouter()
 templates = Jinja2Templates(directory="templates")
@@ -22,5 +24,6 @@ async def signup(username: str = Form(), password: str = Form()):
 
 
 @router.get("/")
-async def signup():
-    return templates.TemplateResponse("signup.html", {"request": {}})
+async def signup(request: Request = {}):
+    context = get_context(request)
+    return templates.TemplateResponse("signup.html", context)

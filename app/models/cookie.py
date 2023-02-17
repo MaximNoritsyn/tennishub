@@ -40,3 +40,9 @@ async def add_username_to_request(request: Request, call_next):
             request.state.logged = False
     response = await call_next(request)
     return response
+
+
+def get_context(request: Request = {}):
+    username = getattr(request.state, "username", "")
+    logged = getattr(request.state, "logged", False)
+    return {"request": request, "logged": logged, "username": username}
