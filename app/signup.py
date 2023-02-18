@@ -7,7 +7,7 @@ from app.models.cookie import create_access_token
 from app.models.cookie import get_context
 
 router = APIRouter()
-templates = Jinja2Templates(directory="templates")
+templates = Jinja2Templates(directory="app/templates")
 
 
 @router.post("/")

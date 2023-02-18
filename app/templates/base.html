@@ -2,6 +2,12 @@
 <html>
   <head>
     <title>{% block title %}My Website{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='/css/base.css') }}">
+    {% block styles %}
+      <style>
+        /* your styles here */
+      </style>
+    {% endblock %}
   </head>
   <body>
     <header>
@@ -9,10 +15,14 @@
         <ul>
           <li><a href="/">Home</a></li>
           {% if logged %}
-          <li><a>{{ username }}!</a></li>
-          <form action="/logout" method="post">
-            <button type="submit">Logout</button>
-          </form>
+          <li class="dropdown">
+            <a class="dropbtn">{{ username }}</a>
+            <div class="dropdown-content">
+              <form action="/logout" method="post">
+                <input type="submit" value="Logout">
+              </form>
+            </div>
+          </li>
           {% else %}
           <li><a href="/signup">Sign up</a></li>
           <li><a href="/login">Log in</a></li>
@@ -27,4 +37,4 @@
       &copy; My Website
     </footer>
   </body>
-</html>l
+</html>

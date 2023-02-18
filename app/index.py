@@ -4,7 +4,7 @@ from fastapi import Request
 from app.models.cookie import get_context
 
 router = APIRouter()
-templates = Jinja2Templates(directory="templates")
+templates = Jinja2Templates(directory="app/templates")
 
 
 @router.get("/")

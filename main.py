@@ -1,13 +1,17 @@
 from fastapi import FastAPI
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import RedirectResponse
 from starlette import status
 
 from app.login import router as login_router
 from app.signup import router as signup_router
 from app.index import router as index_router
 from app.models.cookie import add_username_to_request
-from fastapi.responses import RedirectResponse
+
 
 app = FastAPI()
+
+app.mount("/app/static", StaticFiles(directory="app/static"), name="static")
 
 app.include_router(index_router, prefix="")
 app.include_router(login_router, prefix="/login")
