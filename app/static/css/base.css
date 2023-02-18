@@ -102,3 +102,43 @@ button:focus {
   outline: none;
   box-shadow: 0px 0px 4px #006b8f;
 }
+
+.form_table {
+  width: 50%;
+  margin: 0 auto;
+}
+
+label {
+  display: inline-block;
+  width: 100px;
+  text-align: right;
+  margin-right: 10px;
+  font-weight: bold;
+}
+
+input[type="text"],
+input[type="date"] {
+  width: 200px;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+input[type="submit"] {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  float: right;
+}
+
+input[type="submit"]:hover {
+  background-color: #45a049;
+}
+
+input[readonly] {
+  background-color: #f2f2f2;
+}

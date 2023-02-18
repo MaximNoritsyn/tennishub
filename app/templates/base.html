@@ -13,19 +13,20 @@
     <header>
       <nav>
         <ul>
-          <li><a href="/">Home</a></li>
+          <li><a href="/">Головна</a></li>
           {% if logged %}
+          <li><a href="/testing/new">Розпочати тест</a></li>
           <li class="dropdown">
             <a class="dropbtn">{{ username }}</a>
             <div class="dropdown-content">
               <form action="/logout" method="post">
-                <input type="submit" value="Logout">
+                <input type="submit" value="Вийти">
               </form>
             </div>
           </li>
           {% else %}
-          <li><a href="/signup">Sign up</a></li>
-          <li><a href="/login">Log in</a></li>
+          <li><a href="/signup">Реєстрація</a></li>
+          <li><a href="/login">Увійти</a></li>
           {% endif %}
         </ul>
       </nav>

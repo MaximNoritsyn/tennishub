@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}Розпочати тест{% endblock %}
+
+{% block styles %}
+  <style>
+    /* your styles for this template here */
+  </style>
+{% endblock %}
+
+
+{% block content %}
+
+<form class="form_table" method="post">
+  <label for="name">Name:</label>
+  <input type="text" id="name" name="name" readonly value="John Doe"><br><br>
+
+  <label for="dob">Date of birth:</label>
+  <input type="text" id="dob" name="dob" readonly value="01/01/1990"><br><br>
+
+  <label for="sex">Sex:</label>
+  <input type="text" id="sex" name="sex" readonly value="Male"><br><br>
+
+  <label for="assessor">Assessor:</label>
+  <input type="text" id="assessor" name="assessor"><br><br>
+
+  <label for="date">Date:</label>
+  <input type="date" id="date" name="date"><br><br>
+
+  <label for="venue">Venue:</label>
+  <input type="text" id="venue" name="venue"><br><br>
+
+  <input type="submit" value="Submit">
+</form>
+
+{% endblock %}

@@ -6,6 +6,7 @@ from starlette import status
 from app.login import router as login_router
 from app.signup import router as signup_router
 from app.index import router as index_router
+from app.test_form import router as test_form_router
 from app.models.cookie import add_username_to_request
 
 
@@ -16,6 +17,7 @@ app.mount("/app/static", StaticFiles(directory="app/static"), name="static")
 app.include_router(index_router, prefix="")
 app.include_router(login_router, prefix="/login")
 app.include_router(signup_router, prefix="/signup")
+app.include_router(test_form_router, prefix="/testing")
 
 # Call the add_username_to_request function and pass the app instance as parameter
 app.middleware("http")(add_username_to_request)
