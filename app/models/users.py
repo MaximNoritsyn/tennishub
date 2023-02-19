@@ -1,8 +1,11 @@
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel
 
 
-class User(BaseModel):
+class User:
     username: str
+    name: str
+    date_b: str
+    sex: str
     # email: EmailStr
     is_active: bool
     is_superuser: bool
@@ -11,4 +14,4 @@ class User(BaseModel):
         collection = "users"
 
     def __str__(self):
-        return self.email
+        return self.name

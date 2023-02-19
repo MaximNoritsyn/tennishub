@@ -2,6 +2,7 @@ import pymongo
 import configparser
 import bcrypt
 import logging
+from bson.objectid import ObjectId
 
 logger = logging.getLogger(__name__)
 
@@ -13,6 +14,21 @@ host = config['MONGODB']['host']
 username = config['MONGODB']['username']
 password = config['MONGODB']['password']
 db_name = config['MONGODB']['db_name']
+
+
+class CollectionDB:
+    id: str
+    _id: ObjectId
+
+    def name_collection(self):
+        return ""
+
+    def to_dict(self):
+        return {}
+
+    @property
+    def id(self):
+        return str(self._id)
 
 
 class MongoDBBackend:
@@ -44,3 +60,8 @@ class MongoDBBackend:
 
     def delete_user(self, username):
         self.users.delete_one({"username": username})
+
+    def save_document(self, doc: CollectionDB):
+        d = doc.to_dict()
+        doc._id = self.db[doc.name_collection()].insert_one(d)
+
