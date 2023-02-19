@@ -17,8 +17,7 @@ db_name = config['MONGODB']['db_name']
 
 
 class CollectionDB:
-    id: str
-    _id: ObjectId
+    id_db: str = ''
 
     def name_collection(self):
         return ""
@@ -27,8 +26,8 @@ class CollectionDB:
         return {}
 
     @property
-    def id(self):
-        return str(self._id)
+    def id_obj(self):
+        return ObjectId(self.id)
 
 
 class MongoDBBackend:
@@ -63,5 +62,9 @@ class MongoDBBackend:
 
     def save_document(self, doc: CollectionDB):
         d = doc.to_dict()
-        doc._id = self.db[doc.name_collection()].insert_one(d)
+        print(d)
+        var = self.db[doc.name_collection()].insert_one(d).inserted_id
+        print(var)
+        doc.id_m = var
+        print(doc.id_m)
 

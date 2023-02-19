@@ -1,19 +1,28 @@
 from fastapi import Response, status, HTTPException, Form, Request
 from fastapi.templating import Jinja2Templates
 from fastapi.routing import APIRouter
+from pydantic import EmailStr
+from datetime import date
+from typing import Optional
 
-from app.models.mongobackend import MongoDBBackend
 from app.models.cookie import create_access_token
 from app.models.cookie import get_context
+from app.models.users import User
 
 router = APIRouter()
 templates = Jinja2Templates(directory="app/templates")
 
 
 @router.post("/")
-async def signup(username: str = Form(), password: str = Form()):
-    backend = MongoDBBackend()
-    if not backend.add_user(username, password):
+async def signup(username: str = Form(),
+                 password: str = Form(),
+                 name: str = Form(),
+                 date_b: Optional[date] = Form(None),
+                 sex: Optional[str] = Form(None),
+                 email: EmailStr = Form()):
+    user = User(username=username, password=password, email=email, name=name, date_b=date_b, sex=sex)
+    user.save()
+    if not len(user.id):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Incorrect username or password")
     access_token = create_access_token(username)
     response = Response(content="Logged in")

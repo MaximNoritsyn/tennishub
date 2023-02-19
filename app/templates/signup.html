@@ -5,6 +5,22 @@
 {% block content %}
   <h1>Sign up</h1>
   <form method="POST">
+
+    <label for="name">Name</label>
+    <input type="text" name="name" id="name" required>
+
+    <label for="date_b">Date of Birth</label>
+    <input type="date" name="date_b" id="date_b">
+
+    <label for="sex">Sex</label>
+    <select name="sex" id="sex">
+      <option value="F">Female</option>
+      <option value="M">Male</option>
+    </select>
+
+    <label for="email">Email</label>
+    <input type="email" name="email" id="email" required>
+
     <label for="username">Username</label>
     <input type="text" name="username" id="username" required>
 
