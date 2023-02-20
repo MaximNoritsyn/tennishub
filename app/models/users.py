@@ -45,7 +45,7 @@ class User(CollectionDB):
                 "is_superuser": 1,
                 "password_hash": 1,
                 "person": {
-                    "id_db": "$person._id",
+                    "id_obj": "$person._id",
                     "name": "$person.name",
                     "date_b": "$person.date_b",
                     "sex": "$person.sex",
@@ -57,18 +57,32 @@ class User(CollectionDB):
         if user_doc is None:
             return None, ''
 
-        person_doc = user_doc.pop("person")
-        person = Person(**person_doc)
-        user = User(user_doc.get("username"),
-                    user_doc.get("email"),
-                    person_doc.get("name"),
-                    is_active=user_doc.get("is_active"),
-                    is_coach=user_doc.get("is_coach"),
-                    is_superuser=user_doc.get("is_superuser"),
-                    date_b=person_doc.get("date_b"),
-                    sex=person_doc.get("sex"),)
+        user = cls.from_dict(user_doc)
 
         return user, user_doc.get("password_hash")
+
+    @classmethod
+    def from_dict(cls, data: dict):
+        person_doc = data.pop("person")
+        required_fields = ["username", "email"]
+        if not all(field in data for field in required_fields):
+            return None
+
+        if not ("name" in person_doc):
+            return None
+
+        user = User(data.get("username"),
+                    data.get("email"),
+                    person_doc.get("name"),
+                    is_active=data.get("is_active"),
+                    is_coach=data.get("is_coach"),
+                    is_superuser=data.get("is_superuser"),
+                    date_b=person_doc.get("date_b"),
+                    sex=person_doc.get("sex"),
+                    id_obj=person_doc.get("id_obj"),
+                    id_db=person_doc.get("id_db"))
+
+        return user
 
     def name_collection(self):
         return "users"

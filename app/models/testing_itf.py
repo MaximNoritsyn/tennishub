@@ -1,6 +1,5 @@
 from typing import Optional
-from pydantic import BaseModel
-from app.models.users import User
+from app.models.person import Person
 
 from app.models.mongobackend import MongoDBBackend, CollectionDB
 
@@ -9,7 +8,7 @@ backend = MongoDBBackend()
 
 
 class TestEvent(CollectionDB):
-    user: User
+    person: Person
     assessor: Optional[str] = None
     date: Optional[str] = None
     venue: Optional[str] = None
@@ -65,13 +64,11 @@ class TestEvent(CollectionDB):
     value_serve12: Optional[int] = None
 
     def name_collection(self):
-        return "testing_itf"
+        return "itfunits"
 
     def to_dict(self):
-        return {
-            "name": self.user.name,
-            "date_b": self.user.date_b,
-            "sex": self.user.sex,
+        d = {
+            "person_id": self.person.id_obj,
             "assessor": self.assessor,
             "date": self.date,
             "venue": self.venue,
@@ -121,6 +118,11 @@ class TestEvent(CollectionDB):
             "value_serve11": self.value_serve11,
             "value_serve12": self.value_serve12,
         }
+
+        if len(self.id_db):
+            d['_id'] = self.id_obj
+
+        return d
 
     def save(self):
         backend.save_document(self)
