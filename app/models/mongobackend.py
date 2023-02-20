@@ -39,12 +39,6 @@ class MongoDBBackend:
         self.db = self.client[db_name]
         self.users = self.db['users']
 
-    def get_user(self, username):
-        return self.users.find_one({"username": username})
-
-    def delete_user(self, username):
-        pass
-
     def save_document(self, doc: CollectionDB):
         d = doc.to_dict()
         if '_id' in d:

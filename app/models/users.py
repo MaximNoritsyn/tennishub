@@ -97,4 +97,8 @@ class User(CollectionDB):
     def __str__(self):
         return self.username
 
+    def delete_user(self, username):
+        # need implementation
+        pass
+
 
