@@ -35,9 +35,8 @@ def verify_access_token(access_token: str) -> User:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid access token")
 
 
-async def add_username_to_request(request: Request, call_next):
+async def add_user_to_request(request: Request, call_next):
     # Check if there is a valid access token in the user's cookies
-
     access_token = request.cookies.get("access_token")
     if access_token:
         user = verify_access_token(access_token)
@@ -54,7 +53,8 @@ async def add_username_to_request(request: Request, call_next):
 
 def get_context(request: Request = {}):
     logged = getattr(request.state, "logged", False)
+    user = getattr(request.state, "user", None)
     name = ''
     if logged:
-        name = request.state.user.person.name
-    return {"request": request, "logged": logged, "name": name, "user": request.state.user}
+        name = user.person.name
+    return {"request": request, "logged": logged, "name": name, "user": user}

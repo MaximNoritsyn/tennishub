@@ -6,7 +6,6 @@ from datetime import date
 
 from app.models.testing_itf import TestEvent
 from app.models.cookie import get_context
-from app.models.users import User
 
 router = APIRouter()
 templates = Jinja2Templates(directory="app/templates")
@@ -27,13 +26,11 @@ async def new_test(request: Request = {}):
 
 
 @router.post("/new")
-async def post_new(assessor: str = Form(),
+async def post_new(request: Request,
+                   assessor: str = Form(),
                    date: str = Form(),
                    venue: str = Form()):
-    TestEvent.user = User()
-    TestEvent.user.name = "test"
-    TestEvent.user.date_b = "test1"
-    TestEvent.user.sex = "M"
+    TestEvent.person = request.state.user.person
     TestEvent.assessor = assessor
     TestEvent.date = date
     TestEvent.venue = venue

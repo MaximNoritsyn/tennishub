@@ -1,4 +1,3 @@
-from pydantic import BaseModel
 from typing import Dict, Optional
 from datetime import date
 from app.models.mongobackend import MongoDBBackend, CollectionDB
@@ -18,7 +17,9 @@ class Person(CollectionDB):
         self.id_db = kwargs.get("date_b")
         self.sex = kwargs.get("sex")
         self.id_db = kwargs.get("id_db", '')
-        self.id_db = str(kwargs.get("id_obj", ''))
+        id_obj = kwargs.get("id_obj", None)
+        if id_obj is not None:
+            self.id_db = str(id_obj)
 
     def name_collection(self):
         return "persons"
