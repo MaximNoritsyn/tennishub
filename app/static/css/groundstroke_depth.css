@@ -1,0 +1,122 @@
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  grid-template-rows: repeat(15, 1fr);
+  gap: 10px;
+  transform: perspective(500px) rotateX(30deg);
+  transform-origin: bottom;
+  width: 70%;
+}
+
+/* Center text */
+.grid-container > * {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.box1 {
+  grid-column: 1 / span 1;
+  grid-row: 1 / span 4;
+  background-color: #FFB6C1;
+  border: 1px solid black;
+}
+
+.box2 {
+  grid-column: 2 / span 6;
+  grid-row: 1 / span 2;
+  background-color: #ADD8E6;
+  border: 1px solid black;
+}
+
+.box3 {
+  grid-column: 8 / span 1;
+  grid-row: 1 / span 4;
+  background-color: #FFB6C1;
+  border: 1px solid black;
+}
+
+.box4 {
+  grid-column: 2 / span 3;
+  grid-row: 3 / span 2;
+  background-color: #90EE90;
+  border: 1px solid black;
+}
+
+.box5 {
+  grid-column: 5 / span 3;
+  grid-row: 3 / span 2;
+  background-color: #FFDAB9;
+  border: 1px solid black;
+}
+
+.box6 {
+  grid-column: 1 / span 8;
+  grid-row: 5 / span 1;
+  background-color: #FFA07A;
+  border: 1px solid black;
+}
+
+.box7 {
+  grid-column: 1 / span 1;
+  grid-row: 6 / span 6;
+  background-color: #FFDAB9;
+  border: 1px solid black;
+}
+
+.box8 {
+  grid-column: 2 / span 3;
+  grid-row: 6 / span 3;
+  background-color: #90EE90;
+  border: 1px solid black;
+}
+
+.box9 {
+  grid-column: 5 / span 3;
+  grid-row: 6 / span 3;
+  background-color: #90EE90;
+  border: 1px solid black;
+}
+
+.box10 {
+  grid-column: 8 / span 1;
+  grid-row: 6 / span 6;
+  background-color: #ADD8E6;
+  border: 1px solid black;
+}
+
+.box11 {
+  grid-column: 2 / span 6;
+  grid-row: 9 / span 1;
+  background-color: #ADD8E6;
+  border: 1px solid black;
+}
+
+.box12 {
+  grid-column: 2 / span 6;
+  grid-row: 10 / span 1;
+  background-color: #ADD8E6;
+  border: 1px solid black;
+}
+
+.box13 {
+  grid-column: 2 / span 6;
+  grid-row: 11 / span 1;
+  background-color: #FFFFE0;
+  border: 1px solid black;
+}
+
+.box14 {
+  grid-column: 1 / span 8;
+  grid-row: 12 / span 1;
+  background-color: #FFFFE0;
+  border: none;
+  padding: 10px;
+}
+
+.box15 {
+  grid-column: 1 / span 8;
+  grid-row: 13 / span 1;
+  background-color: #90EE90;
+  border: 1px solid black;
+}
