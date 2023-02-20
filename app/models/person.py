@@ -14,7 +14,7 @@ class Person(CollectionDB):
     def __init__(self, **kwargs):
         super().__init__()
         self.name = kwargs.get("name")
-        self.id_db = kwargs.get("date_b")
+        self.date_b = kwargs.get("date_b", None)
         self.sex = kwargs.get("sex")
         self.id_db = kwargs.get("id_db", '')
         id_obj = kwargs.get("id_obj", None)

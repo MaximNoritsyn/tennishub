@@ -22,7 +22,7 @@ async def signup(username: str = Form(),
                  email: EmailStr = Form()):
     user = User(username, email, name, date_b=date_b, sex=sex)
     user.save(password=password)
-    access_token = create_access_token(username)
+    access_token = create_access_token(user)
     response = Response(content="Logged in")
     response.set_cookie(key="access_token", value=access_token, httponly=True)
     response.headers["location"] = "/"

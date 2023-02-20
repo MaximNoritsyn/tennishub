@@ -19,7 +19,6 @@ def create_access_token(user: User) -> str:
     id_db = str(d_pers.pop('_id'))
     d_pers['id_db'] = id_db
     to_encode['person'] = d_pers
-    print(to_encode)
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
 
