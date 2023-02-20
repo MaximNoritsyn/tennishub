@@ -20,10 +20,8 @@ async def signup(username: str = Form(),
                  date_b: Optional[date] = Form(None),
                  sex: Optional[str] = Form(None),
                  email: EmailStr = Form()):
-    user = User(username=username, password=password, email=email, name=name, date_b=date_b, sex=sex)
-    user.save()
-    if not len(user.id):
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Incorrect username or password")
+    user = User(username, email, name, date_b=date_b, sex=sex)
+    user.save(password=password)
     access_token = create_access_token(username)
     response = Response(content="Logged in")
     response.set_cookie(key="access_token", value=access_token, httponly=True)

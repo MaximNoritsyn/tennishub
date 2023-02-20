@@ -1,6 +1,5 @@
 import pymongo
 import configparser
-import bcrypt
 import logging
 from bson.objectid import ObjectId
 
@@ -27,7 +26,10 @@ class CollectionDB:
 
     @property
     def id_obj(self):
-        return ObjectId(self.id)
+        return ObjectId(self.id_db)
+
+    def set_id(self, id_loc: ObjectId):
+        self.id_db = str(id_loc)
 
 
 class MongoDBBackend:
@@ -37,34 +39,20 @@ class MongoDBBackend:
         self.db = self.client[db_name]
         self.users = self.db['users']
 
-    def verify_password(self, username: str, password: str) -> bool:
-        user = self.users.find_one({'username': username})
-        if user:
-            hashed_password = user['password_hash']
-            return bcrypt.checkpw(password.encode('utf-8'), hashed_password)
-        return False
-
-    def add_user(self, username, password):
-        user = self.get_user(username)
-        if user:
-            return False
-        else:
-            password_hash = bcrypt.hashpw(password.encode(), bcrypt.gensalt())
-            user = {"username": username, "password_hash": password_hash}
-            self.users.insert_one(user)
-            return True
-
     def get_user(self, username):
         return self.users.find_one({"username": username})
 
     def delete_user(self, username):
-        self.users.delete_one({"username": username})
+        pass
 
     def save_document(self, doc: CollectionDB):
         d = doc.to_dict()
-        print(d)
-        var = self.db[doc.name_collection()].insert_one(d).inserted_id
-        print(var)
-        doc.id_m = var
-        print(doc.id_m)
+        if '_id' in d:
+            self.db[doc.name_collection()].update_one(d['_id'], d)
+        else:
+            doc.set_id(self.db[doc.name_collection()].insert_one(d).inserted_id)
+
+    # setting of database. use once
+    def create_username_index_in_collection(self):
+        self.db.users.create_index([("username", pymongo.ASCENDING)], unique=True)
 
