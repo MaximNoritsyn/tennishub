@@ -1,4 +1,3 @@
-from fastapi import status, HTTPException
 from pydantic import EmailStr
 from typing import Any, Dict
 import bcrypt
@@ -27,6 +26,50 @@ class User(CollectionDB):
         self.person = Person(name=name, **kwargs)
         super().__init__()
 
+    @classmethod
+    def from_db(cls, username: str):
+        user_data = backend.db.users.aggregate([
+            {"$match": {"username": username}},
+            {"$lookup": {
+                "from": "persons",
+                "localField": "person_id",
+                "foreignField": "_id",
+                "as": "person"
+            }},
+            {"$unwind": "$person"},
+            {"$project": {
+                "username": 1,
+                "email": 1,
+                "is_active": 1,
+                "is_coach": 1,
+                "is_superuser": 1,
+                "password_hash": 1,
+                "person": {
+                    "id_db": "$person._id",
+                    "name": "$person.name",
+                    "date_b": "$person.date_b",
+                    "sex": "$person.sex",
+                }
+            }}
+        ])
+
+        user_doc = next(user_data, None)
+        if user_doc is None:
+            return None, ''
+
+        person_doc = user_doc.pop("person")
+        person = Person(**person_doc)
+        user = User(user_doc.get("username"),
+                    user_doc.get("email"),
+                    person_doc.get("name"),
+                    is_active=user_doc.get("is_active"),
+                    is_coach=user_doc.get("is_coach"),
+                    is_superuser=user_doc.get("is_superuser"),
+                    date_b=person_doc.get("date_b"),
+                    sex=person_doc.get("sex"),)
+
+        return user, user_doc.get("password_hash")
+
     def name_collection(self):
         return "users"
 
@@ -38,26 +81,20 @@ class User(CollectionDB):
         backend.db[self.name_collection()].update_one({"username": self.username}, {"$set": d}, upsert=True)
 
     def to_dict(self) -> Dict[str, Any]:
-        return {
+        d = {
             "username": self.username,
-            "person_id": self.person.id_obj,
             "email": self.email,
             "is_active": self.is_active,
             "is_coach": self.is_coach,
             "is_superuser": self.is_superuser,
         }
 
+        if len(self.person.id_db):
+            d["person_id"] = self.person.id_obj
+
+        return d
+
     def __str__(self):
         return self.username
 
-
-def verify_password(username: str, password: str) -> str:
-    user = backend.get_user(username)
-    verified = False
-    if user:
-        hashed_password = user['password_hash']
-        verified = bcrypt.checkpw(password.encode('utf-8'), hashed_password)
-
-    if not verified:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Incorrect username or password")
 
