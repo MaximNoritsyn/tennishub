@@ -34,6 +34,8 @@ class Person(CollectionDB):
 
         if self.date_b is not None:
             d['date_b'] = self.date_b.isoformat()
+        else:
+            d['date_b'] = ''
 
         if len(self.id_db):
             d['_id'] = self.id_obj

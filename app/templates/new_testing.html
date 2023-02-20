@@ -13,19 +13,19 @@
 
 <form class="form_table" method="post" action="/testing/new">
   <label for="name">Ім'я:</label>
-  <input type="text" id="name" name="name" readonly value="John Doe"><br><br>
+  <input type="text" id="name" name="name" readonly value="{{ name }}"><br><br>
 
   <label for="dob">Дата народження:</label>
-  <input type="text" id="dob" name="dob" readonly value="01/01/1990"><br><br>
+  <input type="text" id="dob" name="dob" readonly value=" {{ date_b }}"><br><br>
 
   <label for="sex">Стать:</label>
-  <input type="text" id="sex" name="sex" readonly value="Male"><br><br>
+  <input type="text" id="sex" name="sex" readonly value="{{ sex }}"><br><br>
 
   <label for="assessor">Інспектор:</label>
   <input type="text" id="assessor" name="assessor"><br><br>
 
   <label for="date">Дата:</label>
-  <input type="date" id="date" name="date"><br><br>
+  <input type="date" id="date" name="date" value="{{ today }}"><br><br>
 
   <label for="venue">Локація:</label>
   <input type="text" id="venue" name="venue"><br><br>
