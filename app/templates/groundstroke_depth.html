@@ -1,15 +1,13 @@
 {% extends "base.html" %}
 
-{% block title %}Log in up{% endblock %}
+{% block title %}Groundstroke Depth{% endblock %}
 
 {% block styles %}
     <link rel="stylesheet" href="{{ url_for('static', path='/css/groundstroke_depth.css') }}">
 {% endblock %}
 
 {% block content %}
-
-<h1>Groundstroke Depth</h1>
-<div class="grid-container">
+<div class="tennis-court">
   <div class="box1"></div>
   <div class="box2">X X</div>
   <div class="box3"></div>
@@ -17,15 +15,16 @@
   <div class="box5"></div>
   <div class="box6"></div>
   <div class="box7"></div>
-  <div class="box8">1 бал</div>
-  <div class="box9">1 бал</div>
-  <div class="box10"></div>
-  <div class="box11">2 бали</div>
-  <div class="box12">3 бали</div>
-  <div class="box13">4 бали</div>
-  <div class="box14">Зона сили - 1 бал</div>
-  <div class="box15">Зона сили - подвійні бали</div>
+  <div class="box_1point_right active_area" id="box_1point_right">1 бал</div>
+  <div class="box_1point_left active_area" id="box_1point_left">1 бал</div>
+  <div class="box8"></div>
+  <div class="box_2point active_area" id="box_2point">2 бали</div>
+  <div class="box_3point active_area" id="box_3point">3 бали</div>
+  <div class="box_4point active_area" id="box_4point">4 бали</div>
+  <div class="box_power_1point active_area" id="box_power_1point">Зона сили - 1 бал</div>
+  <div class="box_power_double active_area" id="box_power_double">Зона сили - подвійні бали</div>
 </div>
 
+<script src="{{ url_for('static', path='/js/groundstroke_depth.js') }}"></script>
 
 {% endblock %}
