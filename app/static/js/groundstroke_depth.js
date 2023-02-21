@@ -20,10 +20,7 @@ mainActiveAreas.forEach((element) => {
 
     // If the clicked element is the same as the currently selected element, send a POST request to '/testing' with the element's ID as the data
     if (mainSelectedElement === element) {
-      const xhr = new XMLHttpRequest();
-      xhr.open('POST', '/testing');
-      xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
-      xhr.send(JSON.stringify({ id: element.id }));
+      element.classList.remove('push-area');
     }
 
     // Update the selected element variable to the clicked element
@@ -54,7 +51,7 @@ subActiveAreas.forEach((element) => {
 
     // If the clicked element is the same as the currently selected element, send a POST request to '/testing' with the element's ID as the data
     if (subSelectedElement === element) {
-      selectedElement.classList.remove('push-area');
+      element.classList.remove('push-area');
     }
 
     // Update the selected element variable to the clicked element

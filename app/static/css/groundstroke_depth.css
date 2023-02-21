@@ -1,12 +1,11 @@
 .tennis-court {
   display: grid;
   grid-template-columns: repeat(8, 1fr);
-  grid-template-rows: repeat(15, 1fr);
+  grid-template-rows: repeat(13, 1fr);
   gap: 2px;
   transform: perspective(500px) rotateX(30deg);
   transform-origin: bottom;
-  width: 100%;
-  margin-top: -200px;px;
+  margin-top: -200px;
   max-width: 500px;
 }
 
@@ -133,6 +132,6 @@
 
 .push-area {
   transform: scale(1.05);
-  background-color: #ff5656;
+  border: 5px solid #ff5656;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
 }

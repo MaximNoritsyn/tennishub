@@ -142,3 +142,16 @@ input[type="submit"]:hover {
 input[readonly] {
   background-color: #f2f2f2;
 }
+
+.training-route-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.back-point {
+  width: 50%;
+}
+
+.submit-point {
+  width: 50%;
+}
