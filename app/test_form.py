@@ -5,13 +5,13 @@ from fastapi.routing import APIRouter
 from typing import Optional
 from datetime import date
 
-from app.models.testing_itf import TestEvent, StrikeUnit, update_current_test_event
+from app.models.testing_itf import TestEvent, StrikeUnit
 from app.models.cookie import get_context
 
 router = APIRouter()
 templates = Jinja2Templates(directory="app/templates")
 
-test_event = TestEvent()
+
 
 
 @router.get("/new")
@@ -31,6 +31,7 @@ async def post_new(request: Request,
                    assessor: str = Form(),
                    date: str = Form(),
                    venue: str = Form()):
+    test_event = TestEvent()
     test_event.person = request.state.user.person
     test_event.assessor = assessor
     test_event.date = date
@@ -44,7 +45,7 @@ async def post_new(request: Request,
 
 @router.get("/{guid}/gsd/{stage_number}")
 async def get_test_event_stage(guid: str, stage_number: int, request: Request):
-    update_current_test_event(test_event, guid)
+    test_event = TestEvent.from_db(guid)
 
     context = get_context(request)
 
@@ -69,10 +70,10 @@ async def post_test_event_stage(guid: str,
                                 stage_number: int,
                                 main_point: Optional[str] = Form(...),
                                 sub_point: Optional[str] = Form(...)):
-    update_current_test_event(test_event, guid)
+    test_event = TestEvent.from_db(guid)
     name_strike = get_name_strike(stage_number)
 
-    test_event[name_strike] = get_point_gsd(main_point, sub_point)
+    setattr(test_event, name_strike, get_point_gsd(main_point, sub_point))
     test_event.save()
 
     strike_unit = StrikeUnit.from_db(test_event.id_db, name_strike)

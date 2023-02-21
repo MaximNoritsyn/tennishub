@@ -31,7 +31,7 @@ mainActiveAreas.forEach((element) => {
     // Update the selected element variable to the clicked element
     mainSelectedElement = element;
   });
-
+});
 
 
 // Fill the class 'push-area' to the active_area with the same id as the value of 'main_point' input
@@ -43,6 +43,7 @@ if (mainPointValue) {
     mainSelectedElement = activeArea;
   }
 }
+
 
 // Define an array of IDs to select
 const subAreaIds = ['area_power_1point', 'area_power_double'];
@@ -87,5 +88,4 @@ if (subPointValue) {
     subSelectedElement = subActiveArea;
   }
 }
-});
 });

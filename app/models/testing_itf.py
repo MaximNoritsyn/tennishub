@@ -67,6 +67,7 @@ class TestEvent(CollectionDB):
     @classmethod
     def from_db(cls, id_db: str):
         pipeline = [
+            {"$match": {"_id": ObjectId(id_db)}},
             {
                 "$lookup": {
                     "from": "persons",
@@ -80,6 +81,7 @@ class TestEvent(CollectionDB):
             },
             {
                 "$project": {
+                    "id_db": "$_id",
                     "person": 1,
                     "assessor": 1,
                     "date": 1,
@@ -134,16 +136,20 @@ class TestEvent(CollectionDB):
         ]
 
         result = list(backend.db['itfunits'].aggregate(pipeline))
-        return cls.from_dict(result[0])
+        inst = cls.from_dict(result[0])
+        return inst
 
     @classmethod
     def from_dict(cls, data: dict):
-        person = Person.from_dict(data.get('person'))
+        person = Person.from_dict(data['person'])
         test_event = cls()
         test_event.person = person
         for key, value in data.items():
             if key != 'person':
-                setattr(test_event, key, value)
+                if key == 'id_db':
+                    setattr(test_event, key, str(value))
+                else:
+                    setattr(test_event, key, value)
         return test_event
 
     def name_collection(self):
@@ -286,8 +292,5 @@ class StrikeUnit(CollectionDB):
         backend.save_document(self)
 
 
-def update_current_test_event(test_event: TestEvent, guid: str):
-    if not test_event.id_db == guid:
-        test_event = TestEvent.from_db(guid)
 
 

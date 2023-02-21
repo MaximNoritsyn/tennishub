@@ -27,6 +27,8 @@ class Person(CollectionDB):
         for key, value in data.items():
             if key == 'date_b':
                 setattr(person, key, date.fromisoformat(value))
+            elif key == '_id':
+                setattr(person, 'id_db', str(value))
             else:
                 setattr(person, key, value)
         return person
