@@ -5,7 +5,7 @@ from fastapi.routing import APIRouter
 from typing import Optional
 from datetime import date
 
-from app.models.testing_itf import TestEvent
+from app.models.testing_itf import TestEvent, StrikeUnit, update_current_test_event
 from app.models.cookie import get_context
 
 router = APIRouter()
@@ -44,9 +44,7 @@ async def post_new(request: Request,
 
 @router.get("/{guid}/gsd/{stage_number}")
 async def get_test_event_stage(guid: str, stage_number: int, request: Request):
-    # Your code to retrieve test event and stage information based on the GUID and stage number goes here
-    # if guid == test_event.id_db:
-    # inplement get new event
+    update_current_test_event(test_event, guid)
 
     context = get_context(request)
 
@@ -57,6 +55,12 @@ async def get_test_event_stage(guid: str, stage_number: int, request: Request):
     context['forbackhand'] = get_forbackhand(stage_number)
     context['number'] = stage_number
 
+    name_strike = get_name_strike(stage_number)
+    strike_unit = StrikeUnit.from_db(guid, name_strike)
+
+    context['main_point'] = strike_unit.main_point
+    context['sub_point'] = strike_unit.sub_point
+
     return templates.TemplateResponse("groundstroke_depth.html", context)
 
 
@@ -65,11 +69,16 @@ async def post_test_event_stage(guid: str,
                                 stage_number: int,
                                 main_point: Optional[str] = Form(...),
                                 sub_point: Optional[str] = Form(...)):
-    print(test_event.id_db)
-    print(test_event.person.name)
+    update_current_test_event(test_event, guid)
+    name_strike = get_name_strike(stage_number)
 
-    test_event['value_gsd{:02d}'.format(stage_number)] = get_point_gsd(main_point, sub_point)
+    test_event[name_strike] = get_point_gsd(main_point, sub_point)
     test_event.save()
+
+    strike_unit = StrikeUnit.from_db(test_event.id_db, name_strike)
+    strike_unit.main_point = main_point
+    strike_unit.sub_point = sub_point
+    strike_unit.save()
 
     response = Response(content=f"stage {stage_number} submitted")
     response.headers["location"] = f'/testing/{guid}/gsd/{stage_number + 1}'
@@ -101,3 +110,7 @@ def get_point_gsd(main_point, sub_point):
         p *= 2
 
     return p
+
+
+def get_name_strike(stage_number):
+    return 'value_gsd{:02d}'.format(stage_number)

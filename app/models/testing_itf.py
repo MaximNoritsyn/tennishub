@@ -1,6 +1,7 @@
 from typing import Optional
-from app.models.person import Person
+from bson.objectid import ObjectId
 
+from app.models.person import Person
 from app.models.mongobackend import MongoDBBackend, CollectionDB
 
 
@@ -154,8 +155,61 @@ class TestEvent(CollectionDB):
             self.value_gsd10 = value
 
 
-def update_current_test_event(test_event: TestEvent, guid: str):
-    if test_event.id_db == guid:
-        return test_event
+class StrikeUnit(CollectionDB):
+    event_id: str
+    name_strike: str
+    main_point: Optional[str]
+    sub_point: Optional[str]
 
-    return TestEvent.from_db(guid)
+    def __init__(self, event_id: str, name_strike: str, **kwargs):
+        self.event_id = event_id
+        self.name_strike = name_strike
+        self.main_point = kwargs.get('main_point', '')
+        self.sub_point = kwargs.get('sub_point', '')
+        self.id_db = kwargs.get('id_db', '')
+        super().__init__()
+
+    @classmethod
+    def from_db(cls, event_id: str, name_strike: str):
+        # Query the collection for a StrikeUnit object with the provided event_id
+        strike_unit_data = backend.db['strikeunit'].find_one({'event_id': ObjectId(event_id), 'name_strike': name_strike})
+
+        # If no StrikeUnit object is found, return None
+        if not strike_unit_data:
+            return StrikeUnit(event_id=event_id, name_strike=name_strike)
+
+        return cls.from_dict(strike_unit_data)
+
+    @classmethod
+    def from_dict(cls, data: dict):
+        # Create a new StrikeUnit object from the retrieved data
+        return StrikeUnit(str(data['event_id']), data['name_strike'],
+                          id_db=str(data['_id']),
+                          main_point=data['main_point'],
+                          sub_point=data['sub_point'])
+
+    def name_collection(self):
+        return "strikeunit"
+
+    def to_dict(self):
+        d = {
+            "event_id": ObjectId(self.event_id),
+            "name_strike": self.name_strike,
+            "main_point": self.main_point,
+            "sub_point": self.sub_point
+        }
+
+        if len(self.id_db):
+            d['_id'] = self.id_obj
+
+        return d
+
+    def save(self):
+        backend.save_document(self)
+
+
+def update_current_test_event(test_event: TestEvent, guid: str):
+    if not test_event.id_db == guid:
+        test_event = TestEvent.from_db(guid)
+
+
