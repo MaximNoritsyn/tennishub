@@ -63,6 +63,10 @@ class TestEvent(CollectionDB):
     value_serve11: Optional[int] = None
     value_serve12: Optional[int] = None
 
+    @classmethod
+    def from_db(cls, id_db: str):
+        pass
+
     def name_collection(self):
         return "itfunits"
 
@@ -127,3 +131,31 @@ class TestEvent(CollectionDB):
     def save(self):
         backend.save_document(self)
 
+    def __setitem__(self, key, value):
+        if key == 'value_gsd01':
+            self.value_gsd01 = value
+        elif key == 'value_gsd02':
+            self.value_gsd02 = value
+        elif key == 'value_gsd03':
+            self.value_gsd03 = value
+        elif key == 'value_gsd04':
+            self.value_gsd04 = value
+        elif key == 'value_gsd05':
+            self.value_gsd05 = value
+        elif key == 'value_gsd06':
+            self.value_gsd06 = value
+        elif key == 'value_gsd07':
+            self.value_gsd07 = value
+        elif key == 'value_gsd08':
+            self.value_gsd08 = value
+        elif key == 'value_gsd09':
+            self.value_gsd09 = value
+        elif key == 'value_gsd10':
+            self.value_gsd10 = value
+
+
+def update_current_test_event(test_event: TestEvent, guid: str):
+    if test_event.id_db == guid:
+        return test_event
+
+    return TestEvent.from_db(guid)

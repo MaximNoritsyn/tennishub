@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
 // Define an array of IDs to select
-const areaIds = ['box_1point_right', 'box_1point_left', 'box_2point', 'box_3point', 'box_4point'];
+const areaIds = ['area_1point_right', 'area_1point_left', 'area_2point', 'area_3point', 'area_4point'];
 
 // Get all the elements with the specified IDs
 const mainActiveAreas = areaIds.map(id => document.getElementById(id));
@@ -45,7 +45,7 @@ if (mainPointValue) {
 }
 
 // Define an array of IDs to select
-const subAreaIds = ['box_power_1point', 'box_power_double'];
+const subAreaIds = ['area_power_1point', 'area_power_double'];
 
 // Get all the elements with the specified IDs
 const subActiveAreas = subAreaIds.map(id => document.getElementById(id));

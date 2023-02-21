@@ -42,7 +42,7 @@ class MongoDBBackend:
     def save_document(self, doc: CollectionDB):
         d = doc.to_dict()
         if '_id' in d:
-            self.db[doc.name_collection()].update_one(d['_id'], d)
+            self.db[doc.name_collection()].update_one({"_id": d['_id']}, {"$set": d})
         else:
             doc.set_id(self.db[doc.name_collection()].insert_one(d).inserted_id)
 
