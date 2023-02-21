@@ -68,8 +68,8 @@ async def get_test_event_stage(guid: str, stage_number: int, request: Request):
 @router.post("/{guid}/gsd/{stage_number}")
 async def post_test_event_stage(guid: str,
                                 stage_number: int,
-                                main_point: Optional[str] = Form(...),
-                                sub_point: Optional[str] = Form(...)):
+                                main_point: str = Form(default=''),
+                                sub_point: str = Form(default='')):
     test_event = TestEvent.from_db(guid)
     name_strike = get_name_strike(stage_number)
 
