@@ -1,8 +1,10 @@
+document.addEventListener('DOMContentLoaded', () => {
 // Define an array of IDs to select
 const areaIds = ['box_1point_right', 'box_1point_left', 'box_2point', 'box_3point', 'box_4point'];
 
 // Get all the elements with the specified IDs
 const mainActiveAreas = areaIds.map(id => document.getElementById(id));
+const mainPointInput = document.getElementById('main_point');
 
 // Create a variable to keep track of the currently selected element
 let mainSelectedElement = null;
@@ -20,20 +22,34 @@ mainActiveAreas.forEach((element) => {
 
     // If the clicked element is the same as the currently selected element, send a POST request to '/testing' with the element's ID as the data
     if (mainSelectedElement === element) {
-      element.classList.remove('push-area');
+      mainSelectedElement.classList.remove('push-area');
+      mainPointInput.value = "";
+    } else {
+      mainPointInput.value = element.id;
     }
 
     // Update the selected element variable to the clicked element
     mainSelectedElement = element;
   });
-});
 
+
+
+// Fill the class 'push-area' to the active_area with the same id as the value of 'main_point' input
+const mainPointValue = mainPointInput.value;
+if (mainPointValue) {
+  const activeArea = document.getElementById(mainPointValue);
+  if (activeArea) {
+    activeArea.classList.add('push-area');
+    mainSelectedElement = activeArea;
+  }
+}
 
 // Define an array of IDs to select
 const subAreaIds = ['box_power_1point', 'box_power_double'];
 
 // Get all the elements with the specified IDs
 const subActiveAreas = subAreaIds.map(id => document.getElementById(id));
+const subPointInput = document.getElementById('sub_point');
 
 // Create a variable to keep track of the currently selected element
 let subSelectedElement = null;
@@ -51,10 +67,25 @@ subActiveAreas.forEach((element) => {
 
     // If the clicked element is the same as the currently selected element, send a POST request to '/testing' with the element's ID as the data
     if (subSelectedElement === element) {
-      element.classList.remove('push-area');
+      subSelectedElement.classList.remove('push-area');
+      subPointInput.value = "";
+    } else {
+      subPointInput.value = element.id;
     }
 
     // Update the selected element variable to the clicked element
     subSelectedElement = element;
   });
+});
+
+// Fill the class 'push-area' to the active_area with the same id as the value of 'main_point' input
+const subPointValue = subPointInput.value;
+if (subPointValue) {
+  const subActiveArea = document.getElementById(subPointValue);
+  if (subActiveArea) {
+    subActiveArea.classList.add('push-area');
+    subSelectedElement = subActiveArea;
+  }
+}
+});
 });
