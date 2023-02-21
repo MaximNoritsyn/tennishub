@@ -21,6 +21,16 @@ class Person(CollectionDB):
         if id_obj is not None:
             self.id_db = str(id_obj)
 
+    @classmethod
+    def from_dict(cls, data: dict):
+        person = cls()
+        for key, value in data.items():
+            if key == 'date_b':
+                setattr(person, key, date.fromisoformat(value))
+            else:
+                setattr(person, key, value)
+        return person
+
     def name_collection(self):
         return "persons"
 

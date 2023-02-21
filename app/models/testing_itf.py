@@ -66,7 +66,85 @@ class TestEvent(CollectionDB):
 
     @classmethod
     def from_db(cls, id_db: str):
-        pass
+        pipeline = [
+            {
+                "$lookup": {
+                    "from": "persons",
+                    "localField": "person_id",
+                    "foreignField": "_id",
+                    "as": "person"
+                }
+            },
+            {
+                "$unwind": "$person"
+            },
+            {
+                "$project": {
+                    "person": 1,
+                    "assessor": 1,
+                    "date": 1,
+                    "venue": 1,
+                    "scoreF": 1,
+                    "scoreM": 1,
+                    "itn": 1,
+                    "value_gsd01": 1,
+                    "value_gsd02": 1,
+                    "value_gsd03": 1,
+                    "value_gsd04": 1,
+                    "value_gsd05": 1,
+                    "value_gsd06": 1,
+                    "value_gsd07": 1,
+                    "value_gsd08": 1,
+                    "value_gsd09": 1,
+                    "value_gsd10": 1,
+                    "value_vd01": 1,
+                    "value_vd02": 1,
+                    "value_vd03": 1,
+                    "value_vd04": 1,
+                    "value_vd05": 1,
+                    "value_vd06": 1,
+                    "value_vd07": 1,
+                    "value_vd08": 1,
+                    "value_gsa01": 1,
+                    "value_gsa02": 1,
+                    "value_gsa03": 1,
+                    "value_gsa04": 1,
+                    "value_gsa05": 1,
+                    "value_gsa06": 1,
+                    "value_gsa07": 1,
+                    "value_gsa08": 1,
+                    "value_gsa09": 1,
+                    "value_gsa10": 1,
+                    "value_gsa11": 1,
+                    "value_gsa12": 1,
+                    "value_serve01": 1,
+                    "value_serve02": 1,
+                    "value_serve03": 1,
+                    "value_serve04": 1,
+                    "value_serve05": 1,
+                    "value_serve06": 1,
+                    "value_serve07": 1,
+                    "value_serve08": 1,
+                    "value_serve09": 1,
+                    "value_serve10": 1,
+                    "value_serve11": 1,
+                    "value_serve12": 1
+                }
+            }
+        ]
+
+        result = list(backend.db['itfunits'].aggregate(pipeline))
+        return cls.from_dict(result[0])
+
+    @classmethod
+    def from_dict(cls, data: dict):
+        person = Person.from_dict(data.get('person'))
+        test_event = cls()
+        test_event.person = person
+        for key, value in data.items():
+            if key != 'person':
+                setattr(test_event, key, value)
+        return test_event
 
     def name_collection(self):
         return "itfunits"
