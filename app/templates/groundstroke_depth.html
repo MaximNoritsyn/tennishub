@@ -7,6 +7,8 @@
 {% endblock %}
 
 {% block content %}
+
+{% include "training_route_container.html" %}
 <h3>Оцінка глибини удару по землі - включає аспект потужності. (10 поперемінних ударів форхендом і бекхендом)</h3>
 <h5> Удар № {{number}} ({{ forbackhand }})</h5>
 <div class="tennis-court">
@@ -26,8 +28,6 @@
   <div class="area-out-line active-area" id="area_out_line">Зона сили - 1 бал</div>
   <div class="area-out-powerline active-area" id="area_out_powerline">Зона сили - подвійні бали</div>
 </div>
-
-{% include "training_route_container.html" %}
 
 <script src="{{ url_for('static', path='/js/groundstroke_depth.js') }}"></script>
 

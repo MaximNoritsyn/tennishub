@@ -148,9 +148,25 @@ input[readonly] {
   justify-content: space-between;
 }
 
-.back-point {
-  width: 50%;
+.back-point a {
+  background-color: #fff;
+  border: 2px solid #333;
+  border-radius: 3px;
+  color: #333;
+  display: inline-block;
+  font-size: 10px;
+  font-weight: bold;
+  padding: 10px 10px;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: background-color 0.2s, color 0.2s;
 }
+
+.back-point a:hover {
+  background-color: #333;
+  color: #fff;
+}
+
 
 .submit-point {
   width: 50%;
