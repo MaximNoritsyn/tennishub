@@ -3,13 +3,13 @@
 {% block title %}Groundstroke Depth{% endblock %}
 
 {% block styles %}
-    <link rel="stylesheet" href="{{ url_for('static', path='/css/groundstroke_depth.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', path='/css/test_depth.css') }}">
 {% endblock %}
 
 {% block content %}
 
 {% include "training_route_container.html" %}
-<h3>Оцінка глибини удару по землі - включає аспект потужності. (10 поперемінних ударів форхендом і бекхендом)</h3>
+<h3>{{ title_of_task }}</h3>
 <h5> Удар № {{number}} ({{ forbackhand }})</h5>
 <div class="tennis-court">
   <div class="area-left-alley-top"></div>

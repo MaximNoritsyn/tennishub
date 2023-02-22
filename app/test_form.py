@@ -42,8 +42,7 @@ async def post_new(request: Request,
 
 
 @router.get("/{guid}/gsd/{stage_number}")
-async def get_test_event_stage(guid: str, stage_number: int, request: Request):
-    test_event = TestEvent.from_db(guid)
+async def get_test_event_stage_gsd(guid: str, stage_number: int, request: Request):
 
     context = get_context(request)
 
@@ -54,22 +53,25 @@ async def get_test_event_stage(guid: str, stage_number: int, request: Request):
     context['forbackhand'] = get_forbackhand(stage_number)
     context['number'] = stage_number
 
-    name_serving = get_name_serving(stage_number)
+    name_serving = get_name_serving('gsd', stage_number)
     serving_ball = ServingBall.from_db(guid, name_serving)
 
     context['groundstroke1'] = serving_ball.groundstroke1
     context['groundstroke2'] = serving_ball.groundstroke2
 
-    return templates.TemplateResponse("groundstroke_depth.html", context)
+    context['title_of_task'] = 'Оцінка глибини удару по землі - включає аспект потужності. ' \
+                               '(10 поперемінних ударів форхендом і бекхендом)'
+
+    return templates.TemplateResponse("test_depth.html", context)
 
 
 @router.post("/{guid}/gsd/{stage_number}")
-async def post_test_event_stage(guid: str,
+async def post_test_event_stage_gsd(guid: str,
                                 stage_number: int,
                                 groundstroke1: str = Form(default=''),
                                 groundstroke2: str = Form(default='')):
     test_event = TestEvent.from_db(guid)
-    name_serving = get_name_serving(stage_number)
+    name_serving = get_name_serving('gsd', stage_number)
 
     setattr(test_event, name_serving, get_point_gsd(groundstroke1, groundstroke2))
     test_event.save()
@@ -80,7 +82,59 @@ async def post_test_event_stage(guid: str,
     serving_ball.save()
 
     response = Response(content=f"stage {stage_number} submitted")
-    response.headers["location"] = f'/testing/{guid}/gsd/{stage_number + 1}'
+    next_route = f'/testing/{guid}/gsd/{stage_number + 1}'
+    if stage_number == 10:
+        next_route = f'/testing/{guid}/vd/1'
+    response.headers["location"] = next_route
+    response.status_code = status.HTTP_302_FOUND
+    return response
+
+
+@router.get("/{guid}/vd/{stage_number}")
+async def get_test_event_stage_vd(guid: str, stage_number: int, request: Request):
+
+    context = get_context(request)
+
+    context['route_back'] = f'/testing/{guid}/vd/{stage_number - 1}'
+    if stage_number == 1:
+        context['route_back'] = f'/testing/{guid}/gsd/10'
+    context['route_submit'] = f'/testing/{guid}/vd/{stage_number}'
+    context['forbackhand'] = get_forbackhand(stage_number)
+    context['number'] = stage_number
+
+    name_serving = get_name_serving('vd', stage_number)
+    serving_ball = ServingBall.from_db(guid, name_serving)
+
+    context['groundstroke1'] = serving_ball.groundstroke1
+    context['groundstroke2'] = serving_ball.groundstroke2
+
+    context['title_of_task'] = 'Оцінка глибини залпу - включає аспект сили. ' \
+                               '(8 поперемінних ударів ударами форхендом і бекхендом)'
+
+    return templates.TemplateResponse("test_depth.html", context)
+
+
+@router.post("/{guid}/vd/{stage_number}")
+async def post_test_event_stage_vd(guid: str,
+                                stage_number: int,
+                                groundstroke1: str = Form(default=''),
+                                groundstroke2: str = Form(default='')):
+    test_event = TestEvent.from_db(guid)
+    name_serving = get_name_serving('vd', stage_number)
+
+    setattr(test_event, name_serving, get_point_gsd(groundstroke1, groundstroke2))
+    test_event.save()
+
+    serving_ball = ServingBall.from_db(test_event.id_db, name_serving)
+    serving_ball.groundstroke1 = groundstroke1
+    serving_ball.groundstroke2 = groundstroke2
+    serving_ball.save()
+
+    response = Response(content=f"stage {stage_number} submitted")
+    next_route = f'/testing/{guid}/vd/{stage_number + 1}'
+    if stage_number == 8:
+        next_route = f'/testing/{guid}/gsv/1'
+    response.headers["location"] = next_route
     response.status_code = status.HTTP_302_FOUND
     return response
 
@@ -112,5 +166,11 @@ def get_point_gsd(groundstroke1, groundstroke2):
     return p
 
 
-def get_name_serving(stage_number):
-    return 'value_gsd{:02d}'.format(stage_number)
+def get_name_serving(task, stage_number):
+
+    if task == 'gsd':
+        return 'value_gsd{:02d}'.format(stage_number)
+    elif task == 'vd':
+        return 'value_vd{:02d}'.format(stage_number)
+    elif task == '':
+        return 'value_gsa{:02d}'.format(stage_number)

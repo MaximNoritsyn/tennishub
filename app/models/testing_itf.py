@@ -250,7 +250,11 @@ class ServingBall(CollectionDB):
         self.event_id = event_id
         self.name_serving = name_serving
         if 'value_gsd' in name_serving:
-            self.task = 'value_gsd'
+            self.task = 'gsd'
+        elif 'value_vd' in name_serving:
+            self.task = 'vd'
+        elif 'value_gsa' in name_serving:
+            self.task = 'gsa'
         self.groundstroke1 = kwargs.get('groundstroke1', '')
         self.groundstroke2 = kwargs.get('groundstroke2', '')
         self.id_db = kwargs.get('id_db', '')
