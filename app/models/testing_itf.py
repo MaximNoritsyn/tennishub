@@ -18,51 +18,55 @@ class TestEvent(CollectionDB):
     scoreM: Optional[int] = None
     itn: Optional[int] = None
 
-    value_gsd01: Optional[int] = None
-    value_gsd02: Optional[int] = None
-    value_gsd03: Optional[int] = None
-    value_gsd04: Optional[int] = None
-    value_gsd05: Optional[int] = None
-    value_gsd06: Optional[int] = None
-    value_gsd07: Optional[int] = None
-    value_gsd08: Optional[int] = None
-    value_gsd09: Optional[int] = None
-    value_gsd10: Optional[int] = None
+    value_gsd01: Optional[int] = 0
+    value_gsd02: Optional[int] = 0
+    value_gsd03: Optional[int] = 0
+    value_gsd04: Optional[int] = 0
+    value_gsd05: Optional[int] = 0
+    value_gsd06: Optional[int] = 0
+    value_gsd07: Optional[int] = 0
+    value_gsd08: Optional[int] = 0
+    value_gsd09: Optional[int] = 0
+    value_gsd10: Optional[int] = 0
+    consistency_gsd: Optional[int] = 0
 
-    value_vd01: Optional[int] = None
-    value_vd02: Optional[int] = None
-    value_vd03: Optional[int] = None
-    value_vd04: Optional[int] = None
-    value_vd05: Optional[int] = None
-    value_vd06: Optional[int] = None
-    value_vd07: Optional[int] = None
-    value_vd08: Optional[int] = None
+    value_vd01: Optional[int] = 0
+    value_vd02: Optional[int] = 0
+    value_vd03: Optional[int] = 0
+    value_vd04: Optional[int] = 0
+    value_vd05: Optional[int] = 0
+    value_vd06: Optional[int] = 0
+    value_vd07: Optional[int] = 0
+    value_vd08: Optional[int] = 0
+    consistency_vd: Optional[int] = 0
 
-    value_gsa01: Optional[int] = None
-    value_gsa02: Optional[int] = None
-    value_gsa03: Optional[int] = None
-    value_gsa04: Optional[int] = None
-    value_gsa05: Optional[int] = None
-    value_gsa06: Optional[int] = None
-    value_gsa07: Optional[int] = None
-    value_gsa08: Optional[int] = None
-    value_gsa09: Optional[int] = None
-    value_gsa10: Optional[int] = None
-    value_gsa11: Optional[int] = None
-    value_gsa12: Optional[int] = None
+    value_gsa01: Optional[int] = 0
+    value_gsa02: Optional[int] = 0
+    value_gsa03: Optional[int] = 0
+    value_gsa04: Optional[int] = 0
+    value_gsa05: Optional[int] = 0
+    value_gsa06: Optional[int] = 0
+    value_gsa07: Optional[int] = 0
+    value_gsa08: Optional[int] = 0
+    value_gsa09: Optional[int] = 0
+    value_gsa10: Optional[int] = 0
+    value_gsa11: Optional[int] = 0
+    value_gsa12: Optional[int] = 0
+    consistency_gsa: Optional[int] = 0
 
-    value_serve01: Optional[int] = None
-    value_serve02: Optional[int] = None
-    value_serve03: Optional[int] = None
-    value_serve04: Optional[int] = None
-    value_serve05: Optional[int] = None
-    value_serve06: Optional[int] = None
-    value_serve07: Optional[int] = None
-    value_serve08: Optional[int] = None
-    value_serve09: Optional[int] = None
-    value_serve10: Optional[int] = None
-    value_serve11: Optional[int] = None
-    value_serve12: Optional[int] = None
+    value_serve01: Optional[int] = 0
+    value_serve02: Optional[int] = 0
+    value_serve03: Optional[int] = 0
+    value_serve04: Optional[int] = 0
+    value_serve05: Optional[int] = 0
+    value_serve06: Optional[int] = 0
+    value_serve07: Optional[int] = 0
+    value_serve08: Optional[int] = 0
+    value_serve09: Optional[int] = 0
+    value_serve10: Optional[int] = 0
+    value_serve11: Optional[int] = 0
+    value_serve12: Optional[int] = 0
+    consistency_serve: Optional[int] = 0
 
     @classmethod
     def from_db(cls, id_db: str):
@@ -99,6 +103,7 @@ class TestEvent(CollectionDB):
                     "value_gsd08": 1,
                     "value_gsd09": 1,
                     "value_gsd10": 1,
+                    "consistency_gsd": 1,
                     "value_vd01": 1,
                     "value_vd02": 1,
                     "value_vd03": 1,
@@ -107,6 +112,7 @@ class TestEvent(CollectionDB):
                     "value_vd06": 1,
                     "value_vd07": 1,
                     "value_vd08": 1,
+                    "consistency_vd": 1,
                     "value_gsa01": 1,
                     "value_gsa02": 1,
                     "value_gsa03": 1,
@@ -119,6 +125,7 @@ class TestEvent(CollectionDB):
                     "value_gsa10": 1,
                     "value_gsa11": 1,
                     "value_gsa12": 1,
+                    "consistency_gsa": 1,
                     "value_serve01": 1,
                     "value_serve02": 1,
                     "value_serve03": 1,
@@ -130,7 +137,8 @@ class TestEvent(CollectionDB):
                     "value_serve09": 1,
                     "value_serve10": 1,
                     "value_serve11": 1,
-                    "value_serve12": 1
+                    "value_serve12": 1,
+                    "consistency_serve": 1
                 }
             }
         ]
@@ -174,6 +182,7 @@ class TestEvent(CollectionDB):
             "value_gsd08": self.value_gsd08,
             "value_gsd09": self.value_gsd09,
             "value_gsd10": self.value_gsd10,
+            "consistency_gsd": self.consistency_gsd,
             "value_vd01": self.value_vd01,
             "value_vd02": self.value_vd02,
             "value_vd03": self.value_vd03,
@@ -182,6 +191,7 @@ class TestEvent(CollectionDB):
             "value_vd06": self.value_vd06,
             "value_vd07": self.value_vd07,
             "value_vd08": self.value_vd08,
+            "consistency_vd": self.consistency_vd,
             "value_gsa01": self.value_gsa01,
             "value_gsa02": self.value_gsa02,
             "value_gsa03": self.value_gsa03,
@@ -194,6 +204,7 @@ class TestEvent(CollectionDB):
             "value_gsa10": self.value_gsa10,
             "value_gsa11": self.value_gsa11,
             "value_gsa12": self.value_gsa12,
+            "consistency_gsa": self.consistency_gsa,
             "value_serve01": self.value_serve01,
             "value_serve02": self.value_serve02,
             "value_serve03": self.value_serve03,
@@ -206,6 +217,7 @@ class TestEvent(CollectionDB):
             "value_serve10": self.value_serve10,
             "value_serve11": self.value_serve11,
             "value_serve12": self.value_serve12,
+            "consistency_serve": self.consistency_serve,
         }
 
         if len(self.id_db):
