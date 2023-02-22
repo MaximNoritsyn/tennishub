@@ -241,33 +241,33 @@ class TestEvent(CollectionDB):
 
 class ServingBall(CollectionDB):
     event_id: str
-    name_strike: str
+    name_serving: str
+    task: str
     groundstroke1: Optional[str]
     groundstroke2: Optional[str]
 
-    def __init__(self, event_id: str, name_strike: str, **kwargs):
+    def __init__(self, event_id: str, name_serving: str, **kwargs):
         self.event_id = event_id
-        self.name_strike = name_strike
+        self.name_serving = name_serving
+        if 'value_gsd' in name_serving:
+            self.task = 'value_gsd'
         self.groundstroke1 = kwargs.get('groundstroke1', '')
         self.groundstroke2 = kwargs.get('groundstroke2', '')
         self.id_db = kwargs.get('id_db', '')
         super().__init__()
 
     @classmethod
-    def from_db(cls, event_id: str, name_strike: str):
-        # Query the collection for a StrikeUnit object with the provided event_id
-        strike_unit_data = backend.db['strikeunit'].find_one({'event_id': ObjectId(event_id), 'name_strike': name_strike})
+    def from_db(cls, event_id: str, name_serving: str):
+        data = backend.db['servingballs'].find_one({'event_id': ObjectId(event_id), 'name_serving': name_serving})
 
-        # If no StrikeUnit object is found, return None
-        if not strike_unit_data:
-            return ServingBall(event_id=event_id, name_strike=name_strike)
+        if not data:
+            return ServingBall(event_id=event_id, name_serving=name_serving)
 
-        return cls.from_dict(strike_unit_data)
+        return cls.from_dict(data)
 
     @classmethod
     def from_dict(cls, data: dict):
-        # Create a new StrikeUnit object from the retrieved data
-        return ServingBall(str(data['event_id']), data['name_strike'],
+        return ServingBall(str(data['event_id']), data['name_serving'],
                           id_db=str(data['_id']),
                           groundstroke1=data['groundstroke1'],
                           groundstroke2=data['groundstroke2'])
@@ -278,7 +278,8 @@ class ServingBall(CollectionDB):
     def to_dict(self):
         d = {
             "event_id": ObjectId(self.event_id),
-            "name_strike": self.name_strike,
+            "name_serving": self.name_serving,
+            "task": self.task,
             "groundstroke1": self.groundstroke1,
             "groundstroke2": self.groundstroke2
         }

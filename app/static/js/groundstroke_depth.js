@@ -4,6 +4,7 @@ const elemGroundStroke2 = document.getElementById('groundstroke2');
 
 let selectedGroundStroke1 = null;
 let selectedGroundStroke2 = null;
+let timeoutId;
 
 activeAreas.forEach((element) => {
   element.addEventListener('click', () => {
@@ -14,6 +15,7 @@ activeAreas.forEach((element) => {
       selectedGroundStroke2 = null;
       elemGroundStroke1.value = "";
       elemGroundStroke2.value = "";
+      clearTimeout(timeoutId);
     }
 
     if (selectedGroundStroke1 === null) {
@@ -24,6 +26,7 @@ activeAreas.forEach((element) => {
         selectedGroundStroke2 = element
         element.classList.add('groundstroke2');
         elemGroundStroke2.value = element.id;
+        timeoutId = setTimeout(submitForm, 1000);
     }
   });
 });
@@ -40,9 +43,13 @@ if (valueGroundStroke1) {
 
 const valueGroundStroke2 = elemGroundStroke2.value;
 if (valueGroundStroke2) {
-  const activeGroundStroke1 = document.getElementById(valueGroundStroke2);
+  const activeGroundStroke2 = document.getElementById(valueGroundStroke2);
   if (activeGroundStroke2) {
     activeGroundStroke2.classList.add('groundstroke2');
     selectedGroundStroke2 = activeGroundStroke2;
   }
+}
+
+function submitForm() {
+  document.getElementById('result_serving_ball').submit();
 }

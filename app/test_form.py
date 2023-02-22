@@ -12,8 +12,6 @@ router = APIRouter()
 templates = Jinja2Templates(directory="app/templates")
 
 
-
-
 @router.get("/new")
 async def new_test(request: Request = {}):
     context = get_context(request)
@@ -56,11 +54,11 @@ async def get_test_event_stage(guid: str, stage_number: int, request: Request):
     context['forbackhand'] = get_forbackhand(stage_number)
     context['number'] = stage_number
 
-    name_strike = get_name_strike(stage_number)
-    strike_unit = ServingBall.from_db(guid, name_strike)
+    name_serving = get_name_serving(stage_number)
+    serving_ball = ServingBall.from_db(guid, name_serving)
 
-    context['groundstroke1'] = strike_unit.groundstroke1
-    context['groundstroke2'] = strike_unit.groundstroke2
+    context['groundstroke1'] = serving_ball.groundstroke1
+    context['groundstroke2'] = serving_ball.groundstroke2
 
     return templates.TemplateResponse("groundstroke_depth.html", context)
 
@@ -71,15 +69,15 @@ async def post_test_event_stage(guid: str,
                                 groundstroke1: str = Form(default=''),
                                 groundstroke2: str = Form(default='')):
     test_event = TestEvent.from_db(guid)
-    name_strike = get_name_strike(stage_number)
+    name_serving = get_name_serving(stage_number)
 
-    setattr(test_event, name_strike, get_point_gsd(groundstroke1, groundstroke2))
+    setattr(test_event, name_serving, get_point_gsd(groundstroke1, groundstroke2))
     test_event.save()
 
-    strike_unit = ServingBall.from_db(test_event.id_db, name_strike)
-    strike_unit.main_point = groundstroke1
-    strike_unit.sub_point = groundstroke2
-    strike_unit.save()
+    serving_ball = ServingBall.from_db(test_event.id_db, name_serving)
+    serving_ball.groundstroke1 = groundstroke1
+    serving_ball.groundstroke2 = groundstroke2
+    serving_ball.save()
 
     response = Response(content=f"stage {stage_number} submitted")
     response.headers["location"] = f'/testing/{guid}/gsd/{stage_number + 1}'
@@ -114,5 +112,5 @@ def get_point_gsd(groundstroke1, groundstroke2):
     return p
 
 
-def get_name_strike(stage_number):
+def get_name_serving(stage_number):
     return 'value_gsd{:02d}'.format(stage_number)
