@@ -5,7 +5,7 @@ from fastapi.routing import APIRouter
 from typing import Optional
 from datetime import date
 
-from app.models.testing_itf import TestEvent, StrikeUnit
+from app.models.testing_itf import TestEvent, ServingBall
 from app.models.cookie import get_context
 
 router = APIRouter()
@@ -57,10 +57,10 @@ async def get_test_event_stage(guid: str, stage_number: int, request: Request):
     context['number'] = stage_number
 
     name_strike = get_name_strike(stage_number)
-    strike_unit = StrikeUnit.from_db(guid, name_strike)
+    strike_unit = ServingBall.from_db(guid, name_strike)
 
-    context['main_point'] = strike_unit.main_point
-    context['sub_point'] = strike_unit.sub_point
+    context['groundstroke1'] = strike_unit.groundstroke1
+    context['groundstroke2'] = strike_unit.groundstroke2
 
     return templates.TemplateResponse("groundstroke_depth.html", context)
 
@@ -68,17 +68,17 @@ async def get_test_event_stage(guid: str, stage_number: int, request: Request):
 @router.post("/{guid}/gsd/{stage_number}")
 async def post_test_event_stage(guid: str,
                                 stage_number: int,
-                                main_point: str = Form(default=''),
-                                sub_point: str = Form(default='')):
+                                groundstroke1: str = Form(default=''),
+                                groundstroke2: str = Form(default='')):
     test_event = TestEvent.from_db(guid)
     name_strike = get_name_strike(stage_number)
 
-    setattr(test_event, name_strike, get_point_gsd(main_point, sub_point))
+    setattr(test_event, name_strike, get_point_gsd(groundstroke1, groundstroke2))
     test_event.save()
 
-    strike_unit = StrikeUnit.from_db(test_event.id_db, name_strike)
-    strike_unit.main_point = main_point
-    strike_unit.sub_point = sub_point
+    strike_unit = ServingBall.from_db(test_event.id_db, name_strike)
+    strike_unit.main_point = groundstroke1
+    strike_unit.sub_point = groundstroke2
     strike_unit.save()
 
     response = Response(content=f"stage {stage_number} submitted")
@@ -94,21 +94,22 @@ def get_forbackhand(stage_number):
         return 'Форхенд'
 
 
-def get_point_gsd(main_point, sub_point):
+def get_point_gsd(groundstroke1, groundstroke2):
     p = 0
-    if main_point == 'area_1point_right' or main_point == 'area_1point_left':
+    if groundstroke1 == 'area_left_service' or groundstroke1 == 'area_right_service':
         p = 1
-    elif main_point == 'area_2point':
+    elif groundstroke1 == 'area_central1':
         p = 2
-    elif main_point == 'area_3point':
+    elif groundstroke1 == 'area_central2':
         p = 3
-    elif main_point == 'area_4point':
+    elif groundstroke1 == 'area_central3':
         p = 4
 
-    if sub_point == 'area_power_1point':
-        p += 1
-    elif sub_point == 'area_power_double':
-        p *= 2
+    if p > 0:
+        if groundstroke2 == 'area_power_1point':
+            p += 1
+        elif groundstroke2 == 'area_power_double':
+            p *= 2
 
     return p
 

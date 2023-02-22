@@ -19,98 +19,93 @@
   padding: 0;
 }
 
-.box1 {
+.area-left-alley-top {
   grid-column: 1 / span 1;
   grid-row: 1 / span 4;
   background-color: #f9f9f9;
   border: 1px solid black;
 }
 
-.box2 {
+.area-central-top {
   grid-column: 2 / span 6;
   grid-row: 1 / span 2;
   background-color: #f9f9f9;
   border: 1px solid black;
 }
 
-.box3 {
+.area-right-alley-top {
   grid-column: 8 / span 1;
   grid-row: 1 / span 4;
   background-color: #f9f9f9;
   border: 1px solid black;
 }
 
-.box4 {
+.area-left-service-top {
   grid-column: 2 / span 3;
   grid-row: 3 / span 2;
   background-color: #f9f9f9;
   border: 1px solid black;
 }
 
-.box5 {
+.area-right-service-top {
   grid-column: 5 / span 3;
   grid-row: 3 / span 2;
   background-color: #f9f9f9;
   border: 1px solid black;
 }
 
-.box6 {
+.area-net {
   grid-column: 1 / span 8;
   grid-row: 5 / span 1;
   background-color: #33333375;
   border: 1px solid black;
 }
 
-.box7 {
+.area-left-alley-bottom {
   grid-column: 1 / span 1;
   grid-row: 6 / span 6;
   background-color: #f9f9f9;
   border: 1px solid black;
 }
 
-.box_1point_right {
+.area-left-service-bottom {
   grid-column: 2 / span 3;
   grid-row: 6 / span 3;
-  background-color: #fff7de;
   border: 1px solid black;
 }
 
-.box_1point_left {
+.area-right-service-bottom {
   grid-column: 5 / span 3;
   grid-row: 6 / span 3;
-  background-color: #fff7de;
   border: 1px solid black;
 }
 
-.box8 {
+.area-right-alley-bottom {
   grid-column: 8 / span 1;
   grid-row: 6 / span 6;
   background-color: #f9f9f9;
   border: 1px solid black;
 }
 
-.box_2point {
+.area-central-bottom-1 {
   grid-column: 2 / span 6;
   grid-row: 9 / span 1;
-  background-color: #ffefc0;
   border: 1px solid black;
 }
 
-.box_3point {
+.area-central-bottom-2 {
   grid-column: 2 / span 6;
   grid-row: 10 / span 1;
-  background-color: #fdde84;
   border: 1px solid black;
 }
 
-.box_4point {
+.area-central-bottom-3 {
   grid-column: 2 / span 6;
   grid-row: 11 / span 1;
-  background-color: #ffd148;
   border: 1px solid black;
 }
 
-.box_power_1point {
+.area-out-line {
   grid-column: 1 / span 8;
   grid-row: 12 / span 1;
   background-color: #f9f9f9;
@@ -118,20 +113,46 @@
   padding: 10px;
 }
 
-.box_power_double {
+.area-out-powerline {
   grid-column: 1 / span 8;
   grid-row: 13 / span 1;
   background-color: #009901;
   border: 1px solid black;
 }
 
-.active_area:hover {
+.active-area:hover {
   transform: scale(1.05);
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
 }
 
-.push-area {
+.point1 {
+  background-color: #fff7de;
+}
+
+.point2 {
+  background-color: #ffefc0;
+}
+
+.point3 {
+  background-color: #fdde84;
+}
+
+.point4 {
+  background-color: #ffd148;
+}
+
+.groundstroke1 {
   transform: scale(1.05);
-  border: 5px solid #ff5656;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+  border: 5px solid #485aff;
+  border-width: 5px;
+}
+
+.groundstroke2 {
+  transform: scale(1.05);
+  box-shadow: 0px 0px 0px 5px #ff5656;
+}
+
+.groundstroke2:hover {
+  transform: scale(1.05);
+  box-shadow: 0px 0px 5px 5px #ff5656;
 }

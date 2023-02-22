@@ -10,26 +10,25 @@
 <h3>Оцінка глибини удару по землі - включає аспект потужності. (10 поперемінних ударів форхендом і бекхендом)</h3>
 <h5> Удар № {{number}} ({{ forbackhand }})</h5>
 <div class="tennis-court">
-  <div class="box1"></div>
-  <div class="box2">X X</div>
-  <div class="box3"></div>
-  <div class="box4"></div>
-  <div class="box5"></div>
-  <div class="box6"></div>
-  <div class="box7"></div>
-  <div class="box_1point_right active_area" id="area_1point_right">1 бал</div>
-  <div class="box_1point_left active_area" id="area_1point_left">1 бал</div>
-  <div class="box8"></div>
-  <div class="box_2point active_area" id="area_2point">2 бали</div>
-  <div class="box_3point active_area" id="area_3point">3 бали</div>
-  <div class="box_4point active_area" id="area_4point">4 бали</div>
-  <div class="box_power_1point active_area" id="area_power_1point">Зона сили - 1 бал</div>
-  <div class="box_power_double active_area" id="area_power_double">Зона сили - подвійні бали</div>
+  <div class="area-left-alley-top"></div>
+  <div class="area-central-top"></div>
+  <div class="area-right-alley-top"></div>
+  <div class="area-left-service-top"></div>
+  <div class="area-right-service-top"></div>
+  <div class="area-net active-area" id="area_net"></div>
+  <div class="area-left-alley-bottom active-area" id="area_left_alley"></div>
+  <div class="area-left-service-bottom point1 active-area" id="area_left_service">1 бал</div>
+  <div class="area-right-service-bottom point1 active-area" id="area_right_service">1 бал</div>
+  <div class="area-right-alley-bottom active-area" id="area_right_alley"></div>
+  <div class="area-central-bottom-1 point2 active-area" id="area_central1">2 бали</div>
+  <div class="area-central-bottom-2 point3 active-area" id="area_central2">3 бали</div>
+  <div class="area-central-bottom-3 point4 active-area" id="area_central3">4 бали</div>
+  <div class="area-out-line active-area" id="area_out_line">Зона сили - 1 бал</div>
+  <div class="area-out-powerline active-area" id="area_out_powerline">Зона сили - подвійні бали</div>
 </div>
 
 {% include "training_route_container.html" %}
 
 <script src="{{ url_for('static', path='/js/groundstroke_depth.js') }}"></script>
-<script src="{{ url_for('static', path='/js/sub_areas_power.js') }}"></script>
 
 {% endblock %}

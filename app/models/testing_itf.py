@@ -135,7 +135,7 @@ class TestEvent(CollectionDB):
             }
         ]
 
-        result = list(backend.db['itfunits'].aggregate(pipeline))
+        result = list(backend.db['itf'].aggregate(pipeline))
         inst = cls.from_dict(result[0])
         return inst
 
@@ -153,7 +153,7 @@ class TestEvent(CollectionDB):
         return test_event
 
     def name_collection(self):
-        return "itfunits"
+        return "itf"
 
     def to_dict(self):
         d = {
@@ -239,17 +239,17 @@ class TestEvent(CollectionDB):
             self.value_gsd10 = value
 
 
-class StrikeUnit(CollectionDB):
+class ServingBall(CollectionDB):
     event_id: str
     name_strike: str
-    main_point: Optional[str]
-    sub_point: Optional[str]
+    groundstroke1: Optional[str]
+    groundstroke2: Optional[str]
 
     def __init__(self, event_id: str, name_strike: str, **kwargs):
         self.event_id = event_id
         self.name_strike = name_strike
-        self.main_point = kwargs.get('main_point', '')
-        self.sub_point = kwargs.get('sub_point', '')
+        self.groundstroke1 = kwargs.get('groundstroke1', '')
+        self.groundstroke2 = kwargs.get('groundstroke2', '')
         self.id_db = kwargs.get('id_db', '')
         super().__init__()
 
@@ -260,27 +260,27 @@ class StrikeUnit(CollectionDB):
 
         # If no StrikeUnit object is found, return None
         if not strike_unit_data:
-            return StrikeUnit(event_id=event_id, name_strike=name_strike)
+            return ServingBall(event_id=event_id, name_strike=name_strike)
 
         return cls.from_dict(strike_unit_data)
 
     @classmethod
     def from_dict(cls, data: dict):
         # Create a new StrikeUnit object from the retrieved data
-        return StrikeUnit(str(data['event_id']), data['name_strike'],
+        return ServingBall(str(data['event_id']), data['name_strike'],
                           id_db=str(data['_id']),
-                          main_point=data['main_point'],
-                          sub_point=data['sub_point'])
+                          groundstroke1=data['groundstroke1'],
+                          groundstroke2=data['groundstroke2'])
 
     def name_collection(self):
-        return "strikeunit"
+        return "servingballs"
 
     def to_dict(self):
         d = {
             "event_id": ObjectId(self.event_id),
             "name_strike": self.name_strike,
-            "main_point": self.main_point,
-            "sub_point": self.sub_point
+            "groundstroke1": self.groundstroke1,
+            "groundstroke2": self.groundstroke2
         }
 
         if len(self.id_db):
