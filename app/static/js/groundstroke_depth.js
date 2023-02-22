@@ -1,52 +1,52 @@
 const activeAreas = document.querySelectorAll(".active-area");
-const elemGroundStroke1 = document.getElementById('groundstroke1');
-const elemGroundStroke2 = document.getElementById('groundstroke2');
+const elemFirstBounce = document.getElementById('first_bounce');
+const elemSecondBounce = document.getElementById('second_bounce');
 
-let selectedGroundStroke1 = null;
-let selectedGroundStroke2 = null;
+let selectedFirstBounce = null;
+let selectedSecondBounce = null;
 let timeoutId;
 
 activeAreas.forEach((element) => {
   element.addEventListener('click', () => {
-    if (selectedGroundStroke1 !== null && selectedGroundStroke2 !== null) {
-      selectedGroundStroke1.classList.remove('groundstroke1');
-      selectedGroundStroke2.classList.remove('groundstroke2');
-      selectedGroundStroke1 = null;
-      selectedGroundStroke2 = null;
-      elemGroundStroke1.value = "";
-      elemGroundStroke2.value = "";
+    if (selectedFirstBounce !== null && selectedSecondBounce !== null) {
+      selectedFirstBounce.classList.remove('first_bounce');
+      selectedSecondBounce.classList.remove('second_bounce');
+      selectedFirstBounce = null;
+      selectedSecondBounce = null;
+      elemFirstBounce.value = "";
+      elemSecondBounce.value = "";
       clearTimeout(timeoutId);
     }
 
-    if (selectedGroundStroke1 === null) {
-        selectedGroundStroke1 = element
-        element.classList.add('groundstroke1');
-        elemGroundStroke1.value = element.id;
+    if (selectedFirstBounce === null) {
+        selectedFirstBounce = element
+        element.classList.add('first_bounce');
+        elemFirstBounce.value = element.id;
     } else {
-        selectedGroundStroke2 = element
-        element.classList.add('groundstroke2');
-        elemGroundStroke2.value = element.id;
+        selectedSecondBounce = element
+        element.classList.add('second_bounce');
+        elemSecondBounce.value = element.id;
         timeoutId = setTimeout(submitForm, 1000);
     }
   });
 });
 
 
-const valueGroundStroke1 = elemGroundStroke1.value;
-if (valueGroundStroke1) {
-  const activeGroundStroke1 = document.getElementById(valueGroundStroke1);
-  if (activeGroundStroke1) {
-    activeGroundStroke1.classList.add('groundstroke1');
-    selectedGroundStroke1 = activeGroundStroke1;
+const valueFirstBounce = elemFirstBounce.value;
+if (valueFirstBounce) {
+  const activeFirstBounce = document.getElementById(valueFirstBounce);
+  if (activeFirstBounce) {
+    activeFirstBounce.classList.add('first_bounce');
+    selectedFirstBounce = activeFirstBounce;
   }
 }
 
-const valueGroundStroke2 = elemGroundStroke2.value;
-if (valueGroundStroke2) {
-  const activeGroundStroke2 = document.getElementById(valueGroundStroke2);
-  if (activeGroundStroke2) {
-    activeGroundStroke2.classList.add('groundstroke2');
-    selectedGroundStroke2 = activeGroundStroke2;
+const valueSecondBounce = elemSecondBounce.value;
+if (valueSecondBounce) {
+  const activeSecondBounce = document.getElementById(valueSecondBounce);
+  if (activeSecondBounce) {
+    activeSecondBounce.classList.add('second_bounce');
+    selectedSecondBounce = activeSecondBounce;
   }
 }
 

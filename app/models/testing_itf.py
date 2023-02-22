@@ -243,8 +243,9 @@ class ServingBall(CollectionDB):
     event_id: str
     name_serving: str
     task: str
-    groundstroke1: Optional[str]
-    groundstroke2: Optional[str]
+    stability: int
+    first_bounce: Optional[str]
+    second_bounce: Optional[str]
 
     def __init__(self, event_id: str, name_serving: str, **kwargs):
         self.event_id = event_id
@@ -255,8 +256,9 @@ class ServingBall(CollectionDB):
             self.task = 'vd'
         elif 'value_gsa' in name_serving:
             self.task = 'gsa'
-        self.groundstroke1 = kwargs.get('groundstroke1', '')
-        self.groundstroke2 = kwargs.get('groundstroke2', '')
+        self.first_bounce = kwargs.get('first_bounce', '')
+        self.second_bounce = kwargs.get('second_bounce', '')
+        self.stability = kwargs.get('stability', '')
         self.id_db = kwargs.get('id_db', '')
         super().__init__()
 
@@ -273,8 +275,9 @@ class ServingBall(CollectionDB):
     def from_dict(cls, data: dict):
         return ServingBall(str(data['event_id']), data['name_serving'],
                           id_db=str(data['_id']),
-                          groundstroke1=data['groundstroke1'],
-                          groundstroke2=data['groundstroke2'])
+                          first_bounce=data['first_bounce'],
+                          second_bounce=data['second_bounce'],
+                          stability=data['stability'])
 
     def name_collection(self):
         return "servingballs"
@@ -284,8 +287,9 @@ class ServingBall(CollectionDB):
             "event_id": ObjectId(self.event_id),
             "name_serving": self.name_serving,
             "task": self.task,
-            "groundstroke1": self.groundstroke1,
-            "groundstroke2": self.groundstroke2
+            "stability": self.stability,
+            "first_bounce": self.first_bounce,
+            "second_bounce": self.second_bounce
         }
 
         if len(self.id_db):
