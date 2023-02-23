@@ -72,7 +72,8 @@ async def post_test_event_stage_gsd(guid: str,
                                 first_bounce: str = Form(default=''),
                                 second_bounce: str = Form(default='')):
     test_event = TestEvent.from_db(guid)
-    name_serving = get_name_serving('gsd', stage_number)
+    task = 'gsd'
+    name_serving = get_name_serving(task, stage_number)
 
     setattr(test_event, name_serving, get_point_depth(first_bounce, second_bounce))
     test_event.update()
@@ -84,7 +85,7 @@ async def post_test_event_stage_gsd(guid: str,
     serving_ball.save()
 
     response = Response(content=f"stage {stage_number} submitted")
-    next_route = f'/testing/{guid}/gsd/{stage_number + 1}'
+    next_route = f'/testing/{guid}/{task}/{stage_number + 1}'
     if stage_number == 10:
         next_route = f'/testing/{guid}/vd/1'
     response.headers["location"] = next_route
@@ -123,7 +124,8 @@ async def post_test_event_stage_vd(guid: str,
                                 first_bounce: str = Form(default=''),
                                 second_bounce: str = Form(default='')):
     test_event = TestEvent.from_db(guid)
-    name_serving = get_name_serving('vd', stage_number)
+    task = 'vd'
+    name_serving = get_name_serving(task, stage_number)
 
     setattr(test_event, name_serving, get_point_depth(first_bounce, second_bounce))
     test_event.update()
@@ -135,7 +137,7 @@ async def post_test_event_stage_vd(guid: str,
     serving_ball.save()
 
     response = Response(content=f"stage {stage_number} submitted")
-    next_route = f'/testing/{guid}/vd/{stage_number + 1}'
+    next_route = f'/testing/{guid}/{task}/{stage_number + 1}'
     if stage_number == 8:
         next_route = f'/testing/{guid}/gsa/1'
     response.headers["location"] = next_route
@@ -175,7 +177,8 @@ async def post_test_event_stage_gsa(guid: str,
                                 first_bounce: str = Form(default=''),
                                 second_bounce: str = Form(default='')):
     test_event = TestEvent.from_db(guid)
-    name_serving = get_name_serving('gsa', stage_number)
+    task = 'gsa'
+    name_serving = get_name_serving(task, stage_number)
 
     setattr(test_event, name_serving, get_point_accuracy(first_bounce, second_bounce))
     test_event.update()
@@ -187,25 +190,86 @@ async def post_test_event_stage_gsa(guid: str,
     serving_ball.save()
 
     response = Response(content=f"stage {stage_number} submitted")
-    next_route = f'/testing/{guid}/gsa/{stage_number + 1}'
+    next_route = f'/testing/{guid}/{task}/{stage_number + 1}'
     if stage_number == 12:
-        next_route = f'/testing/{guid}/serve/1'
+        next_route = f'/testing/{guid}/serve/1/1'
     response.headers["location"] = next_route
     response.status_code = status.HTTP_302_FOUND
     return response
 
 
-def get_detail_serving(stage_number, task):
+@router.get("/{guid}/serve/{stage_number}/{serve}")
+async def get_test_event_stage_serve(guid: str, stage_number: int, serve: int, request: Request):
+
+    context = get_context(request)
+    task = 'serve'
+
+    context['route_back'] = f'/testing/{guid}/{task}/{stage_number - 1}/1'
+    if stage_number == 1:
+        context['route_back'] = f'/testing/{guid}/sga/12'
+    context['route_submit'] = f'/testing/{guid}/{task}/{stage_number}/1'
+    context['forbackhand'] = get_detail_serving(stage_number, task, serve)
+    context['number'] = stage_number
+    context['serve'] = serve
+
+    name_serving = get_name_serving(task, stage_number)
+    serving_ball = ServingBall.from_db(guid, name_serving, serve)
+
+    context['first_bounce'] = serving_ball.first_bounce
+    context['second_bounce'] = serving_ball.second_bounce
+
+    return templates.TemplateResponse("test_serve.html", context)
+
+
+@router.post("/{guid}/serve/{stage_number}/{serve}")
+async def post_test_event_stage_serve(guid: str,
+                                      stage_number: int,
+                                      serve: int,
+                                      first_bounce: str = Form(default=''),
+                                      second_bounce: str = Form(default='')):
+    test_event = TestEvent.from_db(guid)
+    task = 'serve'
+    name_serving = get_name_serving(task, stage_number)
+
+    point = get_point_serve(first_bounce, second_bounce, stage_number, serve)
+
+    setattr(test_event, name_serving, point)
+    test_event.update()
+    test_event.save()
+
+    next_route = f'/testing/{guid}/{task}/{stage_number + 1}/1'
+    if point == 0 and serve == 1:
+        next_route = f'/testing/{guid}/{task}/{stage_number}/2'
+        second_bounce = ''
+
+    serving_ball = ServingBall.from_db(test_event.id_db, name_serving, serve)
+    serving_ball.first_bounce = first_bounce
+    serving_ball.second_bounce = second_bounce
+    serving_ball.serve = serve
+    serving_ball.save()
+
+    response = Response(content=f"stage {stage_number} submitted")
+
+    if stage_number == 12:
+        next_route = f'/testing/{guid}/mobility/1'
+    response.headers["location"] = next_route
+    response.status_code = status.HTTP_302_FOUND
+    return response
+
+
+def get_detail_serving(stage_number: int, task: str, serve: int = 0):
     res = 'Форхенд'
     if stage_number % 2 == 0:
         res = 'Бекхенд'
 
-    print(task)
     if task == 'gsa':
         suf = 'по лінії'
         if stage_number > 6:
             suf = 'по кроскорту'
         res = f'{res} / {suf}'
+
+    if task == 'serve':
+        res = f'{serve} подача'
 
     return res
 
@@ -238,6 +302,42 @@ def get_point_accuracy(first_bounce, second_bounce):
         p = 2
     elif first_bounce == 'area_central_left' or first_bounce == 'area_central_right':
         p = 3
+
+    if p > 0:
+        if second_bounce == 'area_out_line':
+            p += 1
+        elif second_bounce == 'area_out_powerline':
+            p *= 2
+
+    return p
+
+
+def get_point_serve(first_bounce, second_bounce, stage_number, serve):
+    p = 0
+    if stage_number < 4 and serve == 1:
+        if first_bounce == 'area_right_middle_service': p = 2
+        if first_bounce == 'area_right_wide_service': p = 4
+    elif stage_number < 4 and serve == 2:
+        if first_bounce == 'area_right_middle_service': p = 1
+        if first_bounce == 'area_right_wide_service': p = 2
+    elif stage_number < 7 and serve == 1:
+        if first_bounce == 'area_right_wide_service': p = 2
+        if first_bounce == 'area_right_middle_service': p = 4
+    elif stage_number < 7 and serve == 2:
+        if first_bounce == 'area_right_wide_service': p = 1
+        if first_bounce == 'area_right_middle_service': p = 2
+    elif stage_number < 10 and serve == 1:
+        if first_bounce == 'area_left_wide_service': p = 2
+        if first_bounce == 'area_left_middle_service': p = 4
+    elif stage_number < 10 and serve == 2:
+        if first_bounce == 'area_left_wide_service': p = 1
+        if first_bounce == 'area_left_middle_service': p = 2
+    elif stage_number < 13 and serve == 1:
+        if first_bounce == 'area_left_middle_service': p = 2
+        if first_bounce == 'area_left_wide_service': p = 4
+    elif stage_number < 13 and serve == 2:
+        if first_bounce == 'area_left_middle_service': p = 1
+        if first_bounce == 'area_left_wide_service': p = 2
 
     if p > 0:
         if second_bounce == 'area_out_line':

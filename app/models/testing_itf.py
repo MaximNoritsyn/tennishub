@@ -252,6 +252,7 @@ class ServingBall(CollectionDB):
     event_id: str
     name_serving: str
     task: str
+    serve: int
     first_bounce: Optional[str]
     second_bounce: Optional[str]
 
@@ -264,14 +265,19 @@ class ServingBall(CollectionDB):
             self.task = 'vd'
         elif 'value_gsa' in name_serving:
             self.task = 'gsa'
+        elif 'value_serve' in name_serving:
+            self.task = 'serve'
         self.first_bounce = kwargs.get('first_bounce', '')
         self.second_bounce = kwargs.get('second_bounce', '')
         self.id_db = kwargs.get('id_db', '')
+        self.serve = kwargs.get('serve', 0)
         super().__init__()
 
     @classmethod
-    def from_db(cls, event_id: str, name_serving: str):
-        data = backend.db['servingballs'].find_one({'event_id': ObjectId(event_id), 'name_serving': name_serving})
+    def from_db(cls, event_id: str, name_serving: str, serve: int = 0):
+        data = backend.db['servingballs'].find_one({'event_id': ObjectId(event_id),
+                                                    'name_serving': name_serving,
+                                                    'serve': serve})
 
         if not data:
             return ServingBall(event_id=event_id, name_serving=name_serving)
@@ -280,10 +286,13 @@ class ServingBall(CollectionDB):
 
     @classmethod
     def from_dict(cls, data: dict):
-        return ServingBall(str(data['event_id']), data['name_serving'],
-                          id_db=str(data['_id']),
-                          first_bounce=data['first_bounce'],
-                          second_bounce=data['second_bounce'])
+        serving_ball = ServingBall(str(data['event_id']), data['name_serving'])
+        for key, value in data.items():
+            if key == '_id':
+                setattr(serving_ball, 'id_db', str(value))
+            else:
+                setattr(serving_ball, key, value)
+        return serving_ball
 
     def name_collection(self):
         return "servingballs"
@@ -293,6 +302,7 @@ class ServingBall(CollectionDB):
             "event_id": ObjectId(self.event_id),
             "name_serving": self.name_serving,
             "task": self.task,
+            "serve": self.serve,
             "first_bounce": self.first_bounce,
             "second_bounce": self.second_bounce
         }
@@ -314,4 +324,6 @@ def get_name_serving(task, stage_number):
         return 'value_vd{:02d}'.format(stage_number)
     elif task == 'gsa':
         return 'value_gsa{:02d}'.format(stage_number)
+    elif task == 'serve':
+        return 'value_serve{:02d}'.format(stage_number)
 
