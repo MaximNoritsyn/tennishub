@@ -5,7 +5,7 @@ from fastapi.routing import APIRouter
 from typing import Optional
 from datetime import date
 
-from app.models.testing_itf import TestEvent, ServingBall
+from app.models.testing_itf import TestEvent, ServingBall, get_name_serving
 from app.models.cookie import get_context
 
 router = APIRouter()
@@ -45,15 +45,16 @@ async def post_new(request: Request,
 async def get_test_event_stage_gsd(guid: str, stage_number: int, request: Request):
 
     context = get_context(request)
+    task = 'gsd'
 
-    context['route_back'] = f'/testing/{guid}/gsd/{stage_number - 1}'
+    context['route_back'] = f'/testing/{guid}/{task}/{stage_number - 1}'
     if stage_number == 1:
         context['route_back'] = f'/testing/new'
-    context['route_submit'] = f'/testing/{guid}/gsd/{stage_number}'
-    context['forbackhand'] = get_forbackhand(stage_number)
+    context['route_submit'] = f'/testing/{guid}/{task}/{stage_number}'
+    context['forbackhand'] = get_detail_serving(stage_number, task)
     context['number'] = stage_number
 
-    name_serving = get_name_serving('gsd', stage_number)
+    name_serving = get_name_serving(task, stage_number)
     serving_ball = ServingBall.from_db(guid, name_serving)
 
     context['first_bounce'] = serving_ball.first_bounce
@@ -73,16 +74,13 @@ async def post_test_event_stage_gsd(guid: str,
     test_event = TestEvent.from_db(guid)
     name_serving = get_name_serving('gsd', stage_number)
 
-    p = get_point_depth(first_bounce, second_bounce)
-    stability = get_stability(test_event, 'gsd', stage_number)
-
-    setattr(test_event, name_serving, p + stability)
+    setattr(test_event, name_serving, get_point_depth(first_bounce, second_bounce))
+    test_event.update()
     test_event.save()
 
     serving_ball = ServingBall.from_db(test_event.id_db, name_serving)
     serving_ball.first_bounce = first_bounce
     serving_ball.second_bounce = second_bounce
-    serving_ball.stability = stability
     serving_ball.save()
 
     response = Response(content=f"stage {stage_number} submitted")
@@ -98,15 +96,16 @@ async def post_test_event_stage_gsd(guid: str,
 async def get_test_event_stage_vd(guid: str, stage_number: int, request: Request):
 
     context = get_context(request)
+    task = 'vd'
 
-    context['route_back'] = f'/testing/{guid}/vd/{stage_number - 1}'
+    context['route_back'] = f'/testing/{guid}/{task}/{stage_number - 1}'
     if stage_number == 1:
         context['route_back'] = f'/testing/{guid}/gsd/10'
-    context['route_submit'] = f'/testing/{guid}/vd/{stage_number}'
-    context['forbackhand'] = get_forbackhand(stage_number)
+    context['route_submit'] = f'/testing/{guid}/[task/{stage_number}'
+    context['forbackhand'] = get_detail_serving(stage_number, task)
     context['number'] = stage_number
 
-    name_serving = get_name_serving('vd', stage_number)
+    name_serving = get_name_serving(task, stage_number)
     serving_ball = ServingBall.from_db(guid, name_serving)
 
     context['first_bounce'] = serving_ball.first_bounce
@@ -126,16 +125,13 @@ async def post_test_event_stage_vd(guid: str,
     test_event = TestEvent.from_db(guid)
     name_serving = get_name_serving('vd', stage_number)
 
-    p = get_point_depth(first_bounce, second_bounce)
-    stability = get_stability(test_event, 'vd', stage_number)
-
-    setattr(test_event, name_serving, p+stability)
+    setattr(test_event, name_serving, get_point_depth(first_bounce, second_bounce))
+    test_event.update()
     test_event.save()
 
     serving_ball = ServingBall.from_db(test_event.id_db, name_serving)
     serving_ball.first_bounce = first_bounce
     serving_ball.second_bounce = second_bounce
-    serving_ball.stability = stability
     serving_ball.save()
 
     response = Response(content=f"stage {stage_number} submitted")
@@ -151,15 +147,16 @@ async def post_test_event_stage_vd(guid: str,
 async def get_test_event_stage_sda(guid: str, stage_number: int, request: Request):
 
     context = get_context(request)
+    task = 'gsa'
 
-    context['route_back'] = f'/testing/{guid}/gsa/{stage_number - 1}'
+    context['route_back'] = f'/testing/{guid}/{task}/{stage_number - 1}'
     if stage_number == 1:
         context['route_back'] = f'/testing/{guid}/vd/8'
-    context['route_submit'] = f'/testing/{guid}/gsa/{stage_number}'
-    context['forbackhand'] = get_forbackhand(stage_number)
+    context['route_submit'] = f'/testing/{guid}/{task}/{stage_number}'
+    context['forbackhand'] = get_detail_serving(stage_number, task)
     context['number'] = stage_number
 
-    name_serving = get_name_serving('gsa', stage_number)
+    name_serving = get_name_serving(task, stage_number)
     serving_ball = ServingBall.from_db(guid, name_serving)
 
     context['first_bounce'] = serving_ball.first_bounce
@@ -167,16 +164,50 @@ async def get_test_event_stage_sda(guid: str, stage_number: int, request: Reques
 
     context['title_of_task'] = 'Оцінка точності удару з землі - включає аспект сили. ' \
                                '(6 поперемінних ударів форхендом і бекхендом по лінії та ' \
-                               '6 поперемінних ударів форхендом і бекхендом на кроскорті).'
+                               'на кроскорті).'
 
     return templates.TemplateResponse("test_accuracy.html", context)
 
 
-def get_forbackhand(stage_number):
+@router.post("/{guid}/gsa/{stage_number}")
+async def post_test_event_stage_gsa(guid: str,
+                                stage_number: int,
+                                first_bounce: str = Form(default=''),
+                                second_bounce: str = Form(default='')):
+    test_event = TestEvent.from_db(guid)
+    name_serving = get_name_serving('gsa', stage_number)
+
+    setattr(test_event, name_serving, get_point_accuracy(first_bounce, second_bounce))
+    test_event.update()
+    test_event.save()
+
+    serving_ball = ServingBall.from_db(test_event.id_db, name_serving)
+    serving_ball.first_bounce = first_bounce
+    serving_ball.second_bounce = second_bounce
+    serving_ball.save()
+
+    response = Response(content=f"stage {stage_number} submitted")
+    next_route = f'/testing/{guid}/gsa/{stage_number + 1}'
+    if stage_number == 12:
+        next_route = f'/testing/{guid}/serve/1'
+    response.headers["location"] = next_route
+    response.status_code = status.HTTP_302_FOUND
+    return response
+
+
+def get_detail_serving(stage_number, task):
+    res = 'Форхенд'
     if stage_number % 2 == 0:
-        return 'Бекхенд'
-    else:
-        return 'Форхенд'
+        res = 'Бекхенд'
+
+    print(task)
+    if task == 'gsa':
+        suf = 'по лінії'
+        if stage_number > 6:
+            suf = 'по кроскорту'
+        res = f'{res} / {suf}'
+
+    return res
 
 
 def get_point_depth(first_bounce, second_bounce):
@@ -201,11 +232,11 @@ def get_point_depth(first_bounce, second_bounce):
 
 def get_point_accuracy(first_bounce, second_bounce):
     p = 0
-    if first_bounce == 'area-center-service-bottom' or first_bounce == 'area-central-center':
+    if first_bounce == 'area_center_service' or first_bounce == 'area_central_center':
         p = 1
-    elif first_bounce == 'area-left-service-bottom' or first_bounce == 'area-right-service-bottom':
+    elif first_bounce == 'area_center_service' or first_bounce == 'area_right_service':
         p = 2
-    elif first_bounce == 'area-central-left' or first_bounce == 'area-central-right':
+    elif first_bounce == 'area_central_left' or first_bounce == 'area_central_right':
         p = 3
 
     if p > 0:
@@ -217,30 +248,6 @@ def get_point_accuracy(first_bounce, second_bounce):
     return p
 
 
-def get_name_serving(task, stage_number):
-
-    if task == 'gsd':
-        return 'value_gsd{:02d}'.format(stage_number)
-    elif task == 'vd':
-        return 'value_vd{:02d}'.format(stage_number)
-    elif task == 'gsa':
-        return 'value_gsa{:02d}'.format(stage_number)
 
 
-def get_stability(test_event, task, stage_number):
-
-    prev_res = 0
-    """
-    if stage_number == 1:
-        if task == 'vd':
-            prev_res = getattr(test_event, get_name_serving('gsd', 10))
-        elif task == 'gsa':
-            prev_res = getattr(test_event, get_name_serving('vd', 8))
-        
-    else:
-    """
-    if stage_number > 1:
-        prev_res = getattr(test_event, get_name_serving(task, stage_number-1))
-
-    return 1 if prev_res > 0 else 0
 

@@ -228,34 +228,30 @@ class TestEvent(CollectionDB):
     def save(self):
         backend.save_document(self)
 
-    def __setitem__(self, key, value):
-        if key == 'value_gsd01':
-            self.value_gsd01 = value
-        elif key == 'value_gsd02':
-            self.value_gsd02 = value
-        elif key == 'value_gsd03':
-            self.value_gsd03 = value
-        elif key == 'value_gsd04':
-            self.value_gsd04 = value
-        elif key == 'value_gsd05':
-            self.value_gsd05 = value
-        elif key == 'value_gsd06':
-            self.value_gsd06 = value
-        elif key == 'value_gsd07':
-            self.value_gsd07 = value
-        elif key == 'value_gsd08':
-            self.value_gsd08 = value
-        elif key == 'value_gsd09':
-            self.value_gsd09 = value
-        elif key == 'value_gsd10':
-            self.value_gsd10 = value
+    def update(self):
+        self.consistency_gsd = 0
+        for n in range(1, 10):
+            v = getattr(self, get_name_serving('gsd', n), 0) > 0
+            if v != 0 and v is not None:
+                self.consistency_gsd += 1
+
+        self.consistency_vd = 0
+        for n in range(1, 8):
+            v = getattr(self, get_name_serving('vd', n), 0) > 0
+            if v != 0 and v is not None:
+                self.consistency_vd += 1
+
+        self.consistency_gsa = 0
+        for n in range(1, 12):
+            v = getattr(self, get_name_serving('gsa', n), 0)
+            if v != 0 and v is not None:
+                self.consistency_gsa += 1
 
 
 class ServingBall(CollectionDB):
     event_id: str
     name_serving: str
     task: str
-    stability: int
     first_bounce: Optional[str]
     second_bounce: Optional[str]
 
@@ -270,7 +266,6 @@ class ServingBall(CollectionDB):
             self.task = 'gsa'
         self.first_bounce = kwargs.get('first_bounce', '')
         self.second_bounce = kwargs.get('second_bounce', '')
-        self.stability = kwargs.get('stability', '')
         self.id_db = kwargs.get('id_db', '')
         super().__init__()
 
@@ -288,8 +283,7 @@ class ServingBall(CollectionDB):
         return ServingBall(str(data['event_id']), data['name_serving'],
                           id_db=str(data['_id']),
                           first_bounce=data['first_bounce'],
-                          second_bounce=data['second_bounce'],
-                          stability=data['stability'])
+                          second_bounce=data['second_bounce'])
 
     def name_collection(self):
         return "servingballs"
@@ -299,7 +293,6 @@ class ServingBall(CollectionDB):
             "event_id": ObjectId(self.event_id),
             "name_serving": self.name_serving,
             "task": self.task,
-            "stability": self.stability,
             "first_bounce": self.first_bounce,
             "second_bounce": self.second_bounce
         }
@@ -313,5 +306,12 @@ class ServingBall(CollectionDB):
         backend.save_document(self)
 
 
+def get_name_serving(task, stage_number):
 
+    if task == 'gsd':
+        return 'value_gsd{:02d}'.format(stage_number)
+    elif task == 'vd':
+        return 'value_vd{:02d}'.format(stage_number)
+    elif task == 'gsa':
+        return 'value_gsa{:02d}'.format(stage_number)
 
