@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}Результати{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', path='/css/test_mobile.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', path='/css/court.css') }}">
+{% endblock %}
+
+{% block content %}
+
+{% include "training_route_container.html" %}
+
+<h3>Результати</h3>
+
+
+{% endblock %}

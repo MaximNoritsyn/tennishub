@@ -68,6 +68,8 @@ class TestEvent(CollectionDB):
     value_serve12: Optional[int] = 0
     consistency_serve: Optional[int] = 0
 
+    value_mobility: Optional[int] = 0
+
     @classmethod
     def from_db(cls, id_db: str):
         pipeline = [
@@ -138,7 +140,8 @@ class TestEvent(CollectionDB):
                     "value_serve10": 1,
                     "value_serve11": 1,
                     "value_serve12": 1,
-                    "consistency_serve": 1
+                    "consistency_serve": 1,
+                    "value_mobility": 1
                 }
             }
         ]
@@ -218,6 +221,7 @@ class TestEvent(CollectionDB):
             "value_serve11": self.value_serve11,
             "value_serve12": self.value_serve12,
             "consistency_serve": self.consistency_serve,
+            "value_mobility": self.value_mobility,
         }
 
         if len(self.id_db):
@@ -267,6 +271,8 @@ class ServingBall(CollectionDB):
             self.task = 'gsa'
         elif 'value_serve' in name_serving:
             self.task = 'serve'
+        elif 'value_mobility' in name_serving:
+            self.task = 'mobility'
         self.first_bounce = kwargs.get('first_bounce', '')
         self.second_bounce = kwargs.get('second_bounce', '')
         self.id_db = kwargs.get('id_db', '')

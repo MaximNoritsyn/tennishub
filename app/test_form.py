@@ -43,7 +43,6 @@ async def post_new(request: Request,
 
 @router.get("/{guid}/gsd/{stage_number}")
 async def get_test_event_stage_gsd(guid: str, stage_number: int, request: Request):
-
     context = get_context(request)
     task = 'gsd'
 
@@ -68,9 +67,9 @@ async def get_test_event_stage_gsd(guid: str, stage_number: int, request: Reques
 
 @router.post("/{guid}/gsd/{stage_number}")
 async def post_test_event_stage_gsd(guid: str,
-                                stage_number: int,
-                                first_bounce: str = Form(default=''),
-                                second_bounce: str = Form(default='')):
+                                    stage_number: int,
+                                    first_bounce: str = Form(default=''),
+                                    second_bounce: str = Form(default='')):
     test_event = TestEvent.from_db(guid)
     task = 'gsd'
     name_serving = get_name_serving(task, stage_number)
@@ -95,7 +94,6 @@ async def post_test_event_stage_gsd(guid: str,
 
 @router.get("/{guid}/vd/{stage_number}")
 async def get_test_event_stage_vd(guid: str, stage_number: int, request: Request):
-
     context = get_context(request)
     task = 'vd'
 
@@ -120,9 +118,9 @@ async def get_test_event_stage_vd(guid: str, stage_number: int, request: Request
 
 @router.post("/{guid}/vd/{stage_number}")
 async def post_test_event_stage_vd(guid: str,
-                                stage_number: int,
-                                first_bounce: str = Form(default=''),
-                                second_bounce: str = Form(default='')):
+                                   stage_number: int,
+                                   first_bounce: str = Form(default=''),
+                                   second_bounce: str = Form(default='')):
     test_event = TestEvent.from_db(guid)
     task = 'vd'
     name_serving = get_name_serving(task, stage_number)
@@ -147,7 +145,6 @@ async def post_test_event_stage_vd(guid: str,
 
 @router.get("/{guid}/gsa/{stage_number}")
 async def get_test_event_stage_sda(guid: str, stage_number: int, request: Request):
-
     context = get_context(request)
     task = 'gsa'
 
@@ -173,9 +170,9 @@ async def get_test_event_stage_sda(guid: str, stage_number: int, request: Reques
 
 @router.post("/{guid}/gsa/{stage_number}")
 async def post_test_event_stage_gsa(guid: str,
-                                stage_number: int,
-                                first_bounce: str = Form(default=''),
-                                second_bounce: str = Form(default='')):
+                                    stage_number: int,
+                                    first_bounce: str = Form(default=''),
+                                    second_bounce: str = Form(default='')):
     test_event = TestEvent.from_db(guid)
     task = 'gsa'
     name_serving = get_name_serving(task, stage_number)
@@ -200,7 +197,6 @@ async def post_test_event_stage_gsa(guid: str,
 
 @router.get("/{guid}/serve/{stage_number}/{serve}")
 async def get_test_event_stage_serve(guid: str, stage_number: int, serve: int, request: Request):
-
     context = get_context(request)
     task = 'serve'
 
@@ -209,7 +205,7 @@ async def get_test_event_stage_serve(guid: str, stage_number: int, serve: int, r
         context['route_back'] = f'/testing/{guid}/{task}/{stage_number}/1'
     elif stage_number == 1:
         context['route_back'] = f'/testing/{guid}/gsa/12'
-    context['route_submit'] = f'/testing/{guid}/{task}/{stage_number}/1'
+    context['route_submit'] = f'/testing/{guid}/{task}/{stage_number}/{serve}'
     context['forbackhand'] = get_detail_serving(stage_number, task, serve)
     context['number'] = stage_number
     context['serve'] = serve
@@ -253,10 +249,53 @@ async def post_test_event_stage_serve(guid: str,
     response = Response(content=f"stage {stage_number} submitted")
 
     if stage_number == 12:
-        next_route = f'/testing/{guid}/mobility/1'
+        next_route = f'/testing/{guid}/mobility'
     response.headers["location"] = next_route
     response.status_code = status.HTTP_302_FOUND
     return response
+
+
+@router.get("/{guid}/mobility")
+async def get_test_event_stage_mobility(guid: str, request: Request):
+    context = get_context(request)
+    task = 'mobility'
+
+    context['route_back'] = f'/testing/{guid}/serve/12/1'
+    context['route_submit'] = f'/testing/{guid}/{task}'
+
+    serving_ball = ServingBall.from_db(guid, 'value_mobility')
+
+    context['first_bounce'] = serving_ball.first_bounce
+
+    return templates.TemplateResponse("test_mobility.html", context)
+
+
+@router.post("/{guid}/mobility")
+async def post_test_event_stage_mobility(guid: str, first_bounce: str = Form(default='')):
+    test_event = TestEvent.from_db(guid)
+    name_serving = 'value_mobility'
+
+    setattr(test_event, name_serving, get_point_mobility(first_bounce))
+    test_event.update()
+    test_event.save()
+
+    serving_ball = ServingBall.from_db(test_event.id_db, 'value_mobility')
+    serving_ball.first_bounce = first_bounce
+    serving_ball.save()
+
+    response = Response(content=f"mobility submitted")
+    response.headers["location"] = f'/testing/{guid}/results'
+    response.status_code = status.HTTP_302_FOUND
+    return response
+
+
+@router.get("/{guid}/results")
+async def get_test_event_stage_results(guid: str, request: Request):
+    context = get_context(request)
+
+    context['route_back'] = f'/testing/{guid}/mobility'
+
+    return templates.TemplateResponse("test_results.html", context)
 
 
 def get_detail_serving(stage_number: int, task: str, serve: int = 0):
@@ -350,6 +389,34 @@ def get_point_serve(first_bounce, second_bounce, stage_number, serve):
     return p
 
 
+def get_point_mobility(first_bounce: str):
+    data = {
+        '40': 1,
+        '39': 2,
+        '38': 3,
+        '37': 4,
+        '36': 5,
+        '35': 6,
+        '34': 7,
+        '33': 8,
+        '32': 9,
+        '31': 10,
+        '30': 11,
+        '29': 12,
+        '28': 12,
+        '27': 14,
+        '26': 15,
+        '25': 16,
+        '24': 18,
+        '23': 19,
+        '22': 21,
+        '21': 26,
+        '20': 32,
+        '19': 39,
+        '18': 45,
+        '17': 52,
+        '16': 61,
+        '15': 76
+    }
 
-
-
+    return data[first_bounce]

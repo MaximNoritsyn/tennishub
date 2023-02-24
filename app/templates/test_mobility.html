@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+
+{% block title %}Мобільність{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', path='/css/test_mobile.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', path='/css/court.css') }}">
+{% endblock %}
+
+{% block content %}
+
+{% include "training_route_container.html" %}
+
+<h3>Оцінка мобільності - Це оцінка вимірює час, який потрібен гравцеві, щоб підібрати п'ять тенісних м'ячів і
+    повернути їх окремо  визначену зону.</h3>
+
+<div class="table_mobility">
+    <div id="Time" class="table_mobility_column active-area">
+        <div class="table_mobility_row1">Час</div>
+        <div class="table_mobility_row2">Бали</div>
+    </div>
+    <div id="40" class="table_mobility_column active-area">
+        <div class="table_mobility_row1">40</div>
+        <div class="table_mobility_row2">1</div>
+    </div>
+    <div id="39" class="table_mobility_column active-area">
+        <div class="table_mobility_row1">39</div>
+        <div class="table_mobility_row2">2</div>
+    </div>
+    <div id="38" class="table_mobility_column active-area">
+        <div class="table_mobility_row1">38</div>
+        <div class="table_mobility_row2">3</div>
+    </div>
+    <div id="37" class="table_mobility_column active-area">
+        <div class="table_mobility_row1">37</div>
+        <div class="table_mobility_row2">4</div>
+    </div>
+    <div id="36" class="table_mobility_column active-area">
+        <div class="table_mobility_row1">36</div>
+        <div class="table_mobility_row2">5</div>
+    </div>
+    <div id="35" class="table_mobility_column active-area">
+        <div class="table_mobility_row1">35</div>
+        <div class="table_mobility_row2">6</div>
+    </div>
+    <div id="34" class="table_mobility_column active-area">
+        <div class="table_mobility_row1">34</div>
+        <div class="table_mobility_row2">7</div>
+    </div>
+    <div id="33" class="table_mobility_column active-area">
+        <div class="table_mobility_row1">33</div>
+        <div class="table_mobility_row2">8</div>
+    </div>
+    <div id="32" class="table_mobility_column active-area">
+        <div class="table_mobility_row1">32</div>
+        <div class="table_mobility_row2">9</div>
+    </div>
+    <div id="31" class="table_mobility_column active-area">
+        <div class="table_mobility_row1">31</div>
+        <div class="table_mobility_row2">10</div>
+    </div>
+    <div id="30" class="table_mobility_column active-area">
+        <div class="table_mobility_row1">30</div>
+        <div class="table_mobility_row2">11</div>
+    </div>
+    <div id="29" class="table_mobility_column active-area">
+        <div class="table_mobility_row1">29</div>
+        <div class="table_mobility_row2">12</div>
+    </div>
+    <div id="28" class="table_mobility_column active-area">
+        <div class="table_mobility_row1">28</div>
+        <div class="table_mobility_row2">12</div>
+    </div>
+    <div id="27" class="table_mobility_column active-area">
+        <div class="table_mobility_row1">27</div>
+        <div class="table_mobility_row2">14</div>
+    </div>
+    <div id="26" class="table_mobility_column active-area">
+        <div class="table_mobility_row1">26</div>
+        <div class="table_mobility_row2">15</div>
+    </div>
+    <div id="25" class="table_mobility_column active-area">
+        <div class="table_mobility_row1">25</div>
+        <div class="table_mobility_row2">16</div>
+    </div>
+    <div id="24" class="table_mobility_column active-area">
+        <div class="table_mobility_row1">24</div>
+        <div class="table_mobility_row2">52</div>
+    </div>
+    <div id="23" class="table_mobility_column active-area">
+        <div class="table_mobility_row1">23</div>
+        <div class="table_mobility_row2">61</div>
+    </div>
+    <div id="22" class="table_mobility_column active-area">
+        <div class="table_mobility_row1">22</div>
+        <div class="table_mobility_row2">76</div>
+    </div>
+    <div id="21" class="table_mobility_column active-area">
+        <div class="table_mobility_row1">21</div>
+        <div class="table_mobility_row2">26</div>
+    </div>
+    <div id="20" class="table_mobility_column active-area">
+        <div class="table_mobility_row1">20</div>
+        <div class="table_mobility_row2">32</div>
+    </div>
+    <div id="19" class="table_mobility_column active-area">
+        <div class="table_mobility_row1">19</div>
+        <div class="table_mobility_row2">39</div>
+    </div>
+    <div id="18" class="table_mobility_column active-area">
+        <div class="table_mobility_row1">18</div>
+        <div class="table_mobility_row2">45</div>
+    </div>
+    <div id="17" class="table_mobility_column active-area">
+        <div class="table_mobility_row1">17</div>
+        <div class="table_mobility_row2">52</div>
+    </div>
+    <div id="16" class="table_mobility_column active-area">
+        <div class="table_mobility_row1">16</div>
+        <div class="table_mobility_row2">61</div>
+    </div>
+    <div id="15" class="table_mobility_column active-area">
+        <div class="table_mobility_row1">15</div>
+        <div class="table_mobility_row2">76</div>
+    </div>
+</div>
+
+
+<script src="{{ url_for('static', path='/js/click_area_bounce.js') }}"></script>
+
+{% endblock %}
