@@ -205,7 +205,9 @@ async def get_test_event_stage_serve(guid: str, stage_number: int, serve: int, r
     task = 'serve'
 
     context['route_back'] = f'/testing/{guid}/{task}/{stage_number - 1}/1'
-    if stage_number == 1:
+    if serve == 2:
+        context['route_back'] = f'/testing/{guid}/{task}/{stage_number}/1'
+    elif stage_number == 1:
         context['route_back'] = f'/testing/{guid}/gsa/12'
     context['route_submit'] = f'/testing/{guid}/{task}/{stage_number}/1'
     context['forbackhand'] = get_detail_serving(stage_number, task, serve)

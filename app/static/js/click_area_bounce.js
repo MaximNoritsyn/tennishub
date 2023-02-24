@@ -5,10 +5,11 @@ const elemSecondBounce = document.getElementById('second_bounce');
 let selectedFirstBounce = null;
 let selectedSecondBounce = null;
 let timeoutId;
+let finishSelectBounces = false;
 
 activeAreas.forEach((element) => {
   element.addEventListener('click', () => {
-    if (selectedFirstBounce !== null && selectedSecondBounce !== null) {
+    if (finishSelectBounces) {
       selectedFirstBounce.classList.remove('first_bounce');
       selectedSecondBounce.classList.remove('second_bounce');
       selectedFirstBounce = null;
@@ -22,11 +23,19 @@ activeAreas.forEach((element) => {
         selectedFirstBounce = element
         element.classList.add('first_bounce');
         elemFirstBounce.value = element.id;
+        if (!element.classList.contains("point1") &&
+            !element.classList.contains("point2") &&
+            !element.classList.contains("point3") &&
+            !element.classList.contains("point4")) {
+                timeoutId = setTimeout(submitForm, 1000);
+                finishSelectBounces = true
+            }
     } else {
         selectedSecondBounce = element
         element.classList.add('second_bounce');
         elemSecondBounce.value = element.id;
         timeoutId = setTimeout(submitForm, 1000);
+        finishSelectBounces = true
     }
   });
 });
