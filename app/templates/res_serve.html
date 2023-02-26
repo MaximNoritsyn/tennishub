@@ -1,0 +1,88 @@
+<div class="block-res">
+  <div class="table-res-header">
+    <h3>Подача</h3>
+  </div>
+  <table class="table-res">
+    <thead>
+      <tr>
+        <th class="no-border-left">Удар </th>
+        <th class="no-border-right">№</th>
+        <th>Бали</th>
+      </tr>
+    </thead>
+    <tbody>
+  <tr>
+    <td class="no-border-left yellow_back">1 бокс дал</td>
+    <td class="no-border-right yellow_back">1</td>
+    <td>{{ test_event.value_serve01}}</td>
+  </tr>
+  <tr>
+    <td class="no-border-left yellow_back">1 бокс дал</td>
+    <td class="no-border-right yellow_back">2</td>
+    <td>{{ test_event.value_serve02}}</td>
+  </tr>
+  <tr>
+    <td class="no-border-left yellow_back">1 бокс дал</td>
+    <td class="no-border-right yellow_back">3</td>
+    <td>{{ test_event.value_serve03}}</td>
+  </tr>
+  <tr>
+    <td class="no-border-left">1 бокс сер</td>
+    <td class="no-border-right">4</td>
+    <td>{{ test_event.value_serve04}}</td>
+  </tr>
+  <tr>
+    <td class="no-border-left">1 бокс сер</td>
+    <td class="no-border-right">5</td>
+    <td>{{ test_event.value_serve05}}</td>
+  </tr>
+  <tr>
+    <td class="no-border-left">1 бокс сер</td>
+    <td class="no-border-right">6</td>
+    <td>{{ test_event.value_serve06}}</td>
+  </tr>
+  <tr>
+    <td class="no-border-left yellow_back">2 бокс сер</td>
+    <td class="no-border-right yellow_back">7</td>
+    <td>{{ test_event.value_serve07}}</td>
+  </tr>
+  <tr>
+    <td class="no-border-left yellow_back">2 бокс сер</td>
+    <td class="no-border-right yellow_back">8</td>
+    <td>{{ test_event.value_serve08}}</td>
+  </tr>
+  <tr>
+    <td class="no-border-left yellow_back">2 бокс сер</td>
+    <td class="no-border-right yellow_back">9</td>
+    <td>{{ test_event.value_serve09}}</td>
+  </tr>
+  <tr>
+    <td class="no-border-left">2 бокс дал</td>
+    <td class="no-border-right">10</td>
+    <td>{{ test_event.value_serve10}}</td>
+  </tr>
+  <tr>
+    <td class="no-border-left">2 бокс дал</td>
+    <td class="no-border-right">11</td>
+    <td>{{ test_event.value_serve11}}</td>
+  </tr>
+  <tr>
+    <td class="no-border-left">2 бокс дал</td>
+    <td class="no-border-right">12</td>
+    <td>{{ test_event.value_serve12}}</td>
+  </tr>
+  <tr>
+    <td colspan="2">Всього</td>
+    <td>{{ test_event.total_serve}}</td>
+  </tr>
+  <tr>
+    <td colspan="2">Стабільність</td>
+    <td>{{ test_event.consistency_serve}}</td>
+  </tr>
+  <tr>
+    <td colspan="2">Всього точності</td>
+    <td> {{test_event.total_serve + test_event.consistency_serve}}</td>
+  </tr>
+</tbody>
+</table>
+</div>
