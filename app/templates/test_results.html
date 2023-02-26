@@ -11,7 +11,48 @@
 
 {% include "training_route_container.html" %}
 
-<h3>Результати</h3>
-{% include "res_gsd.html" %}
+<div class="page-res">
+    <div>
+        <h3>Міжнародний тенісний номер - оцінка на корті</h3>
+    </div>
+    <table>
+        <thead>
+        <tr>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td colspan="4" style="border: 2px solid black; padding: 5px">
+                <div>
+                    <label for="name">Ім'я:</label>
+                    <input id="name" type="text" readonly value="{{test_event.person.name}}">
+                    <label for="date_b">Дата народження:</label>
+                    <input type="text" id="date_b" readonly name="date" value="{{ test_event.person.date_b }}">
+                    <label for="sex">Пол:</label>
+                    <input id="sex" type="text" readonly value="{{test_event.person.sex}}">
+                </div>
+                <div>
+                    <label for="assessor">Інспектор:</label>
+                    <input id="assessor" type="text" readonly value="{{test_event.assessor}}">
+                    <label for="date">Дата:</label>
+                    <input type="text" id="date" readonly name="date" value="{{ test_event.data }}">
+                    <label for="vanue">Місце проведення:</label>
+                    <input id="vanue" type="text" readonly value="{{test_event.venue}}">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>{% include "res_gsd.html" %}</td>
+            <td>{% include "res_vd.html" %}</td>
+            <td></td>
+            <td></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
 
 {% endblock %}
