@@ -1,0 +1,88 @@
+<div class="block-res">
+  <div class="table-res-header">
+    <h3>Точність</h3>
+  </div>
+  <table class="table-res">
+    <thead>
+      <tr>
+        <th class="no-border-left">Удар </th>
+        <th class="no-border-right">№</th>
+        <th>Бали</th>
+      </tr>
+    </thead>
+    <tbody>
+  <tr>
+    <td class="no-border-left yellow_back">Форхенд Пр</td>
+    <td class="no-border-right yellow_back">1</td>
+    <td>{{ test_event.value_gsa01}}</td>
+  </tr>
+  <tr>
+    <td class="no-border-left yellow_back">Бекхенд Пр</td>
+    <td class="no-border-right yellow_back">2</td>
+    <td>{{ test_event.value_gsa02}}</td>
+  </tr>
+  <tr>
+    <td class="no-border-left yellow_back">Форхенд Пр</td>
+    <td class="no-border-right yellow_back">3</td>
+    <td>{{ test_event.value_gsa03}}</td>
+  </tr>
+  <tr>
+    <td class="no-border-left yellow_back">Бекхенд Пр</td>
+    <td class="no-border-right yellow_back">4</td>
+    <td>{{ test_event.value_gsa04}}</td>
+  </tr>
+  <tr>
+    <td class="no-border-left yellow_back">Форхенд Пр</td>
+    <td class="no-border-right yellow_back">5</td>
+    <td>{{ test_event.value_gsa05}}</td>
+  </tr>
+  <tr>
+    <td class="no-border-left yellow_back">Бекхенд Пр</td>
+    <td class="no-border-right yellow_back">6</td>
+    <td>{{ test_event.value_gsa06}}</td>
+  </tr>
+  <tr>
+    <td class="no-border-left">Форхенд Кр</td>
+    <td class="no-border-right">7</td>
+    <td>{{ test_event.value_gsa07}}</td>
+  </tr>
+  <tr>
+    <td class="no-border-left">Бекхенд Кр</td>
+    <td class="no-border-right">8</td>
+    <td>{{ test_event.value_gsa08}}</td>
+  </tr>
+  <tr>
+    <td class="no-border-left">Форхенд Кр</td>
+    <td class="no-border-right">9</td>
+    <td>{{ test_event.value_gsa09}}</td>
+  </tr>
+  <tr>
+    <td class="no-border-left">Бекхенд Кр</td>
+    <td class="no-border-right">10</td>
+    <td>{{ test_event.value_gsa10}}</td>
+  </tr>
+  <tr>
+    <td class="no-border-left">Форхенд Кр</td>
+    <td class="no-border-right">11</td>
+    <td>{{ test_event.value_gsa11}}</td>
+  </tr>
+  <tr>
+    <td class="no-border-left">Бекхенд Кр</td>
+    <td class="no-border-right">12</td>
+    <td>{{ test_event.value_gsa12}}</td>
+  </tr>
+  <tr>
+    <td colspan="2">Всього</td>
+    <td>{{ test_event.total_gsa}}</td>
+  </tr>
+  <tr>
+    <td colspan="2">Стабільність</td>
+    <td>{{ test_event.consistency_gsa}}</td>
+  </tr>
+  <tr>
+    <td colspan="2">Всього точності</td>
+    <td> {{test_event.total_gsa + test_event.consistency_gsa}}</td>
+  </tr>
+</tbody>
+</table>
+</div>

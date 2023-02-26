@@ -97,3 +97,7 @@
 .page-res td {
   vertical-align: top;
 }
+
+.yellow_back {
+  background-color: #ffffcc;
+}
