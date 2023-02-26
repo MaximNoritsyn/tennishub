@@ -291,8 +291,11 @@ async def post_test_event_stage_mobility(guid: str, first_bounce: str = Form(def
 
 @router.get("/{guid}/results")
 async def get_test_event_stage_results(guid: str, request: Request):
+    test_event = TestEvent.from_db(guid)
+
     context = get_context(request)
 
+    context['test_event'] = test_event
     context['route_back'] = f'/testing/{guid}/mobility'
 
     return templates.TemplateResponse("test_results.html", context)

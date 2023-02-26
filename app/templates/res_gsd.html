@@ -1,0 +1,78 @@
+<div class="block-res">
+  <div class="table-res-header">
+    <h3>Сила з відскоку</h3>
+  </div>
+  <table class="table-res">
+    <thead>
+      <tr>
+        <th class="no-border-left">Удар </th>
+        <th class="no-border-right">№</th>
+        <th>Бали</th>
+      </tr>
+    </thead>
+    <tbody>
+  <tr>
+    <td class="no-border-left">Форхенд</td>
+    <td class="no-border-right">1</td>
+    <td>{{ test_event.value_gsd01}}</td>
+  </tr>
+  <tr>
+    <td class="no-border-left">Бєкхенд</td>
+    <td class="no-border-right">2</td>
+    <td>{{ test_event.value_gsd02}}</td>
+  </tr>
+  <tr>
+    <td class="no-border-left">Форхенд</td>
+    <td class="no-border-right">3</td>
+    <td>{{ test_event.value_gsd03}}</td>
+  </tr>
+  <tr>
+    <td class="no-border-left">Бєкхенд</td>
+    <td class="no-border-right">4</td>
+    <td>{{ test_event.value_gsd04}}</td>
+  </tr>
+  <tr>
+    <td class="no-border-left">Форхенд</td>
+    <td class="no-border-right">5</td>
+    <td>{{ test_event.value_gsd05}}</td>
+  </tr>
+  <tr>
+    <td class="no-border-left">Форхенд</td>
+    <td class="no-border-right">6</td>
+    <td>{{ test_event.value_gsd06}}</td>
+  </tr>
+  <tr>
+    <td class="no-border-left">Бєкхенд</td>
+    <td class="no-border-right">7</td>
+    <td>{{ test_event.value_gsd07}}</td>
+  </tr>
+  <tr>
+    <td class="no-border-left">Форхенд</td>
+    <td class="no-border-right">8</td>
+    <td>{{ test_event.value_gsd08}}</td>
+  </tr>
+  <tr>
+    <td class="no-border-left">Бєкхенд</td>
+    <td class="no-border-right">9</td>
+    <td>{{ test_event.value_gsd09}}</td>
+  </tr>
+  <tr>
+    <td class="no-border-left">Форхенд</td>
+    <td class="no-border-right">10</td>
+    <td>{{ test_event.value_gsd10}}</td>
+  </tr>
+  <tr>
+    <td colspan="2">Всього</td>
+    <td>{{ test_event.total_gsd}}</td>
+  </tr>
+  <tr>
+    <td colspan="2">Постійність</td>
+    <td>{{ test_event.consistency_gsd}}</td>
+  </tr>
+  <tr>
+    <td colspan="2">Всього з землі</td>
+    <td> {{test_event.total_gsd + test_event.consistency_gsd}}</td>
+  </tr>
+</tbody>
+</table>
+</div>
