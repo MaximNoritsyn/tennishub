@@ -48,8 +48,26 @@
         <tr>
             <td>{% include "res_gsd.html" %}</td>
             <td>{% include "res_vd.html" %}</td>
-            <td>{% include "res_accuracy.html" %}</td>
-            <td>{% include "res_serve.html" %}</td>
+            <td rowspan="2">{% include "res_accuracy.html" %}</td>
+            <td rowspan="2">{% include "res_serve.html" %}</td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <div style="display: inline-flex;">
+                    <h3 style="align-self: end; margin: auto;">Таблиця мобільності</h3>
+                    <table style="height: 10px; align-self: end;">
+                        <tbody>
+                        <tr>
+                            <td class="table_mobility_row1" style="width: 110px;">Час в секундах</td>
+                            <td class="table_mobility_row2" style="width: 110px;">Бали</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4">{% include "res_mobility.html" %}</td>
         </tr>
         </tbody>
     </table>
