@@ -73,6 +73,7 @@ class TestEvent(CollectionDB):
     consistency_serve: Optional[int] = 0
 
     value_mobility: Optional[int] = 0
+    time_mobility: Optional[int] = 0
 
     @classmethod
     def from_db(cls, id_db: str):
@@ -149,7 +150,8 @@ class TestEvent(CollectionDB):
                     "value_serve12": 1,
                     "total_serve": 1,
                     "consistency_serve": 1,
-                    "value_mobility": 1
+                    "value_mobility": 1,
+                    "time_mobility": 1
                 }
             }
         ]
@@ -234,6 +236,7 @@ class TestEvent(CollectionDB):
             "total_serve": self.total_serve,
             "consistency_serve": self.consistency_serve,
             "value_mobility": self.value_mobility,
+            "time_mobility": self.time_mobility,
         }
 
         if len(self.id_db):
@@ -247,23 +250,23 @@ class TestEvent(CollectionDB):
     def update(self):
         self.consistency_gsd = 0
         self.total_gsd = 0
-        for n in range(1, 10):
-            v = getattr(self, get_name_serving('gsd', n), 0) > 0
+        for n in range(1, 11):
+            v = getattr(self, get_name_serving('gsd', n), 0)
             if v != 0 and v is not None:
                 self.consistency_gsd += 1
                 self.total_gsd += v
 
         self.consistency_vd = 0
-        self.total_vd
-        for n in range(1, 8):
-            v = getattr(self, get_name_serving('vd', n), 0) > 0
+        self.total_vd = 0
+        for n in range(1, 9):
+            v = getattr(self, get_name_serving('vd', n), 0)
             if v != 0 and v is not None:
                 self.consistency_vd += 1
                 self.total_vd += v
 
         self.consistency_gsa = 0
-        self.total_gsa
-        for n in range(1, 12):
+        self.total_gsa = 0
+        for n in range(1, 13):
             v = getattr(self, get_name_serving('gsa', n), 0)
             if v != 0 and v is not None:
                 self.consistency_gsa += 1
@@ -271,20 +274,21 @@ class TestEvent(CollectionDB):
 
         self.consistency_serve = 0
         self.total_serve = 0
-        for n in range(1, 12):
+        for n in range(1, 13):
             v = getattr(self, get_name_serving('serve', n), 0)
             if v != 0 and v is not None:
                 self.consistency_serve += 1
                 self.total_serve += v
 
-        self.strokes_total += self.consistency_gsd \
+        self.strokes_total = self.consistency_gsd \
                              + self.consistency_vd \
                              + self.consistency_gsa \
                              + self.consistency_serve \
                               + self.total_gsd \
                               + self.total_vd \
                               + self.total_gsa \
-                              + self.total_serve
+                              + self.total_serve \
+                             + self.value_mobility
 
         self.total_score = self.strokes_total + self.value_mobility
         self.itn = get_itn_number(self.person.sex, self.total_score)

@@ -276,6 +276,7 @@ async def post_test_event_stage_mobility(guid: str, first_bounce: str = Form(def
     name_serving = 'value_mobility'
 
     setattr(test_event, name_serving, get_point_mobility(first_bounce))
+    setattr(test_event, 'time_mobility', int(first_bounce))
     test_event.update()
     test_event.save()
 

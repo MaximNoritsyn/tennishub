@@ -116,3 +116,13 @@
 .brown-back {
     background-color: #ff9933;
 }
+
+.blue-back {
+    background-color: #99ccff;
+}
+
+.marked-res {
+  transform: scale(1.1);
+  border: 4px solid #ff3200;
+  border-radius: 10px;
+}

@@ -87,7 +87,7 @@
                             </tbody>
                         </table>
                     </div>
-                    <div class="itn-block">
+                    <div class="itn-block" id="itn_10">
                         <table>
                             <tbody>
                             <tr>
@@ -102,7 +102,7 @@
                             </tbody>
                         </table>
                     </div>
-                    <div class="itn-block">
+                    <div class="itn-block" id="itn_9">
                         <table>
                             <tbody>
                             <tr>
@@ -117,7 +117,7 @@
                             </tbody>
                         </table>
                     </div>
-                    <div class="itn-block">
+                    <div class="itn-block" id="itn_8">
                         <table>
                             <tbody>
                             <tr>
@@ -132,7 +132,7 @@
                             </tbody>
                         </table>
                     </div>
-                    <div class="itn-block">
+                    <div class="itn-block" id="itn_7">
                         <table>
                             <tbody>
                             <tr>
@@ -147,7 +147,7 @@
                             </tbody>
                         </table>
                     </div>
-                    <div class="itn-block">
+                    <div class="itn-block" id="itn_6">
                         <table>
                             <tbody>
                             <tr>
@@ -162,7 +162,7 @@
                             </tbody>
                         </table>
                     </div>
-                    <div class="itn-block">
+                    <div class="itn-block" id="itn_5">
                         <table>
                             <tbody>
                             <tr>
@@ -177,7 +177,7 @@
                             </tbody>
                         </table>
                     </div>
-                    <div class="itn-block">
+                    <div class="itn-block" id="itn_4">
                         <table>
                             <tbody>
                             <tr>
@@ -192,7 +192,7 @@
                             </tbody>
                         </table>
                     </div>
-                    <div class="itn-block">
+                    <div class="itn-block" id="itn_3">
                         <table>
                             <tbody>
                             <tr>
@@ -207,7 +207,7 @@
                             </tbody>
                         </table>
                     </div>
-                    <div class="itn-block">
+                    <div class="itn-block" id="itn_2">
                         <table>
                             <tbody>
                             <tr>
@@ -222,7 +222,7 @@
                             </tbody>
                         </table>
                     </div>
-                    <div class="itn-block">
+                    <div class="itn-block" id="itn_1">
                         <table>
                             <tbody>
                             <tr>
@@ -253,20 +253,13 @@
                         </thead>
                         <tbody>
                         <tr>
-                            <td class="itn-res"> {{test_event.total_gsd +
-                                test_event.total_vd +
-                                test_event.total_gsa +
-                                test_event.total_serve}}
+                            <td class="itn-res"> {{test_event.strokes_total}}
                             </td>
                             <td class="itn-res">
                                 {{test_event.value_mobility}}
                             </td>
                             <td class="itn-res">
-                                {{test_event.total_gsd +
-                                test_event.total_vd +
-                                test_event.total_gsa +
-                                test_event.total_serve +
-                                test_event.value_mobility}}
+                                {{test_event.total_score}}
                             </td>
                         </tr>
                         </tbody>
@@ -281,7 +274,7 @@
                         <tbody>
                         <tr>
                             <td class="itn-res">
-                                {{test_event.strokes_total}}
+                                {{test_event.total_score}}
                             </td>
                             <td class="itn-res">
                                 {{test_event.itn}}
@@ -294,7 +287,10 @@
         </tr>
         </tbody>
     </table>
-    <input type="hidden" id="test_event_mobility" value="{{test_event.value_mobility}}">
+    <input type="hidden" id="test_event_mobility" value="{{test_event.time_mobility}}">
+    <input type="hidden" id="test_event_itn" value="{{test_event.itn}}">
 </div>
+
+<script src="{{ url_for('static', path='/js/results.js') }}"></script>
 
 {% endblock %}
