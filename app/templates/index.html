@@ -3,6 +3,9 @@
 {% block title %}About Us{% endblock %}
 
 {% block content %}
-  <h1>About Us</h1>
-  <p>We are a small company dedicated to making the world a better place.</p>
+{% if logged %}
+  {% include "list_of_test.html" %}
+{% else %}
+  <h3>Ласкаво просимо на сайт. Зареєструйтеся для початку користування або увійдіть в свій аккаунт</h3>
+{% endif %}
 {% endblock %}

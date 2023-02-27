@@ -156,7 +156,7 @@ class TestEvent(CollectionDB):
             }
         ]
 
-        result = list(backend.db['itf'].aggregate(pipeline))
+        result = list(backend.db[cls.name_collection_class()].aggregate(pipeline))
         inst = cls.from_dict(result[0])
         return inst
 
@@ -174,6 +174,10 @@ class TestEvent(CollectionDB):
         return test_event
 
     def name_collection(self):
+        return TestEvent.name_collection_class()
+
+    @classmethod
+    def name_collection_class(cls):
         return "itf"
 
     def to_dict(self):
@@ -399,3 +403,39 @@ def get_itn_number(sex, score):
         elif score < 304: return 3
         elif score < 345: return 2
         else: 1
+
+
+def get_test_events(person_id):
+    pipeline = [
+        {"$match": {"person_id": ObjectId(person_id)}},
+        {
+            "$lookup": {
+                "from": "persons",
+                "localField": "person_id",
+                "foreignField": "_id",
+                "as": "person"
+            }
+        },
+        {
+            "$unwind": "$person"
+        },
+        {
+            "$project": {
+                "id_db": "$_id",
+                "person": 1,
+                "assessor": 1,
+                "date": 1,
+                "venue": 1,
+                "strokes_total": 1,
+                "total_score": 1,
+                "itn": 1
+            }
+        }
+    ]
+
+    result = list(backend.db[TestEvent.name_collection_class()].aggregate(pipeline))
+    list_return = []
+    for r in result:
+        list_return.append(TestEvent.from_dict(r))
+
+    return list_return

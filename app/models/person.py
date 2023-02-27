@@ -45,10 +45,13 @@ class Person(CollectionDB):
             "sex": self.sex
         }
 
-        if self.date_b is not None:
-            d['date_b'] = self.date_b.isoformat()
-        else:
+        if self.date_b is None:
             d['date_b'] = ''
+        elif type(self.date_b) == str:
+            d['date_b'] = self.date_b
+        else:
+            d['date_b'] = self.date_b.isoformat()
+
 
         if len(self.id_db):
             d['_id'] = self.id_obj
