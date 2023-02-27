@@ -101,3 +101,18 @@
 .yellow_back {
   background-color: #ffffcc;
 }
+
+.itn-res {
+  border: 1px solid black;
+  width: 66px;
+  padding: 4px;
+  font-weight: bold;
+}
+
+.itn-block table {
+    border-spacing: 0px;
+}
+
+.brown-back {
+    background-color: #ff9933;
+}

@@ -69,8 +69,232 @@
         <tr>
             <td colspan="4">{% include "res_mobility.html" %}</td>
         </tr>
+        <tr>
+            <td colspan="4">
+                <div class="table_mobility">
+                    <div class="itn-block">
+                        <table>
+                            <tbody>
+                            <tr>
+                                <th class="itn-res" style="background-color: #ccecff;">Бали Ж</th>
+                            </tr>
+                            <tr>
+                                <td class="itn-res brown-back">Бали М</td>
+                            </tr>
+                            <tr>
+                                <td class="itn-res brown-back">МТН</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="itn-block">
+                        <table>
+                            <tbody>
+                            <tr>
+                                <th class="itn-res">57-79</th>
+                            </tr>
+                            <tr>
+                                <td class="itn-res">75-104</td>
+                            </tr>
+                            <tr>
+                                <td class="itn-res brown-back">МТН 10</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="itn-block">
+                        <table>
+                            <tbody>
+                            <tr>
+                                <th class="itn-res">80-108</th>
+                            </tr>
+                            <tr>
+                                <td class="itn-res">105-139</td>
+                            </tr>
+                            <tr>
+                                <td class="itn-res brown-back">МТН 9</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="itn-block">
+                        <table>
+                            <tbody>
+                            <tr>
+                                <th class="itn-res">109-140</th>
+                            </tr>
+                            <tr>
+                                <td class="itn-res">140-175</td>
+                            </tr>
+                            <tr>
+                                <td class="itn-res brown-back">МТН 8</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="itn-block">
+                        <table>
+                            <tbody>
+                            <tr>
+                                <th class="itn-res">141-171</th>
+                            </tr>
+                            <tr>
+                                <td class="itn-res">176-209</td>
+                            </tr>
+                            <tr>
+                                <td class="itn-res brown-back">МТН 7</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="itn-block">
+                        <table>
+                            <tbody>
+                            <tr>
+                                <th class="itn-res">172-205</th>
+                            </tr>
+                            <tr>
+                                <td class="itn-res">210-244</td>
+                            </tr>
+                            <tr>
+                                <td class="itn-res brown-back">МТН 6</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="itn-block">
+                        <table>
+                            <tbody>
+                            <tr>
+                                <th class="itn-res">206-230</th>
+                            </tr>
+                            <tr>
+                                <td class="itn-res">245-268</td>
+                            </tr>
+                            <tr>
+                                <td class="itn-res brown-back">МТН 5</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="itn-block">
+                        <table>
+                            <tbody>
+                            <tr>
+                                <th class="itn-res">231-258</th>
+                            </tr>
+                            <tr>
+                                <td class="itn-res">269-293</td>
+                            </tr>
+                            <tr>
+                                <td class="itn-res brown-back">МТН 4</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="itn-block">
+                        <table>
+                            <tbody>
+                            <tr>
+                                <th class="itn-res">259-303</th>
+                            </tr>
+                            <tr>
+                                <td class="itn-res">294-337</td>
+                            </tr>
+                            <tr>
+                                <td class="itn-res brown-back">МТН 3</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="itn-block">
+                        <table>
+                            <tbody>
+                            <tr>
+                                <th class="itn-res">304-344</th>
+                            </tr>
+                            <tr>
+                                <td class="itn-res">338-362</td>
+                            </tr>
+                            <tr>
+                                <td class="itn-res brown-back">МТН 2</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="itn-block">
+                        <table>
+                            <tbody>
+                            <tr>
+                                <th class="itn-res">345-430</th>
+                            </tr>
+                            <tr>
+                                <td class="itn-res">363-430</td>
+                            </tr>
+                            <tr>
+                                <td class="itn-res brown-back">МТН 1</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4">
+                <div class="table_mobility">
+                    <table class="itn-block" style="border-spacing: 0px">
+                        <thead>
+                        <tr>
+                            <th class="itn-res blue-back" style="width: 100px;">Ударів всього</th>
+                            <th class="itn-res blue-back" style="width: 100px;">Бали мобільності</th>
+                            <th class="itn-res blue-back" style="width: 100px;">Всього</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td class="itn-res"> {{test_event.total_gsd +
+                                test_event.total_vd +
+                                test_event.total_gsa +
+                                test_event.total_serve}}
+                            </td>
+                            <td class="itn-res">
+                                {{test_event.value_mobility}}
+                            </td>
+                            <td class="itn-res">
+                                {{test_event.total_gsd +
+                                test_event.total_vd +
+                                test_event.total_gsa +
+                                test_event.total_serve +
+                                test_event.value_mobility}}
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <table style="margin-left: 100px; border-spacing: 0px">
+                        <thead>
+                        <tr>
+                            <th class="itn-res blue-back" style="width: 100px;">Бали оцінки</th>
+                            <th class="itn-res blue-back" style="width: 100px;">Новий МТН рейтинг</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td class="itn-res">
+                                {{test_event.strokes_total}}
+                            </td>
+                            <td class="itn-res">
+                                {{test_event.itn}}
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </td>
+        </tr>
         </tbody>
     </table>
+    <input type="hidden" id="test_event_mobility" value="{{test_event.value_mobility}}">
 </div>
 
 {% endblock %}
