@@ -1,18 +1,17 @@
 import pymongo
-import configparser
-import logging
+import os
+from dotenv import load_dotenv
 from bson.objectid import ObjectId
 
-logger = logging.getLogger(__name__)
+load_dotenv()
 
+host = os.environ.get('MONGODB_HOST')
+username = os.environ.get('MONGODB_USERNAME')
+password = os.environ.get('MONGODB_PASSWORD')
+db_name = os.environ.get('MONGODB_DB_NAME')
 
-config = configparser.ConfigParser()
-config.read('config.ini')
-
-host = config['MONGODB']['host']
-username = config['MONGODB']['username']
-password = config['MONGODB']['password']
-db_name = config['MONGODB']['db_name']
+if not host or not username or not password or not db_name:
+    raise ValueError('Missing MongoDB configuration')
 
 
 class CollectionDB:

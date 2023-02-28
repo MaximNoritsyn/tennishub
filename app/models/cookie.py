@@ -1,15 +1,16 @@
 import jwt
 from fastapi import HTTPException, status
 from fastapi.requests import Request
-import configparser
+from dotenv import load_dotenv
+import os
 
 from app.models.users import User
 
-config = configparser.ConfigParser()
-config.read('config.ini')
 
-SECRET_KEY = config['ACCESS_TOKEN']['SECRET_KEY']
-ALGORITHM = config['ACCESS_TOKEN']['ALGORITHM']
+load_dotenv()
+
+SECRET_KEY = os.environ.get('SECRET_KEY')
+ALGORITHM = 'HS256'
 
 
 def create_access_token(user: User) -> str:
