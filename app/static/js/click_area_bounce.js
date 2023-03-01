@@ -11,7 +11,9 @@ activeAreas.forEach((element) => {
   element.addEventListener('click', () => {
     if (finishSelectBounces) {
       selectedFirstBounce.classList.remove('first_bounce');
-      selectedSecondBounce.classList.remove('second_bounce');
+      if (selectedSecondBounce) {
+        selectedSecondBounce.classList.remove('second_bounce');
+      }
       selectedFirstBounce = null;
       selectedSecondBounce = null;
       elemFirstBounce.value = "";
@@ -30,6 +32,9 @@ activeAreas.forEach((element) => {
                 timeoutId = setTimeout(submitForm, 1000);
                 finishSelectBounces = true
             }
+        else {
+            finishSelectBounces = false
+        }
     } else {
         selectedSecondBounce = element
         element.classList.add('second_bounce');
@@ -57,6 +62,10 @@ if (valueSecondBounce) {
     activeSecondBounce.classList.add('second_bounce');
     selectedSecondBounce = activeSecondBounce;
   }
+}
+
+if (selectedFirstBounce && selectedSecondBounce) {
+    finishSelectBounces = true
 }
 
 function submitForm() {

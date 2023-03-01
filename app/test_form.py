@@ -47,6 +47,8 @@ async def get_test_event_stage_gsd(guid: str, stage_number: int, request: Reques
     context = get_context(request)
     task = 'gsd'
 
+    context['test_event'] = TestEvent.from_db(guid)
+
     context['route_back'] = f'/testing/{guid}/{task}/{stage_number - 1}'
     if stage_number == 1:
         context['route_back'] = f'/testing/new'
@@ -98,10 +100,12 @@ async def get_test_event_stage_vd(guid: str, stage_number: int, request: Request
     context = get_context(request)
     task = 'vd'
 
+    context['test_event'] = TestEvent.from_db(guid)
+
     context['route_back'] = f'/testing/{guid}/{task}/{stage_number - 1}'
     if stage_number == 1:
         context['route_back'] = f'/testing/{guid}/gsd/10'
-    context['route_submit'] = f'/testing/{guid}/[task/{stage_number}'
+    context['route_submit'] = f'/testing/{guid}/{task}/{stage_number}'
     context['forbackhand'] = get_detail_serving(stage_number, task)
     context['number'] = stage_number
 
@@ -148,6 +152,8 @@ async def post_test_event_stage_vd(guid: str,
 async def get_test_event_stage_sda(guid: str, stage_number: int, request: Request):
     context = get_context(request)
     task = 'gsa'
+
+    context['test_event'] = TestEvent.from_db(guid)
 
     context['route_back'] = f'/testing/{guid}/{task}/{stage_number - 1}'
     if stage_number == 1:
@@ -200,6 +206,8 @@ async def post_test_event_stage_gsa(guid: str,
 async def get_test_event_stage_serve(guid: str, stage_number: int, serve: int, request: Request):
     context = get_context(request)
     task = 'serve'
+
+    context['test_event'] = TestEvent.from_db(guid)
 
     context['route_back'] = f'/testing/{guid}/{task}/{stage_number - 1}/1'
     if serve == 2:
@@ -344,7 +352,7 @@ def get_point_accuracy(first_bounce, second_bounce):
     p = 0
     if first_bounce == 'area_center_service' or first_bounce == 'area_central_center':
         p = 1
-    elif first_bounce == 'area_center_service' or first_bounce == 'area_right_service':
+    elif first_bounce == 'area_left_service' or first_bounce == 'area_right_service':
         p = 2
     elif first_bounce == 'area_central_left' or first_bounce == 'area_central_right':
         p = 3
