@@ -6,31 +6,32 @@ from typing import Optional
 from datetime import date
 
 from app.models.testing_itf import TestEvent, ServingBall, get_name_serving
+from app.models.person import Person
 from app.models.cookie import get_context
 
 router = APIRouter()
 templates = Jinja2Templates(directory="app/templates")
 
 
-@router.get("/new")
-async def new_test(request: Request = {}):
+@router.get("/new/{guid}")
+async def new_test(guid: str, request: Request = {}):
     context = get_context(request)
-    if context.get('logged'):
-        context['sex'] = context.get('user').person.sex
-        context['date_b'] = context.get('user').person.date_b
-        context['today'] = date.today()
-        return templates.TemplateResponse("new_testing.html", context)
-    else:
-        return templates.TemplateResponse("login.html", context)
+    person = Person.from_db(guid)
+    context['name_player'] = person.name
+    context['sex'] = person.sex
+    context['date_b'] = person.date_b
+    context['today'] = date.today()
+    return templates.TemplateResponse("new_testing.html", context)
 
 
-@router.post("/new")
+@router.post("/new/{guid}")
 async def post_new(request: Request,
-                   assessor: str = Form(),
-                   date: str = Form(),
-                   venue: str = Form()):
+                    guid: str,
+                    assessor: str = Form(),
+                    date: str = Form(),
+                    venue: str = Form()):
     test_event = TestEvent()
-    test_event.person = request.state.user.person
+    test_event.person = Person.from_db(guid)
     test_event.assessor = assessor
     test_event.date = date
     test_event.venue = venue

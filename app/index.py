@@ -17,9 +17,9 @@ def index(request: Request = {}):
         user = context.get('user')
         if user.is_coach:
             context['players'] = get_persons_by_coach(user.username)
-            # context['players'] = []
         else:
             context['events'] = get_test_events(user.person.id_db)
+            context['player_guid'] = user.person.id_db
 
     return templates.TemplateResponse("index.html", context)
 

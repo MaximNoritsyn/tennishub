@@ -28,7 +28,6 @@ async def create_new_person(request: Request, name: str = Form(),
 
     context = get_context(request)
     if getattr(request.state, "logged", False):
-        print('save person: ', context.get('Logged'))
         person = Person(name=name, date_b=date_b, sex=sex)
         person.save()
 
@@ -44,10 +43,11 @@ async def create_new_person(request: Request, name: str = Form(),
 @router.get("/{guid}")
 def person(guid: str, request: Request = {}):
     context = get_context(request)
-    cur_person = Person.get_from_db(guid)
+    cur_person = Person.from_db(guid)
     print(cur_person)
     if cur_person:
         context['player_name'] = cur_person.name
+        context['player_guid'] = cur_person.id_db
     context['events'] = get_test_events(guid)
 
     return templates.TemplateResponse("list_of_test.html", context)

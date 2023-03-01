@@ -59,14 +59,13 @@ class Person(CollectionDB):
         else:
             d['date_b'] = self.date_b.isoformat()
 
-
         if len(self.id_db):
             d['_id'] = self.id_obj
 
         return d
 
     @classmethod
-    def get_from_db(cls, id_db: str):
+    def from_db(cls, id_db: str):
         document = backend.db[cls.name_collection_class()].find_one(
             {"_id": ObjectId(id_db)}
         )
