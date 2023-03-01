@@ -65,6 +65,11 @@ nav li a:hover {
   background-color: #111;
 }
 
+footer {
+  border-top: 1px solid black;
+  padding-top: 10px;
+}
+
 form {
   display: flex;
   flex-direction: column;

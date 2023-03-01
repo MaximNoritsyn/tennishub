@@ -1,5 +1,4 @@
 from typing import Dict, Optional
-from bson import ObjectId
 from app.models.mongobackend import MongoDBBackend, CollectionDB
 from app.models.users import User
 from app.models.person import Person
@@ -28,7 +27,7 @@ class CoachRef(CollectionDB):
     def to_dict(self) -> Dict[str, str]:
         d = {
             "id_person": self.person.id_obj,
-            "id_coach": self.coach.id_obj
+            "coach_username": self.coach.username
         }
 
         if len(self.id_db):
@@ -37,12 +36,12 @@ class CoachRef(CollectionDB):
         return d
 
 
-def get_persons_by_coach(id_coach):
+def get_persons_by_coach(coach_username):
 
     pipeline = [
         {
             "$match": {
-                "id_coach": ObjectId(id_coach)
+                "coach_username": coach_username
             }
         },
         {
@@ -68,3 +67,6 @@ def get_persons_by_coach(id_coach):
     ]
 
     result = backend.db[CoachRef.name_collection_class()].aggregate(pipeline)
+    print(list(result))
+
+    return []

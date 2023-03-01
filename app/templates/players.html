@@ -1,0 +1,8 @@
+<div><h1>Гравці</h1>
+    <a href="/players/new">Створити нового</a>
+</div>
+<ul>
+    {% for player in players %}
+    <li><a href="player/{{player.id_db}}">{{ player.name }}</a></li>
+    {% endfor %}
+</ul>

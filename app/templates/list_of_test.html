@@ -1,6 +1,8 @@
-<h1>Test Events</h1>
+<div><h1>Всі пройдені тести</h1>
+    <a href="/testing/new">Розпочати тест</a>
+</div>
 <ul>
     {% for event in events %}
-    <li><a href="testing/{{event.id_db}}/results">{{ event.date }}  (МТН {{ event.itn }})</a></li>
+    <li><a href="testing/{{event.id_db}}/results">{{ event.date }} (МТН {{ event.itn }})</a></li>
     {% endfor %}
 </ul>

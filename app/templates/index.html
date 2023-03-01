@@ -3,9 +3,12 @@
 {% block title %}About Us{% endblock %}
 
 {% block content %}
-{% if logged %}
-  {% include "list_of_test.html" %}
-{% else %}
+{% if logged==False %}
   <h3>Ласкаво просимо на сайт. Зареєструйтеся для початку користування або увійдіть в свій аккаунт</h3>
+{% elif user.is_coach %}
+  {% include "players.html" %}
+{% else %}
+  {% include "list_of_test.html" %}
+
 {% endif %}
 {% endblock %}
