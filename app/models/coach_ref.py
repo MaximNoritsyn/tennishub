@@ -62,6 +62,7 @@ def get_persons_by_coach(coach_username):
             "$project": {
                 "_id": 0,
                 "person.name": 1,
+                "person._id": 1,
                 "person.date_b": 1,
                 "coach.username": 1,
                 "coach.email": 1
@@ -69,7 +70,6 @@ def get_persons_by_coach(coach_username):
         }
     ]
 
-    result = backend.db[CoachRef.name_collection_class()].aggregate(pipeline)
-    print(list(result))
+    results = [Person.from_dict(result['person']) for result in backend.db[CoachRef.name_collection_class()].aggregate(pipeline)]
 
-    return []
+    return results
