@@ -1,5 +1,7 @@
 from typing import Dict, Optional
 from datetime import date
+from bson.objectid import ObjectId
+
 from app.models.mongobackend import MongoDBBackend, CollectionDB
 
 
@@ -35,6 +37,10 @@ class Person(CollectionDB):
         return person
 
     def name_collection(self):
+        return Person.name_collection_class()
+
+    @classmethod
+    def name_collection_class(cls):
         return "persons"
 
     def save(self):
@@ -58,6 +64,17 @@ class Person(CollectionDB):
             d['_id'] = self.id_obj
 
         return d
+
+    @classmethod
+    def get_from_db(cls, id_db: str):
+        document = backend.db[cls.name_collection_class()].find_one(
+            {"_id": ObjectId(id_db)}
+        )
+
+        if not document:
+            return None
+
+        return Person.from_dict(document)
 
     def __str__(self):
         return self.name

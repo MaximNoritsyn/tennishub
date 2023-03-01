@@ -1,8 +1,8 @@
-<div><h1>Всі пройдені тести</h1>
-    <a href="/testing/new">Розпочати тест</a>
-</div>
-<ul>
-    {% for event in events %}
-    <li><a href="testing/{{event.id_db}}/results">{{ event.date }} (МТН {{ event.itn }})</a></li>
-    {% endfor %}
-</ul>
+{% extends "base.html" %}
+
+{% block title %}{% endblock %}
+
+{% block content %}
+    <h3>{{player_name}}</h3>
+  {% include "tampl_list_of_test.html" %}
+{% endblock %}

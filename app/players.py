@@ -8,6 +8,7 @@ from datetime import date
 from app.models.cookie import get_context
 from app.models.person import Person
 from app.models.coach_ref import CoachRef
+from app.models.testing_itf import get_test_events
 
 router = APIRouter()
 templates = Jinja2Templates(directory="app/templates")
@@ -38,3 +39,15 @@ async def create_new_person(request: Request, name: str = Form(),
     response.headers["location"] = "/"
     response.status_code = status.HTTP_302_FOUND
     return response
+
+
+@router.get("/{guid}")
+def person(guid: str, request: Request = {}):
+    context = get_context(request)
+    cur_person = Person.get_from_db(guid)
+    print(cur_person)
+    if cur_person:
+        context['player_name'] = cur_person.name
+    context['events'] = get_test_events(guid)
+
+    return templates.TemplateResponse("list_of_test.html", context)
