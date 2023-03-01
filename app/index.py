@@ -4,6 +4,7 @@ from fastapi import Request
 
 from app.models.cookie import get_context
 from app.models.testing_itf import get_test_events
+from app.models.coach_ref import get_persons_by_coach
 
 router = APIRouter()
 templates = Jinja2Templates(directory="app/templates")
@@ -13,7 +14,12 @@ templates = Jinja2Templates(directory="app/templates")
 def index(request: Request = {}):
     context = get_context(request)
     if context.get('logged'):
-        context['events'] = get_test_events(context.get('user').person.id_db)
+        user = context.get('user')
+        if user.is_coach:
+            context['players'] = get_persons_by_coach(user.username)
+        else:
+            context['events'] = get_test_events(user.person.id_db)
+            context['player_guid'] = user.person.id_db
 
     return templates.TemplateResponse("index.html", context)
 

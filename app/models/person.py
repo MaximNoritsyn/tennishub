@@ -1,5 +1,7 @@
 from typing import Dict, Optional
 from datetime import date
+from bson.objectid import ObjectId
+
 from app.models.mongobackend import MongoDBBackend, CollectionDB
 
 
@@ -26,7 +28,8 @@ class Person(CollectionDB):
         person = cls()
         for key, value in data.items():
             if key == 'date_b':
-                setattr(person, key, date.fromisoformat(value))
+                if value:
+                    setattr(person, key, date.fromisoformat(value))
             elif key == '_id':
                 setattr(person, 'id_db', str(value))
             else:
@@ -34,6 +37,10 @@ class Person(CollectionDB):
         return person
 
     def name_collection(self):
+        return Person.name_collection_class()
+
+    @classmethod
+    def name_collection_class(cls):
         return "persons"
 
     def save(self):
@@ -52,11 +59,21 @@ class Person(CollectionDB):
         else:
             d['date_b'] = self.date_b.isoformat()
 
-
         if len(self.id_db):
             d['_id'] = self.id_obj
 
         return d
+
+    @classmethod
+    def from_db(cls, id_db: str):
+        document = backend.db[cls.name_collection_class()].find_one(
+            {"_id": ObjectId(id_db)}
+        )
+
+        if not document:
+            return None
+
+        return Person.from_dict(document)
 
     def __str__(self):
         return self.name

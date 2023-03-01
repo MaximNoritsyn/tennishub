@@ -3,8 +3,8 @@
 {% block title %}Groundstroke Depth{% endblock %}
 
 {% block styles %}
-    <link rel="stylesheet" href="{{ url_for('static', path='/css/test_serve.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', path='/css/court.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', path='/css/test_serve.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', path='/css/court.css') }}">
 {% endblock %}
 
 {% block content %}
@@ -12,51 +12,56 @@
 {% include "training_route_container.html" %}
 <h3>{{ title_of_task }}</h3>
 <h5> Удар № {{number}} ({{ forbackhand }})</h5>
-<div class="tennis-court">
-  <div class="area-left-alley-top"></div>
-  <div class="area-central-top"></div>
-  <div class="area-right-alley-top"></div>
-  <div class="area-left-service-top"></div>
-  <div class="area-right-service-top"></div>
-  <div class="area-net active-area" id="area_net"></div>
-  <div class="area-left-alley-bottom active-area" id="area_left_alley"></div>
-  {% if number < 4 and serve == 1 %}
-  <div class="area-left-service-bottom active-area" id="area_left_service"></div>
-  <div class="area-right-middle-service-bottom point2 active-area" id="area_right_middle_service">2 бали</div>
-  <div class="area-right-wide-service-bottom point4 active-area" id="area_right_wide_service">4 бали</div>
-  {% elif number < 4 and serve == 2 %}
-  <div class="area-left-service-bottom active-area" id="area_left_service"></div>
-  <div class="area-right-middle-service-bottom point1 active-area" id="area_right_middle_service">1 бал</div>
-  <div class="area-right-wide-service-bottom point2 active-area" id="area_right_wide_service">2 бали</div>
-  {% elif number < 7 and serve == 1 %}
-  <div class="area-left-service-bottom active-area" id="area_left_service"></div>
-  <div class="area-right-middle-service-bottom point4 active-area" id="area_right_middle_service">4 бали</div>
-  <div class="area-right-wide-service-bottom point2 active-area" id="area_right_wide_service">2 бали</div>
-  {% elif number < 7 and serve == 2 %}
-  <div class="area-left-service-bottom active-area" id="area_left_service"></div>
-  <div class="area-right-middle-service-bottom point2 active-area" id="area_right_middle_service">2 бал</div>
-  <div class="area-right-wide-service-bottom point1 active-area" id="area_right_wide_service">1 бали</div>
-  {% elif number < 10 and serve == 1 %}
-  <div class="area-left-wide-service-bottom point2 active-area" id="area_left_wide_service">2 бали</div>
-  <div class="area-left-middle-service-bottom point4 active-area" id="area_left_middle_service">4 бали</div>
-  <div class="area-right-service-bottom active-area" id="area_right_service"></div>
-  {% elif number < 10 and serve == 2 %}
-  <div class="area-left-wide-service-bottom point1 active-area" id="area_left_wide_service">1 бали</div>
-  <div class="area-left-middle-service-bottom point2 active-area" id="area_left_middle_service">2 бал</div>
-  <div class="area-right-service-bottom active-area" id="area_right_service"></div>
-  {% elif number < 13 and serve == 1 %}
-  <div class="area-left-wide-service-bottom point4 active-area" id="area_left_wide_service">4 бали</div>
-  <div class="area-left-middle-service-bottom point2 active-area" id="area_left_middle_service">2 бали</div>
-  <div class="area-right-service-bottom active-area" id="area_right_service"></div>
-  {% elif number < 13 and serve == 2 %}
-  <div class="area-left-wide-service-bottom point2 active-area" id="area_left_wide_service">2 бали</div>
-  <div class="area-left-middle-service-bottom point1 active-area" id="area_left_middle_service">1 бал</div>
-  <div class="area-right-service-bottom active-area" id="area_right_service"></div>
-  {% endif %}
-  <div class="area-right-alley-bottom active-area" id="area_right_alley"></div>
-  <div class="area-central active-area" id="area_central"></div>
-  <div class="area-out-line active-area" id="area_out_line">Зона сили - 1 бал</div>
-  <div class="area-out-powerline active-area" id="area_out_powerline">Зона сили - подвійні бали</div>
+<div class="result-area-input">
+    <div class="tennis-court">
+        <div class="area-left-alley-top"></div>
+        <div class="area-central-top"></div>
+        <div class="area-right-alley-top"></div>
+        <div class="area-left-service-top"></div>
+        <div class="area-right-service-top"></div>
+        <div class="area-net active-area" id="area_net"></div>
+        <div class="area-left-alley-bottom active-area" id="area_left_alley"></div>
+        {% if number < 4 and serve == 1 %}
+        <div class="area-left-service-bottom active-area" id="area_left_service"></div>
+        <div class="area-right-middle-service-bottom point2 active-area" id="area_right_middle_service">2 бали</div>
+        <div class="area-right-wide-service-bottom point4 active-area" id="area_right_wide_service">4 бали</div>
+        {% elif number < 4 and serve == 2 %}
+        <div class="area-left-service-bottom active-area" id="area_left_service"></div>
+        <div class="area-right-middle-service-bottom point1 active-area" id="area_right_middle_service">1 бал</div>
+        <div class="area-right-wide-service-bottom point2 active-area" id="area_right_wide_service">2 бали</div>
+        {% elif number < 7 and serve == 1 %}
+        <div class="area-left-service-bottom active-area" id="area_left_service"></div>
+        <div class="area-right-middle-service-bottom point4 active-area" id="area_right_middle_service">4 бали</div>
+        <div class="area-right-wide-service-bottom point2 active-area" id="area_right_wide_service">2 бали</div>
+        {% elif number < 7 and serve == 2 %}
+        <div class="area-left-service-bottom active-area" id="area_left_service"></div>
+        <div class="area-right-middle-service-bottom point2 active-area" id="area_right_middle_service">2 бал</div>
+        <div class="area-right-wide-service-bottom point1 active-area" id="area_right_wide_service">1 бали</div>
+        {% elif number < 10 and serve == 1 %}
+        <div class="area-left-wide-service-bottom point2 active-area" id="area_left_wide_service">2 бали</div>
+        <div class="area-left-middle-service-bottom point4 active-area" id="area_left_middle_service">4 бали</div>
+        <div class="area-right-service-bottom active-area" id="area_right_service"></div>
+        {% elif number < 10 and serve == 2 %}
+        <div class="area-left-wide-service-bottom point1 active-area" id="area_left_wide_service">1 бали</div>
+        <div class="area-left-middle-service-bottom point2 active-area" id="area_left_middle_service">2 бал</div>
+        <div class="area-right-service-bottom active-area" id="area_right_service"></div>
+        {% elif number < 13 and serve == 1 %}
+        <div class="area-left-wide-service-bottom point4 active-area" id="area_left_wide_service">4 бали</div>
+        <div class="area-left-middle-service-bottom point2 active-area" id="area_left_middle_service">2 бали</div>
+        <div class="area-right-service-bottom active-area" id="area_right_service"></div>
+        {% elif number < 13 and serve == 2 %}
+        <div class="area-left-wide-service-bottom point2 active-area" id="area_left_wide_service">2 бали</div>
+        <div class="area-left-middle-service-bottom point1 active-area" id="area_left_middle_service">1 бал</div>
+        <div class="area-right-service-bottom active-area" id="area_right_service"></div>
+        {% endif %}
+        <div class="area-right-alley-bottom active-area" id="area_right_alley"></div>
+        <div class="area-central active-area" id="area_central"></div>
+        <div class="area-out-line active-area" id="area_out_line">Зона сили - 1 бал</div>
+        <div class="area-out-powerline active-area" id="area_out_powerline">Зона сили - подвійні бали</div>
+    </div>
+    <div>
+        {% include "res_serve.html" %}
+    </div>
 </div>
 
 <script src="{{ url_for('static', path='/js/click_area_bounce.js') }}"></script>

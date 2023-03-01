@@ -1,10 +1,9 @@
 {% extends "base.html" %}
 
-{% block title %}Sign up{% endblock %}
+{% block title %}Новий гравець{% endblock %}
 
 {% block content %}
-  <h1>Sign up</h1>
-  <form method="POST">
+<form method="POST">
 
     <label for="name">Ім'я</label>
     <input type="text" name="name" id="name" required>
@@ -18,15 +17,6 @@
       <option value="M">Чоловіча</option>
     </select>
 
-    <label for="email">Email</label>
-    <input type="email" name="email" id="email" required>
-
-    <label for="username">Username</label>
-    <input type="text" name="username" id="username" required>
-
-    <label for="password">Password</label>
-    <input type="password" name="password" id="password" required>
-
-    <button type="submit">Зареєструватися</button>
+    <button type="submit">Створити</button>
   </form>
 {% endblock %}

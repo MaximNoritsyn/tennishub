@@ -113,3 +113,14 @@
 .second_bounce:hover {
   box-shadow: 0px 0px 5px 5px #ff5656;
 }
+
+.result-area-input {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: space-between;
+}
+
+.result-area-input > div {
+  width: 60%;
+}

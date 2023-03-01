@@ -6,31 +6,32 @@ from typing import Optional
 from datetime import date
 
 from app.models.testing_itf import TestEvent, ServingBall, get_name_serving
+from app.models.person import Person
 from app.models.cookie import get_context
 
 router = APIRouter()
 templates = Jinja2Templates(directory="app/templates")
 
 
-@router.get("/new")
-async def new_test(request: Request = {}):
+@router.get("/new/{guid}")
+async def new_test(guid: str, request: Request = {}):
     context = get_context(request)
-    if context.get('logged'):
-        context['sex'] = context.get('user').person.sex
-        context['date_b'] = context.get('user').person.date_b
-        context['today'] = date.today()
-        return templates.TemplateResponse("new_testing.html", context)
-    else:
-        return templates.TemplateResponse("login.html", context)
+    person = Person.from_db(guid)
+    context['name_player'] = person.name
+    context['sex'] = person.sex
+    context['date_b'] = person.date_b
+    context['today'] = date.today()
+    return templates.TemplateResponse("new_testing.html", context)
 
 
-@router.post("/new")
+@router.post("/new/{guid}")
 async def post_new(request: Request,
-                   assessor: str = Form(),
-                   date: str = Form(),
-                   venue: str = Form()):
+                    guid: str,
+                    assessor: str = Form(),
+                    date: str = Form(),
+                    venue: str = Form()):
     test_event = TestEvent()
-    test_event.person = request.state.user.person
+    test_event.person = Person.from_db(guid)
     test_event.assessor = assessor
     test_event.date = date
     test_event.venue = venue
@@ -45,6 +46,8 @@ async def post_new(request: Request,
 async def get_test_event_stage_gsd(guid: str, stage_number: int, request: Request):
     context = get_context(request)
     task = 'gsd'
+
+    context['test_event'] = TestEvent.from_db(guid)
 
     context['route_back'] = f'/testing/{guid}/{task}/{stage_number - 1}'
     if stage_number == 1:
@@ -97,10 +100,12 @@ async def get_test_event_stage_vd(guid: str, stage_number: int, request: Request
     context = get_context(request)
     task = 'vd'
 
+    context['test_event'] = TestEvent.from_db(guid)
+
     context['route_back'] = f'/testing/{guid}/{task}/{stage_number - 1}'
     if stage_number == 1:
         context['route_back'] = f'/testing/{guid}/gsd/10'
-    context['route_submit'] = f'/testing/{guid}/[task/{stage_number}'
+    context['route_submit'] = f'/testing/{guid}/{task}/{stage_number}'
     context['forbackhand'] = get_detail_serving(stage_number, task)
     context['number'] = stage_number
 
@@ -147,6 +152,8 @@ async def post_test_event_stage_vd(guid: str,
 async def get_test_event_stage_sda(guid: str, stage_number: int, request: Request):
     context = get_context(request)
     task = 'gsa'
+
+    context['test_event'] = TestEvent.from_db(guid)
 
     context['route_back'] = f'/testing/{guid}/{task}/{stage_number - 1}'
     if stage_number == 1:
@@ -199,6 +206,8 @@ async def post_test_event_stage_gsa(guid: str,
 async def get_test_event_stage_serve(guid: str, stage_number: int, serve: int, request: Request):
     context = get_context(request)
     task = 'serve'
+
+    context['test_event'] = TestEvent.from_db(guid)
 
     context['route_back'] = f'/testing/{guid}/{task}/{stage_number - 1}/1'
     if serve == 2:
@@ -343,7 +352,7 @@ def get_point_accuracy(first_bounce, second_bounce):
     p = 0
     if first_bounce == 'area_center_service' or first_bounce == 'area_central_center':
         p = 1
-    elif first_bounce == 'area_center_service' or first_bounce == 'area_right_service':
+    elif first_bounce == 'area_left_service' or first_bounce == 'area_right_service':
         p = 2
     elif first_bounce == 'area_central_left' or first_bounce == 'area_central_right':
         p = 3
