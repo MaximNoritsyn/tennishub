@@ -24,6 +24,9 @@ class CoachRef(CollectionDB):
     def name_collection_class(cls):
         return "coachref"
 
+    def save(self):
+        backend.save_document(self)
+
     def to_dict(self) -> Dict[str, str]:
         d = {
             "id_person": self.person.id_obj,
