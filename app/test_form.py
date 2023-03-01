@@ -48,6 +48,7 @@ async def get_test_event_stage_gsd(guid: str, stage_number: int, request: Reques
     task = 'gsd'
 
     context['test_event'] = TestEvent.from_db(guid)
+    context['gsd'] = True
 
     context['route_back'] = f'/testing/{guid}/{task}/{stage_number - 1}'
     if stage_number == 1:
