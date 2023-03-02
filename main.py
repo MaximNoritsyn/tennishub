@@ -7,8 +7,10 @@ from app.login import router as login_router
 from app.signup import router as signup_router
 from app.index import router as index_router
 from app.test_form import router as test_form_router
-from app.models.cookie import add_user_to_request
 from app.players import router as player_router
+from app.coach_test_form import router as coach_test_router
+
+from app.models.cookie import add_user_to_request
 
 
 app = FastAPI()
@@ -20,6 +22,7 @@ app.include_router(login_router, prefix="/login")
 app.include_router(signup_router, prefix="/signup")
 app.include_router(test_form_router, prefix="/testing")
 app.include_router(player_router, prefix='/players')
+app.include_router(coach_test_router, prefix='/coachtesting')
 
 # Call the add_user_to_request function and pass the app instance as parameter
 app.middleware("http")(add_user_to_request)

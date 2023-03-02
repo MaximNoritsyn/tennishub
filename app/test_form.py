@@ -5,7 +5,8 @@ from fastapi.routing import APIRouter
 from typing import Optional
 from datetime import date
 
-from app.models.testing_itf import TestEvent, ServingBall, get_name_serving
+import app.models.testing_itf as itf
+from app.models.testing_itf import TestEvent, ServingBall
 from app.models.person import Person
 from app.models.cookie import get_context
 
@@ -54,10 +55,10 @@ async def get_test_event_stage_gsd(guid: str, stage_number: int, request: Reques
     if stage_number == 1:
         context['route_back'] = f'/testing/new'
     context['route_submit'] = f'/testing/{guid}/{task}/{stage_number}'
-    context['forbackhand'] = get_detail_serving(stage_number, task)
+    context['forbackhand'] = itf.get_detail_serving(stage_number, task)
     context['number'] = stage_number
 
-    name_serving = get_name_serving(task, stage_number)
+    name_serving = itf.get_name_serving(task, stage_number)
     serving_ball = ServingBall.from_db(guid, name_serving)
 
     context['first_bounce'] = serving_ball.first_bounce
@@ -76,9 +77,9 @@ async def post_test_event_stage_gsd(guid: str,
                                     second_bounce: str = Form(default='')):
     test_event = TestEvent.from_db(guid)
     task = 'gsd'
-    name_serving = get_name_serving(task, stage_number)
+    name_serving = itf.get_name_serving(task, stage_number)
 
-    setattr(test_event, name_serving, get_point_depth(first_bounce, second_bounce))
+    setattr(test_event, name_serving, itf.get_point_depth(first_bounce, second_bounce))
     test_event.update()
     test_event.save()
 
@@ -107,10 +108,10 @@ async def get_test_event_stage_vd(guid: str, stage_number: int, request: Request
     if stage_number == 1:
         context['route_back'] = f'/testing/{guid}/gsd/10'
     context['route_submit'] = f'/testing/{guid}/{task}/{stage_number}'
-    context['forbackhand'] = get_detail_serving(stage_number, task)
+    context['forbackhand'] = itf.get_detail_serving(stage_number, task)
     context['number'] = stage_number
 
-    name_serving = get_name_serving(task, stage_number)
+    name_serving = itf.get_name_serving(task, stage_number)
     serving_ball = ServingBall.from_db(guid, name_serving)
 
     context['first_bounce'] = serving_ball.first_bounce
@@ -129,9 +130,9 @@ async def post_test_event_stage_vd(guid: str,
                                    second_bounce: str = Form(default='')):
     test_event = TestEvent.from_db(guid)
     task = 'vd'
-    name_serving = get_name_serving(task, stage_number)
+    name_serving = itf.get_name_serving(task, stage_number)
 
-    setattr(test_event, name_serving, get_point_depth(first_bounce, second_bounce))
+    setattr(test_event, name_serving, itf.get_point_depth(first_bounce, second_bounce))
     test_event.update()
     test_event.save()
 
@@ -160,10 +161,10 @@ async def get_test_event_stage_sda(guid: str, stage_number: int, request: Reques
     if stage_number == 1:
         context['route_back'] = f'/testing/{guid}/vd/8'
     context['route_submit'] = f'/testing/{guid}/{task}/{stage_number}'
-    context['forbackhand'] = get_detail_serving(stage_number, task)
+    context['forbackhand'] = itf.get_detail_serving(stage_number, task)
     context['number'] = stage_number
 
-    name_serving = get_name_serving(task, stage_number)
+    name_serving = itf.get_name_serving(task, stage_number)
     serving_ball = ServingBall.from_db(guid, name_serving)
 
     context['first_bounce'] = serving_ball.first_bounce
@@ -183,9 +184,9 @@ async def post_test_event_stage_gsa(guid: str,
                                     second_bounce: str = Form(default='')):
     test_event = TestEvent.from_db(guid)
     task = 'gsa'
-    name_serving = get_name_serving(task, stage_number)
+    name_serving = itf.get_name_serving(task, stage_number)
 
-    setattr(test_event, name_serving, get_point_accuracy(first_bounce, second_bounce))
+    setattr(test_event, name_serving, itf.get_point_accuracy(first_bounce, second_bounce))
     test_event.update()
     test_event.save()
 
@@ -216,11 +217,11 @@ async def get_test_event_stage_serve(guid: str, stage_number: int, serve: int, r
     elif stage_number == 1:
         context['route_back'] = f'/testing/{guid}/gsa/12'
     context['route_submit'] = f'/testing/{guid}/{task}/{stage_number}/{serve}'
-    context['forbackhand'] = get_detail_serving(stage_number, task, serve)
+    context['forbackhand'] = itf.get_detail_serving(stage_number, task, serve)
     context['number'] = stage_number
     context['serve'] = serve
 
-    name_serving = get_name_serving(task, stage_number)
+    name_serving = itf.get_name_serving(task, stage_number)
     serving_ball = ServingBall.from_db(guid, name_serving, serve)
 
     context['first_bounce'] = serving_ball.first_bounce
@@ -237,9 +238,9 @@ async def post_test_event_stage_serve(guid: str,
                                       second_bounce: str = Form(default='')):
     test_event = TestEvent.from_db(guid)
     task = 'serve'
-    name_serving = get_name_serving(task, stage_number)
+    name_serving = itf.get_name_serving(task, stage_number)
 
-    point = get_point_serve(first_bounce, second_bounce, stage_number, serve)
+    point = itf.get_point_serve(first_bounce, second_bounce, stage_number, serve)
 
     setattr(test_event, name_serving, point)
     test_event.update()
@@ -285,7 +286,7 @@ async def post_test_event_stage_mobility(guid: str, first_bounce: str = Form(def
     test_event = TestEvent.from_db(guid)
     name_serving = 'value_mobility'
 
-    setattr(test_event, name_serving, get_point_mobility(first_bounce))
+    setattr(test_event, name_serving, itf.get_point_mobility(first_bounce))
     setattr(test_event, 'time_mobility', int(first_bounce))
     test_event.update()
     test_event.save()
@@ -311,126 +312,3 @@ async def get_test_event_stage_results(guid: str, request: Request):
 
     return templates.TemplateResponse("test_results.html", context)
 
-
-def get_detail_serving(stage_number: int, task: str, serve: int = 0):
-    res = 'Форхенд'
-    if stage_number % 2 == 0:
-        res = 'Бекхенд'
-
-    if task == 'gsa':
-        suf = 'по лінії'
-        if stage_number > 6:
-            suf = 'по кроскорту'
-        res = f'{res} / {suf}'
-
-    if task == 'serve':
-        res = f'{serve} подача'
-
-    return res
-
-
-def get_point_depth(first_bounce, second_bounce):
-    p = 0
-    if first_bounce == 'area_left_service' or first_bounce == 'area_right_service':
-        p = 1
-    elif first_bounce == 'area_central1':
-        p = 2
-    elif first_bounce == 'area_central2':
-        p = 3
-    elif first_bounce == 'area_central3':
-        p = 4
-
-    if p > 0:
-        if second_bounce == 'area_out_line':
-            p += 1
-        elif second_bounce == 'area_out_powerline':
-            p *= 2
-
-    return p
-
-
-def get_point_accuracy(first_bounce, second_bounce):
-    p = 0
-    if first_bounce == 'area_center_service' or first_bounce == 'area_central_center':
-        p = 1
-    elif first_bounce == 'area_left_service' or first_bounce == 'area_right_service':
-        p = 2
-    elif first_bounce == 'area_central_left' or first_bounce == 'area_central_right':
-        p = 3
-
-    if p > 0:
-        if second_bounce == 'area_out_line':
-            p += 1
-        elif second_bounce == 'area_out_powerline':
-            p *= 2
-
-    return p
-
-
-def get_point_serve(first_bounce, second_bounce, stage_number, serve):
-    p = 0
-    if stage_number < 4 and serve == 1:
-        if first_bounce == 'area_right_middle_service': p = 2
-        if first_bounce == 'area_right_wide_service': p = 4
-    elif stage_number < 4 and serve == 2:
-        if first_bounce == 'area_right_middle_service': p = 1
-        if first_bounce == 'area_right_wide_service': p = 2
-    elif stage_number < 7 and serve == 1:
-        if first_bounce == 'area_right_wide_service': p = 2
-        if first_bounce == 'area_right_middle_service': p = 4
-    elif stage_number < 7 and serve == 2:
-        if first_bounce == 'area_right_wide_service': p = 1
-        if first_bounce == 'area_right_middle_service': p = 2
-    elif stage_number < 10 and serve == 1:
-        if first_bounce == 'area_left_wide_service': p = 2
-        if first_bounce == 'area_left_middle_service': p = 4
-    elif stage_number < 10 and serve == 2:
-        if first_bounce == 'area_left_wide_service': p = 1
-        if first_bounce == 'area_left_middle_service': p = 2
-    elif stage_number < 13 and serve == 1:
-        if first_bounce == 'area_left_middle_service': p = 2
-        if first_bounce == 'area_left_wide_service': p = 4
-    elif stage_number < 13 and serve == 2:
-        if first_bounce == 'area_left_middle_service': p = 1
-        if first_bounce == 'area_left_wide_service': p = 2
-
-    if p > 0:
-        if second_bounce == 'area_out_line':
-            p += 1
-        elif second_bounce == 'area_out_powerline':
-            p *= 2
-
-    return p
-
-
-def get_point_mobility(first_bounce: str):
-    data = {
-        '40': 1,
-        '39': 2,
-        '38': 3,
-        '37': 4,
-        '36': 5,
-        '35': 6,
-        '34': 7,
-        '33': 8,
-        '32': 9,
-        '31': 10,
-        '30': 11,
-        '29': 12,
-        '28': 12,
-        '27': 14,
-        '26': 15,
-        '25': 16,
-        '24': 18,
-        '23': 19,
-        '22': 21,
-        '21': 26,
-        '20': 32,
-        '19': 39,
-        '18': 45,
-        '17': 52,
-        '16': 61,
-        '15': 76
-    }
-
-    return data[first_bounce]

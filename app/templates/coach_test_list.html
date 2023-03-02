@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}{% endblock %}
+
+{% block content %}
+<div><h3>Список групових тестів</h3>
+    <a href="/coachtesting/new">Створити новий тест</a>
+</div>
+<ul>
+    {% for test in coachtests %}
+    <li><a href="/coachtesting/{{test.id_db}}/dashboard">{{ event.date }} (МТН {{ event.itn }})</a></li>
+    {% endfor %}
+</ul>
+{% endblock %}
