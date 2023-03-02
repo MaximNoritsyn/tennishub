@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}{% endblock %}
+
+{% block content %}
+<div>
+    {% if edit==False %}
+    <h3>{{group_test.venue}} - {{group_test.date}}</h3>
+    {% endif %}
+</div>
+<div>
+
+    {% if edit %}
+    <form method="post" id="form-coach-test">
+
+        <label for="assessor">Інспектор:</label>
+        <input type="text" id="assessor" name="assessor" value="{{assessor}}"><br><br>
+
+        <label for="date">Дата:</label>
+        <input type="date" id="date" name="date" value="{{ today }}"><br><br>
+
+        <label for="venue">Місце проведення:</label>
+        <input type="text" id="venue" name="venue" value="{{ venue }}"><br><br>
+
+        <input type="submit" value="Зберегти">
+    </form>
+    {% else %}
+    <form method="post" id="form-coach-test" action="/coachtesting/{{group_test.id_db}}/edit">
+
+        <label for="assessor">Інспектор:</label>
+        <input type="text" id="assessor" readonly name="assessor" value="{{group_test.assessor}}"><br><br>
+
+        <label for="date">Дата:</label>
+        <input type="date" id="date" readonly name="date" value="{{ group_test.date }}"><br><br>
+
+        <label for="venue">Місце проведення:</label>
+        <input type="text" id="venue" readonly name="venue" value="{{ group_test.venue }}"><br><br>
+
+        <button id="edit-coach-test">Редагувати</button>
+    </form>
+    {% endif %}
+
+</div>
+
+<script src="{{ url_for('static', path='/js/coach_tests_dachboard.js') }}"></script>
+
+{% endblock %}
+
+{% block scripts %}
+
+{% endblock %}

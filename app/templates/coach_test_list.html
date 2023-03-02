@@ -7,8 +7,8 @@
     <a href="/coachtesting/new">Створити новий тест</a>
 </div>
 <ul>
-    {% for test in coachtests %}
-    <li><a href="/coachtesting/{{test.id_db}}/dashboard">{{ event.date }} (МТН {{ event.itn }})</a></li>
+    {% for test in group_tests %}
+    <li><a href="/coachtesting/{{test.id_db}}/dashboard">{{ test.date }} (місце - {{ test.venue }})</a></li>
     {% endfor %}
 </ul>
 {% endblock %}

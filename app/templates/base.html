@@ -16,6 +16,9 @@
         <ul>
           <li><a href="/">Головна</a></li>
           {% if logged %}
+          {% if user.is_coach %}
+          <li><a href="/coachtesting">Групові тестування</a></li>
+          {% endif %}
           <li class="dropdown">
             <a class="dropbtn">{{ name }}</a>
             <div class="dropdown-content">
