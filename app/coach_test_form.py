@@ -2,7 +2,7 @@ from fastapi import Response, status, HTTPException, Form, Request
 from fastapi.templating import Jinja2Templates
 from fastapi.routing import APIRouter
 
-from typing import Optional
+from typing import Optional, List
 from datetime import date
 
 import app.models.testing_itf as itf
@@ -65,12 +65,16 @@ async def post_edit(request: Request,
                     guid: str,
                     assessor: str = Form(),
                     date: str = Form(),
-                    venue: str = Form()):
+                    venue: str = Form(),
+                    persons: Optional[str] = Form()):
     group_test = GroupTest.from_db(guid)
     group_test.date = date
     group_test.assessor = assessor
     group_test.venue = venue
     group_test.save()
+    if persons:
+        persons_ids_list = persons.split(',')
+        print(persons_ids_list)
     response = Response(content="Create group of test")
     response.headers["location"] = f"/coachtesting/{group_test.id_db}/dashboard"
     response.status_code = status.HTTP_302_FOUND
