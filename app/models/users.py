@@ -28,30 +28,7 @@ class User(CollectionDB):
 
     @classmethod
     def from_db(cls, username: str):
-        user_data = backend.db.users.aggregate([
-            {"$match": {"username": username}},
-            {"$lookup": {
-                "from": "persons",
-                "localField": "person_id",
-                "foreignField": "_id",
-                "as": "person"
-            }},
-            {"$unwind": "$person"},
-            {"$project": {
-                "username": 1,
-                "email": 1,
-                "is_active": 1,
-                "is_coach": 1,
-                "is_superuser": 1,
-                "password_hash": 1,
-                "person": {
-                    "id_obj": "$person._id",
-                    "name": "$person.name",
-                    "date_b": "$person.date_b",
-                    "sex": "$person.sex",
-                }
-            }}
-        ])
+        user_data = backend.get_full_user_by_username(username)
 
         user_doc = next(user_data, None)
         if user_doc is None:

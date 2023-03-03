@@ -41,35 +41,5 @@ class CoachRef(CollectionDB):
 
 def get_persons_by_coach(coach_username):
 
-    pipeline = [
-        {
-            "$match": {
-                "coach_username": coach_username
-            }
-        },
-        {
-            "$lookup": {
-                "from": "persons",
-                "localField": "id_person",
-                "foreignField": "_id",
-                "as": "person"
-            }
-        },
-        {
-            "$unwind": "$person"
-        },
-        {
-            "$project": {
-                "_id": 0,
-                "person.name": 1,
-                "person._id": 1,
-                "person.date_b": 1,
-                "coach.username": 1,
-                "coach.email": 1
-            }
-        }
-    ]
-
-    results = [Person.from_dict(result['person']) for result in backend.db[CoachRef.name_collection_class()].aggregate(pipeline)]
-
-    return results
+    return [Person.from_dict(result['person']) for result in
+            backend.get_persons_by_coach(coach_username, CoachRef.name_collection_class())]

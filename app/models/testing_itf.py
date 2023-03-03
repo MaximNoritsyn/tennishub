@@ -77,87 +77,7 @@ class TestEvent(CollectionDB):
 
     @classmethod
     def from_db(cls, id_db: str):
-        pipeline = [
-            {"$match": {"_id": ObjectId(id_db)}},
-            {
-                "$lookup": {
-                    "from": "persons",
-                    "localField": "person_id",
-                    "foreignField": "_id",
-                    "as": "person"
-                }
-            },
-            {
-                "$unwind": "$person"
-            },
-            {
-                "$project": {
-                    "id_db": "$_id",
-                    "person": 1,
-                    "assessor": 1,
-                    "date": 1,
-                    "venue": 1,
-                    "strokes_total": 1,
-                    "total_score": 1,
-                    "itn": 1,
-                    "value_gsd01": 1,
-                    "value_gsd02": 1,
-                    "value_gsd03": 1,
-                    "value_gsd04": 1,
-                    "value_gsd05": 1,
-                    "value_gsd06": 1,
-                    "value_gsd07": 1,
-                    "value_gsd08": 1,
-                    "value_gsd09": 1,
-                    "value_gsd10": 1,
-                    "total_gsd": 1,
-                    "consistency_gsd": 1,
-                    "value_vd01": 1,
-                    "value_vd02": 1,
-                    "value_vd03": 1,
-                    "value_vd04": 1,
-                    "value_vd05": 1,
-                    "value_vd06": 1,
-                    "value_vd07": 1,
-                    "value_vd08": 1,
-                    "total_vd": 1,
-                    "consistency_vd": 1,
-                    "value_gsa01": 1,
-                    "value_gsa02": 1,
-                    "value_gsa03": 1,
-                    "value_gsa04": 1,
-                    "value_gsa05": 1,
-                    "value_gsa06": 1,
-                    "value_gsa07": 1,
-                    "value_gsa08": 1,
-                    "value_gsa09": 1,
-                    "value_gsa10": 1,
-                    "value_gsa11": 1,
-                    "value_gsa12": 1,
-                    "total_gsa": 1,
-                    "consistency_gsa": 1,
-                    "value_serve01": 1,
-                    "value_serve02": 1,
-                    "value_serve03": 1,
-                    "value_serve04": 1,
-                    "value_serve05": 1,
-                    "value_serve06": 1,
-                    "value_serve07": 1,
-                    "value_serve08": 1,
-                    "value_serve09": 1,
-                    "value_serve10": 1,
-                    "value_serve11": 1,
-                    "value_serve12": 1,
-                    "total_serve": 1,
-                    "consistency_serve": 1,
-                    "value_mobility": 1,
-                    "time_mobility": 1
-                }
-            }
-        ]
-
-        result = list(backend.db[cls.name_collection_class()].aggregate(pipeline))
-        inst = cls.from_dict(result[0])
+        inst = cls.from_dict(backend.get_full_test_event_by_id(id_db))
         return inst
 
     @classmethod
@@ -405,37 +325,9 @@ def get_itn_number(sex, score):
         else: 1
 
 
-def get_test_events(person_id):
-    pipeline = [
-        {"$match": {"person_id": ObjectId(person_id)}},
-        {
-            "$lookup": {
-                "from": "persons",
-                "localField": "person_id",
-                "foreignField": "_id",
-                "as": "person"
-            }
-        },
-        {
-            "$unwind": "$person"
-        },
-        {
-            "$project": {
-                "id_db": "$_id",
-                "person": 1,
-                "assessor": 1,
-                "date": 1,
-                "venue": 1,
-                "strokes_total": 1,
-                "total_score": 1,
-                "itn": 1
-            }
-        }
-    ]
-
-    result = list(backend.db[TestEvent.name_collection_class()].aggregate(pipeline))
+def get_test_events_by_person(person_id):
     list_return = []
-    for r in result:
+    for r in list(backend.get_full_test_event_by_person(person_id, TestEvent.name_collection_class())):
         list_return.append(TestEvent.from_dict(r))
 
     return list_return
