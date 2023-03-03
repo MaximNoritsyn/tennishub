@@ -77,3 +77,10 @@ class Person(CollectionDB):
 
     def __str__(self):
         return self.name
+
+
+def get_persons_by_part_of_name(search_text):
+    print(backend.get_persons_by_part_of_name(search_text, Person.name_collection_class()))
+    print(search_text)
+    return [Person.from_dict(result) for result in
+            backend.get_persons_by_part_of_name(search_text, Person.name_collection_class())]

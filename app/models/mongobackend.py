@@ -220,3 +220,5 @@ class MongoDBBackend:
 
         return self.db[name_collection_class].aggregate(pipeline)
 
+    def get_persons_by_part_of_name(self, search_text, name_collection_class):
+        return list(self.db[name_collection_class].find({"name": {"$regex": search_text, "$options": "i"}}))
