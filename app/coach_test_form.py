@@ -10,6 +10,7 @@ import app.models.coach_testing as ct
 from app.models.testing_itf import TestEvent, ServingBall
 from app.models.coach_testing import CoachTest, GroupTest
 from app.models.cookie import get_context
+from app.models.coach_ref import get_persons_by_coach
 
 router = APIRouter()
 templates = Jinja2Templates(directory="app/templates")
@@ -47,19 +48,6 @@ async def post_new(request: Request,
     return response
 
 
-@router.get("/{guid}/edit")
-async def new_tests(guid: str, request: Request = {}):
-    group_test = GroupTest.from_db(guid)
-    context = get_context(request)
-    context['group_test'] = group_test
-    context['edit'] = True
-    context['assessor'] = group_test.assessor
-    context['today'] = group_test.date
-    context['today'] = group_test.date
-
-    return templates.TemplateResponse("coach_test_dashboard.html", context)
-
-
 @router.post("/{guid}/edit")
 async def post_edit(request: Request,
                     guid: str,
@@ -87,5 +75,6 @@ async def new_tests(guid: str, request: Request = {}):
     context = get_context(request)
     context['edit'] = False
     context['group_test'] = group_test
+    context['players_ch'] = get_persons_by_coach(context.get('user').username)
 
     return templates.TemplateResponse("coach_test_dashboard.html", context)

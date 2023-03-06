@@ -36,14 +36,12 @@
         <label for="venue">Місце проведення:</label>
         <input type="text" id="venue" readonly name="venue" value="{{ group_test.venue }}"><br><br>
 
-        <label for="person">Спортсмен:</label>
-        <select id="person" name="person">
-            <option value="" disabled selected>Виберіть спортсмена</option>
-        </select><br><br>
-
-        <label for="search">Пошук спортсмена:</label>
-        <input type="text" id="search" name="search" placeholder="Введіть Ім'я"/>
-        <button id="add-person">Додати спортсмена до списку</button>
+        <dev id="search-div" style="display: none;">
+            <label for="search">Пошук спортсмена:</label>
+            <input type="text" id="search" name="search" placeholder="Введіть Ім'я"/>
+            <label for="persons-list-for-choose">Доступні спортсмени:</label>
+            <ul id="persons-list-for-choose"></ul>
+        </dev>
 
         <button id="edit-coach-test">Редагувати</button>
     </form>
@@ -56,6 +54,7 @@
         {% endfor %}
     </ul>
 
+    <input type="hidden" id="username" value="{{user.username}}">
 
 </div>
 
