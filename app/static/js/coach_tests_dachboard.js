@@ -11,28 +11,39 @@ document.addEventListener('DOMContentLoaded', function() {
         username = usernameEl.value;
     }
 
+    let persons = [];
+    let players_ch = [];
+
     // Function to update the list of persons in the dropdown
-    function updatePersonList(persons) {
+    function updatePersonList(personsFromDb) {
         personsList_Ch.innerHTML = ''; // Clear the list
 
+        personsFromDb = removePersonsFromPlayers(personsFromDb, persons)
+
         // Loop through the persons array and create new li elements for each person
-        persons.forEach(person => {
+        personsFromDb.forEach(person => {
           const li = document.createElement('li');
           li.textContent = person.name;
-          li.setAttribute('id', person.id);
+          li.setAttribute('id', person.id_db);
 
-            li.addEventListener('click', function(event) {
+          li.addEventListener('click', function(event) {
 
                 const listItem = document.createElement('li');
                 listItem.innerText = person.name;
                 personsList.appendChild(listItem);
 
-                persons.push({id: person.id, name: person.name});
+                persons.push({id_db: person.id_db, name: person.name});
+                li.remove();
             });
 
           personsList_Ch.appendChild(li);
 
         });
+    }
+
+    function removePersonsFromPlayers(players_ch, persons) {
+      const idsToRemove = persons.map(person => person.id_db);
+      return players_ch.filter(player => !idsToRemove.includes(player.id_db));
     }
 
 
@@ -50,44 +61,42 @@ document.addEventListener('DOMContentLoaded', function() {
     // Add event listener to search input
     searchInput.addEventListener('input', handleSearch);
 
-
-    const persons = [];
-    const players_ch = [];
-
     handleSearch()
 
     const editCoachTest = document.getElementById('edit-coach-test');
 
     // Add a click event listener to the button
     editCoachTest.addEventListener('click', function(event) {
-        // Prevent the default form submission
-        if (editCoachTest.innerText === 'Редагувати') {
         event.preventDefault();
 
-        searchDiv.style.display = 'block';  // show the div
+        if (editCoachTest.innerText === 'Редагувати') {
 
-        // Get the input elements by their IDs
-        const assessorInput = document.getElementById('assessor');
-        const dateInput = document.getElementById('date');
-        const venueInput = document.getElementById('venue');
+            searchDiv.style.display = 'block';  // show the div
 
-        // Remove the 'readonly' attribute from the input elements
-        assessorInput.removeAttribute('readonly');
-        dateInput.removeAttribute('readonly');
-        venueInput.removeAttribute('readonly');
+            // Get the input elements by their IDs
+            const assessorInput = document.getElementById('assessor');
+            const dateInput = document.getElementById('date');
+            const venueInput = document.getElementById('venue');
 
-        // Change the submit button text
-        editCoachTest.innerText = 'Зберегти';
+            // Remove the 'readonly' attribute from the input elements
+            assessorInput.removeAttribute('readonly');
+            dateInput.removeAttribute('readonly');
+            venueInput.removeAttribute('readonly');
+
+            // Change the submit button text
+            editCoachTest.innerText = 'Зберегти';
+
         }
         else {
-        event.preventDefault();
-        const personsIds = persons.map(person => person.id);
-        const personsInput = document.createElement('input');
-        personsInput.type = 'hidden';
-        personsInput.name = 'persons';
-        personsInput.value = personsIds.join(',');;
-        document.getElementById('form-coach-test').appendChild(personsInput);
-        document.getElementById('form-coach-test').submit();
+
+            const personsIds = persons.map(person => person.id_db);
+            const personsInput = document.createElement('input');
+            personsInput.type = 'hidden';
+            personsInput.name = 'persons';
+            personsInput.value = personsIds.join(',');;
+            document.getElementById('form-coach-test').appendChild(personsInput);
+            document.getElementById('form-coach-test').submit();
+
         }
     });
 })
