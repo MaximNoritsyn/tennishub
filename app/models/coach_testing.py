@@ -5,6 +5,7 @@ from bson.objectid import ObjectId
 from app.models.mongobackend import MongoDBBackend, CollectionDB
 from app.models.users import User
 from app.models.testing_itf import TestEvent
+from app.models.person import Person
 
 
 backend = MongoDBBackend()
@@ -112,6 +113,21 @@ class CoachTest(CollectionDB):
 
         return d
 
+    @classmethod
+    def get_by_person(cls, person_id: str, group_test: GroupTest):
+        res = backend.get_coach_test_by_person(person_id, TestEvent.name_collection_class())
+        person = Person.from_db(person_id)
+        if len(res):
+            test_event = TestEvent.from_db(res.get('id_event'))
+            CoachTest(test_event, group_test, res[0])
+        else:
+            test_event = TestEvent()
+            test_event.person = person
+            test_event.save()
+            coach_test = cls(test_event, group_test)
+            coach_test.save()
+            return coach_test
+
 
 def get_group_tests_by_coach_username(coach: User):
     documents = backend.db[GroupTest.name_collection_class()].find(
@@ -125,3 +141,23 @@ def get_group_tests_by_coach_username(coach: User):
 
     return group_tests
 
+
+def get_coach_test_by_group(group_test: GroupTest):
+    documents = backend.db[CoachTest.name_collection_class()].find(
+        {"id_group_test": group_test.id_obj}
+    )
+
+    coach_tests = []
+    for document in documents:
+        test_event = TestEvent.from_db(str(document.get('id_test')))
+        coach_test = CoachTest(test_event,
+                               group_test,
+                               id_db=str(document.get('_id')),
+                               finish_gsd=document.get('finish_gsd'),
+                               finish_vd=document.get('finish_vd'),
+                               finish_gsa=document.get('finish_gsa'),
+                               finish_serve=document.get('finish_serve'),
+                               finish_mobility=document.get('finish_mobility'))
+        coach_tests.append(coach_test)
+
+    return coach_tests

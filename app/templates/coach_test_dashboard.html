@@ -16,8 +16,8 @@
         <label for="assessor">Інспектор:</label>
         <input type="text" id="assessor" name="assessor" value="{{assessor}}"><br><br>
 
-        <label for="date">Дата:</label>
-        <input type="date" id="date" name="date" value="{{ today }}"><br><br>
+        <label for="v_date">Дата:</label>
+        <input type="date" id="v_date" name="v_date" value="{{ today }}"><br><br>
 
         <label for="venue">Місце проведення:</label>
         <input type="text" id="venue" name="venue" value="{{ venue }}"><br><br>
@@ -37,8 +37,8 @@
         <label for="assessor">Інспектор:</label>
         <input type="text" id="assessor" readonly name="assessor" value="{{group_test.assessor}}"><br><br>
 
-        <label for="date">Дата:</label>
-        <input type="date" id="date" readonly name="date" value="{{ group_test.date }}"><br><br>
+        <label for="v_date">Дата:</label>
+        <input type="date" id="v_date" readonly name="v_date" value="{{ group_test.date }}"><br><br>
 
         <label for="venue">Місце проведення:</label>
         <input type="text" id="venue" readonly name="venue" value="{{ group_test.venue }}"><br><br>
@@ -62,6 +62,7 @@
     </ul>
 
     <input type="hidden" id="username" value="{{user.username}}">
+    <input type="hidden" id="group_test_id" value="{{group_test_id}}">
 
 </div>
 

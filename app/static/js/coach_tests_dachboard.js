@@ -5,10 +5,17 @@ document.addEventListener('DOMContentLoaded', function() {
     const personsList = document.getElementById('persons-list');
     const personsList_Ch = document.getElementById('persons-list-for-choose');
     const searchDiv = document.getElementById('search-div');
+    const editCoachTest = document.getElementById('edit-coach-test');
     const usernameEl = document.getElementById('username');
     let username = '';
     if (usernameEl) {
         username = usernameEl.value;
+    }
+
+    const groupTestIdEl = document.getElementById('group_test_id');
+    let groupTestId = '';
+    if (groupTestIdEl) {
+        groupTestId = groupTestIdEl.value;
     }
 
     let persons = [];
@@ -63,7 +70,22 @@ document.addEventListener('DOMContentLoaded', function() {
 
     handleSearch()
 
-    const editCoachTest = document.getElementById('edit-coach-test');
+    if (groupTestId !== '') {
+        fetch(`/api/coach_tests?group_test_id=${groupTestId}`)
+                .then(response => response.json())
+                .then(data => {
+
+                    data.forEach(player => {
+                        const listItem = document.createElement('li');
+                        listItem.innerText = player.test_event.person.name;
+                        personsList.appendChild(listItem);
+
+                        persons.push({id_db: player.test_event.person.id_db, name: player.test_event.person.name});
+                    })
+
+                })
+                .catch(error => console.error(error));
+    }
 
     // Add a click event listener to the button
     editCoachTest.addEventListener('click', function(event) {
@@ -75,7 +97,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // Get the input elements by their IDs
             const assessorInput = document.getElementById('assessor');
-            const dateInput = document.getElementById('date');
+            const dateInput = document.getElementById('v_date');
             const venueInput = document.getElementById('venue');
 
             // Remove the 'readonly' attribute from the input elements

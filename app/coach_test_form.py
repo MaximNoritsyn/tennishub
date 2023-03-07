@@ -31,42 +31,30 @@ async def new_tests(request: Request = {}):
     context['edit'] = True
     context['assessor'] = context.get('user').person.name
     context['today'] = date.today()
+    context['group_test_id'] = ''
 
     return templates.TemplateResponse("coach_test_dashboard.html", context)
 
 
 @router.post("/new")
 async def post_new(request: Request,
-                    assessor: str = Form(),
-                    date: str = Form(),
-                    venue: str = Form()):
+                   assessor: str = Form(),
+                   v_date: str = Form(),
+                   venue: str = Form(),
+                   persons: Optional[str] = Form()):
     group_test = GroupTest(request.state.user, assessor, date, venue)
-    group_test.save()
-    response = Response(content="Create group of test")
-    response.headers["location"] = f"/coachtesting/{group_test.id_db}/dashboard"
-    response.status_code = status.HTTP_302_FOUND
-    return response
+    return edit_group_test(group_test, assessor, v_date, venue, persons)
 
 
 @router.post("/{guid}/edit")
 async def post_edit(request: Request,
                     guid: str,
                     assessor: str = Form(),
-                    date: str = Form(),
+                    v_date: str = Form(),
                     venue: str = Form(),
                     persons: Optional[str] = Form()):
     group_test = GroupTest.from_db(guid)
-    group_test.date = date
-    group_test.assessor = assessor
-    group_test.venue = venue
-    group_test.save()
-    if persons:
-        persons_ids_list = persons.split(',')
-        print(persons_ids_list)
-    response = Response(content="Create group of test")
-    response.headers["location"] = f"/coachtesting/{group_test.id_db}/dashboard"
-    response.status_code = status.HTTP_302_FOUND
-    return response
+    return edit_group_test(group_test, assessor, v_date, venue, persons)
 
 
 @router.get("/{guid}/dashboard")
@@ -75,6 +63,25 @@ async def new_tests(guid: str, request: Request = {}):
     context = get_context(request)
     context['edit'] = False
     context['group_test'] = group_test
-    context['players_ch'] = get_persons_by_coach(context.get('user').username)
+    context['group_test_id'] = guid
 
     return templates.TemplateResponse("coach_test_dashboard.html", context)
+
+
+def edit_group_test(group_test: GroupTest,
+                    assessor: str = Form(),
+                    v_date: str = Form(),
+                    venue: str = Form(),
+                    persons: Optional[str] = Form()):
+    group_test.date = v_date
+    group_test.assessor = assessor
+    group_test.venue = venue
+    group_test.save()
+    if persons:
+        persons_ids_list = persons.split(',')
+        for person_id in persons_ids_list:
+            CoachTest.get_by_person(person_id, group_test)
+    response = Response(content="Create group of test")
+    response.headers["location"] = f"/coachtesting/{group_test.id_db}/dashboard"
+    response.status_code = status.HTTP_302_FOUND
+    return response

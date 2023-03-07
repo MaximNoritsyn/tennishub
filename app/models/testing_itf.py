@@ -77,7 +77,8 @@ class TestEvent(CollectionDB):
 
     @classmethod
     def from_db(cls, id_db: str):
-        inst = cls.from_dict(backend.get_full_test_event_by_id(id_db))
+        t = backend.get_full_test_event_by_id(id_db, cls.name_collection_class())
+        inst = cls.from_dict(t)
         return inst
 
     @classmethod
@@ -89,6 +90,8 @@ class TestEvent(CollectionDB):
             if key != 'person':
                 if key == 'id_db':
                     setattr(test_event, key, str(value))
+                elif key == '_id':
+                    setattr(test_event, 'id_db', str(value))
                 else:
                     setattr(test_event, key, value)
         return test_event
