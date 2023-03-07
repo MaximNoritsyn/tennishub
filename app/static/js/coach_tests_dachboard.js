@@ -12,11 +12,50 @@ document.addEventListener('DOMContentLoaded', function() {
         username = usernameEl.value;
     }
 
-    const groupTestIdEl = document.getElementById('group_test_id');
+    const groupTestIdEl = document.getElementById('group-test-id');
     let groupTestId = '';
     if (groupTestIdEl) {
         groupTestId = groupTestIdEl.value;
     }
+
+    let currentTask = null;
+
+    const taskBoxes = document.querySelectorAll('.task-box');
+    taskBoxes.forEach((box) => {
+        box.addEventListener('click', () => {
+            if (currentTask !== null) {
+                currentTask.classList.remove('current-task-box');
+            }
+            currentTask = box;
+            currentTask.classList.add('current-task-box');
+        });
+    });
+
+    function beginTaskTest() {
+        if (currentTask) {
+            console.log(currentTask.id)
+        }
+
+
+    }
+
+    let li = null
+
+    function addPlayer() {
+
+        const listItem = document.createElement('li');
+        listItem.setAttribute('id', person.id_db);
+        listItem.setAttribute('class', 'players-line');
+        listItem.textContent = person.name;
+        listItem.addEventListener('click', beginTaskTest)
+
+        personsList.appendChild(listItem);
+
+        persons.push({id_db: person.id_db, name: person.name});
+        li.remove();
+
+    }
+
 
     let persons = [];
     let players_ch = [];
@@ -27,26 +66,19 @@ document.addEventListener('DOMContentLoaded', function() {
 
         personsFromDb = removePersonsFromPlayers(personsFromDb, persons)
 
-        // Loop through the persons array and create new li elements for each person
         personsFromDb.forEach(person => {
-          const li = document.createElement('li');
+          li = document.createElement('li');
           li.textContent = person.name;
-          li.setAttribute('id', person.id_db);
 
-          li.addEventListener('click', function(event) {
-
-                const listItem = document.createElement('li');
-                listItem.innerText = person.name;
-                personsList.appendChild(listItem);
-
-                persons.push({id_db: person.id_db, name: person.name});
-                li.remove();
-            });
+          li.addEventListener('click', addPlayer);
 
           personsList_Ch.appendChild(li);
 
         });
     }
+
+
+
 
     function removePersonsFromPlayers(players_ch, persons) {
       const idsToRemove = persons.map(person => person.id_db);
@@ -76,11 +108,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 .then(data => {
 
                     data.forEach(player => {
-                        const listItem = document.createElement('li');
-                        listItem.innerText = player.test_event.person.name;
-                        personsList.appendChild(listItem);
+                        person = player.test_event.person
 
-                        persons.push({id_db: player.test_event.person.id_db, name: player.test_event.person.name});
+                        addPlayer()
+
                     })
 
                 })

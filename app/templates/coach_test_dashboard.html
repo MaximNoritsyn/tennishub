@@ -2,6 +2,10 @@
 
 {% block title %}{% endblock %}
 
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', path='/css/grouptesting_dashboard.css') }}">
+{% endblock %}
+
 {% block content %}
 <div>
     {% if edit==False %}
@@ -54,6 +58,12 @@
     </form>
     {% endif %}
 
+    <div id="gsd" class="task-box">Глибина з земли</div>
+	<div id="vd" class="task-box">Глибина з льоту</div>
+	<div id="gsa" class="task-box">Точність з землі</div>
+	<div id="serve" class="task-box">Подача</div>
+	<div id="mobility" class="task-box">Мобільність</div>
+
     <label for="persons-list">Список спортсменів:</label>
     <ul id="persons-list">
         {% for person in persons %}
@@ -62,7 +72,7 @@
     </ul>
 
     <input type="hidden" id="username" value="{{user.username}}">
-    <input type="hidden" id="group_test_id" value="{{group_test_id}}">
+    <input type="hidden" id="group-test-id" value="{{group_test_id}}">
 
 </div>
 

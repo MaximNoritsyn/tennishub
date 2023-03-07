@@ -37,9 +37,6 @@ async def get_persons(group_test_id: str = Query(default=None)):
         group_test = GroupTest.from_db(group_test_id)
         coach_tests = get_coach_test_by_group(group_test)
 
-        # get all the attributes and their values for the instance
-        coach_test_attrs = vars(coach_tests[0])
-
         return coach_tests
     else:
         return []

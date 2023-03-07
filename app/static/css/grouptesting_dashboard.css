@@ -1,0 +1,15 @@
+.task-box {
+    background-color: lightblue;
+    padding: 10px;
+    margin: 5px;
+    cursor: pointer;
+}
+
+.current-task-box {
+    background-color: blue;
+    color: white;
+}
+
+.players-line {
+    cursor: pointer;
+}
