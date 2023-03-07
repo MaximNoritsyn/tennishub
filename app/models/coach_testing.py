@@ -115,14 +115,20 @@ class CoachTest(CollectionDB):
 
     @classmethod
     def get_by_person(cls, person_id: str, group_test: GroupTest):
-        res = backend.get_coach_test_by_person(person_id, TestEvent.name_collection_class())
-        person = Person.from_db(person_id)
-        if len(res):
+        list_res = backend.get_coach_test_by_person_group(person_id, group_test.id_db, TestEvent.name_collection_class())
+        if len(list_res):
+            res = list_res[0]
             test_event = TestEvent.from_db(res.get('id_event'))
-            CoachTest(test_event, group_test, res[0])
+            return CoachTest(test_event, group_test,
+                             id_db=str(res.get('_id')),
+                             finish_gsd=res.get('finish_gsd'),
+                             finish_vd=res.get('finish_vd'),
+                             finish_gsa=res.get('finish_gsa'),
+                             finish_serve=res.get('finish_serve'),
+                             finish_mobility=res.get('finish_mobility'))
         else:
             test_event = TestEvent()
-            test_event.person = person
+            test_event.person = Person.from_db(person_id)
             test_event.save()
             coach_test = cls(test_event, group_test)
             coach_test.save()

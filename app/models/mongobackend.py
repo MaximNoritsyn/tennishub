@@ -223,23 +223,28 @@ class MongoDBBackend:
     def get_persons_by_part_of_name(self, search_text, name_collection_class):
         return list(self.db[name_collection_class].find({"name": {"$regex": search_text, "$options": "i"}}))
 
-    def get_coach_test_by_person(self, person_id, name_collection_class):
+    def get_coach_test_by_person_group(self, person_id: str, group_test_id: str, name_collection_class: str):
         pipeline = [
             {
                 "$match": {
-                    "person_id": person_id
+                    "person_id": ObjectId(person_id)
                 }
             },
             {
                 "$lookup": {
                     "from": "coachtest",
-                    "localField": "id_test",
-                    "foreignField": "_id",
+                    "localField": "_id",
+                    "foreignField": "id_test",
                     "as": "coachtest"
                 }
             },
             {
                 "$unwind": "$coachtest"
+            },
+            {
+                "$match": {
+                    "coachtest.id_group_test": ObjectId(group_test_id)
+                }
             },
             {
                 "$project": {
