@@ -29,8 +29,8 @@
         <dev id="search-div">
             <label for="search">Пошук спортсмена:</label>
             <input type="text" id="search" name="search" placeholder="Введіть Ім'я"/>
-            <label for="persons-list-for-choose">Доступні спортсмени:</label>
-            <ul id="persons-list-for-choose"></ul>
+            <label for="persons-list">Доступні спортсмени:</label>
+            <ul id="persons-list"></ul>
         </dev>
 
         <button id="edit-coach-test">Зберегти</button>
@@ -50,8 +50,8 @@
         <dev id="search-div" style="display: none;">
             <label for="search">Пошук спортсмена:</label>
             <input type="text" id="search" name="search" placeholder="Введіть Ім'я"/>
-            <label for="persons-list-for-choose">Доступні спортсмени:</label>
-            <ul id="persons-list-for-choose"></ul>
+            <label for="persons-list">Доступні спортсмени:</label>
+            <ul id="persons-list"></ul>
         </dev>
 
         <button id="edit-coach-test">Редагувати</button>
@@ -64,8 +64,8 @@
 	<div id="serve" class="task-box">Подача</div>
 	<div id="mobility" class="task-box">Мобільність</div>
 
-    <label for="persons-list">Список спортсменів:</label>
-    <ul id="persons-list">
+    <label for="players-list">Список спортсменів:</label>
+    <ul id="players-list">
         {% for person in persons %}
         <li>{{ person.name }}</li>
         {% endfor %}

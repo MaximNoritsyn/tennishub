@@ -1,9 +1,8 @@
 document.addEventListener('DOMContentLoaded', function() {
 
     const searchInput = document.getElementById('search');
-    const personSelect = document.getElementById('person');
-    const personsList = document.getElementById('persons-list');
-    const personsList_Ch = document.getElementById('persons-list-for-choose');
+    const playersListEl = document.getElementById('players-list');
+    const personsListEl = document.getElementById('persons-list');
     const searchDiv = document.getElementById('search-div');
     const editCoachTest = document.getElementById('edit-coach-test');
     const usernameEl = document.getElementById('username');
@@ -19,6 +18,8 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     let currentTask = null;
+    let players = [];
+    let persons = [];
 
     const taskBoxes = document.querySelectorAll('.task-box');
     taskBoxes.forEach((box) => {
@@ -31,48 +32,53 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    function beginTaskTest() {
+    function beginTaskTest(event) {
         if (currentTask) {
+
+            const clickedElement = event.target;
+            const playerId = clickedElement.id.split('_')[1];
+
             console.log(currentTask.id)
+            console.log(playerId)
         }
-
-
     }
 
     let li = null
 
-    function addPlayer() {
+    function addPlayer(event) {
+
+        const clickedElement = event.target;
+        const playerId = clickedElement.id.split('_')[1];
+
+        const playerName = clickedElement.textContent;
 
         const listItem = document.createElement('li');
-        listItem.setAttribute('id', person.id_db);
+        listItem.setAttribute('id', 'player_' + playerId);
         listItem.setAttribute('class', 'players-line');
-        listItem.textContent = person.name;
+        listItem.textContent = playerName;
         listItem.addEventListener('click', beginTaskTest)
 
-        personsList.appendChild(listItem);
+        playersListEl.appendChild(listItem);
 
-        persons.push({id_db: person.id_db, name: person.name});
-        li.remove();
+        players.push({id_db: playerId, name: playerName});
+        clickedElement.remove();
 
     }
 
 
-    let persons = [];
-    let players_ch = [];
-
     // Function to update the list of persons in the dropdown
     function updatePersonList(personsFromDb) {
-        personsList_Ch.innerHTML = ''; // Clear the list
+        personsListEl.innerHTML = ''; // Clear the list
 
-        personsFromDb = removePersonsFromPlayers(personsFromDb, persons)
-
-        personsFromDb.forEach(person => {
+        removePersonsFromPlayers(personsFromDb, players).forEach(person => {
           li = document.createElement('li');
           li.textContent = person.name;
+          li.setAttribute('class', 'person-line');
+          li.setAttribute('id', 'person_' + person.id_db);
 
           li.addEventListener('click', addPlayer);
 
-          personsList_Ch.appendChild(li);
+          personsListEl.appendChild(li);
 
         });
     }
@@ -80,9 +86,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
-    function removePersonsFromPlayers(players_ch, persons) {
-      const idsToRemove = persons.map(person => person.id_db);
-      return players_ch.filter(player => !idsToRemove.includes(player.id_db));
+    function removePersonsFromPlayers(arrayToRemove, array) {
+      const idsToRemove = array.map(l_player => l_player.id_db);
+      return arrayToRemove.filter(l_person => !idsToRemove.includes(l_person.id_db));
     }
 
 
@@ -100,23 +106,28 @@ document.addEventListener('DOMContentLoaded', function() {
     // Add event listener to search input
     searchInput.addEventListener('input', handleSearch);
 
-    handleSearch()
-
     if (groupTestId !== '') {
         fetch(`/api/coach_tests?group_test_id=${groupTestId}`)
                 .then(response => response.json())
                 .then(data => {
 
-                    data.forEach(player => {
-                        person = player.test_event.person
+                    data.forEach(coach_test => {
+                        person = coach_test.test_event.person
 
-                        addPlayer()
+                        const listItem = document.createElement('li');
+                        listItem.setAttribute('id', 'person_' + person.id_db);
+                        listItem.setAttribute('class', 'players-line');
+                        listItem.textContent = person.name;
+
+                        addPlayer({target: listItem})
 
                     })
 
                 })
                 .catch(error => console.error(error));
     }
+
+    handleSearch()
 
     // Add a click event listener to the button
     editCoachTest.addEventListener('click', function(event) {
@@ -142,7 +153,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         else {
 
-            const personsIds = persons.map(person => person.id_db);
+            const personsIds = players.map(player => player.id_db);
             const personsInput = document.createElement('input');
             personsInput.type = 'hidden';
             personsInput.name = 'persons';
