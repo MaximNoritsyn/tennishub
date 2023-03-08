@@ -37,7 +37,13 @@ document.addEventListener('DOMContentLoaded', function() {
             const clickedElement = event.target;
             const testEventIdId = clickedElement.id.split('_')[1];
 
-            const url = `/coachtesting/${testEventIdId}/${currentTask.id}/1`;
+            let url = `/coachtesting/${testEventIdId}/${currentTask.id}/1`;
+            if (currentTask.id === 'serve') {
+                url = `/coachtesting/${testEventIdId}/${currentTask.id}/1/1`;
+            }
+            else if (currentTask.id === 'mobility') {
+                url = `/coachtesting/${testEventIdId}/${currentTask.id}`;
+            }
             window.location.href = url;
         }
     }

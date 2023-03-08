@@ -70,29 +70,15 @@ async def new_tests(guid: str, request: Request = {}):
 
 @router.get("/{guid}/gsd/{stage_number}")
 async def get_test_event_stage_gsd(guid: str, stage_number: int, request: Request):
-    context = get_context(request)
     task = 'gsd'
 
-    test_event = TestEvent.from_db(guid)
-    context['test_event'] = test_event
-    context['gsd'] = True
+    context = itf.prepare_context_get_court(task, guid, stage_number, request)
 
     context['route_back'] = f'/coachtesting/{guid}/{task}/{stage_number - 1}'
     if stage_number == 1:
-        coach_test = CoachTest.get_by_event(test_event, context.get('user'))
+        coach_test = CoachTest.get_by_event(context['test_event'], context.get('user'))
         context['route_back'] = f'/coachtesting/{coach_test.group_test.id_db}/dashboard'
     context['route_submit'] = f'/coachtesting/{guid}/{task}/{stage_number}'
-    context['forbackhand'] = itf.get_detail_serving(stage_number, task)
-    context['number'] = stage_number
-
-    name_serving = itf.get_name_serving(task, stage_number)
-    serving_ball = ServingBall.from_db(guid, name_serving)
-
-    context['first_bounce'] = serving_ball.first_bounce
-    context['second_bounce'] = serving_ball.second_bounce
-
-    context['title_of_task'] = 'Оцінка глибини удару по землі - включає аспект потужності. ' \
-                               '(10 поперемінних ударів форхендом і бекхендом)'
 
     return templates.TemplateResponse("test_depth.html", context)
 
@@ -102,24 +88,163 @@ async def post_test_event_stage_gsd(guid: str,
                                     stage_number: int,
                                     first_bounce: str = Form(default=''),
                                     second_bounce: str = Form(default='')):
-    test_event = TestEvent.from_db(guid)
     task = 'gsd'
-    name_serving = itf.get_name_serving(task, stage_number)
-
-    setattr(test_event, name_serving, itf.get_point_depth(first_bounce, second_bounce))
-    test_event.update()
-    test_event.save()
-
-    serving_ball = ServingBall.from_db(test_event.id_db, name_serving)
-    serving_ball.first_bounce = first_bounce
-    serving_ball.second_bounce = second_bounce
-    serving_ball.save()
+    test_event = itf.save_results_serve_test(task, guid, stage_number, first_bounce, second_bounce)
 
     response = Response(content=f"stage {stage_number} submitted")
     next_route = f'/coachtesting/{guid}/{task}/{stage_number + 1}'
     if stage_number == 10:
-        next_route = f'/coachtesting/dashboard'
+        coach_test = CoachTest.get_by_event(test_event)
+        coach_test.finish_gsd = True
+        coach_test.save()
+        next_route = f'/coachtesting/{coach_test.group_test.id_db}/dashboard'
     response.headers["location"] = next_route
+    response.status_code = status.HTTP_302_FOUND
+    return response
+
+
+@router.get("/{guid}/vd/{stage_number}")
+async def get_test_event_stage_vd(guid: str, stage_number: int, request: Request):
+    task = 'vd'
+
+    context = itf.prepare_context_get_court(task, guid, stage_number, request)
+
+    context['route_back'] = f'/coachtesting/{guid}/{task}/{stage_number - 1}'
+    if stage_number == 1:
+        coach_test = CoachTest.get_by_event(context['test_event'], context.get('user'))
+        context['route_back'] = f'/coachtesting/{coach_test.group_test.id_db}/dashboard'
+    context['route_submit'] = f'/coachtesting/{guid}/{task}/{stage_number}'
+
+    return templates.TemplateResponse("test_depth.html", context)
+
+
+@router.post("/{guid}/vd/{stage_number}")
+async def post_test_event_stage_vd(guid: str,
+                                   stage_number: int,
+                                   first_bounce: str = Form(default=''),
+                                   second_bounce: str = Form(default='')):
+    task = 'vd'
+    test_event = itf.save_results_serve_test(task, guid, stage_number, first_bounce, second_bounce)
+
+    response = Response(content=f"stage {stage_number} submitted")
+    next_route = f'/coachtesting/{guid}/{task}/{stage_number + 1}'
+    if stage_number == 8:
+        coach_test = CoachTest.get_by_event(test_event)
+        coach_test.finish_vd = True
+        coach_test.save()
+        next_route = f'/coachtesting/{coach_test.group_test.id_db}/dashboard'
+    response.headers["location"] = next_route
+    response.status_code = status.HTTP_302_FOUND
+    return response
+
+
+@router.get("/{guid}/gsa/{stage_number}")
+async def get_test_event_stage_sda(guid: str, stage_number: int, request: Request):
+    task = 'gsa'
+
+    context = itf.prepare_context_get_court(task, guid, stage_number, request)
+
+    context['route_back'] = f'/coachtesting/{guid}/{task}/{stage_number - 1}'
+    if stage_number == 1:
+        coach_test = CoachTest.get_by_event(context['test_event'], context.get('user'))
+        context['route_back'] = f'/coachtesting/{coach_test.group_test.id_db}/dashboard'
+    context['route_submit'] = f'/coachtesting/{guid}/{task}/{stage_number}'
+
+    return templates.TemplateResponse("test_accuracy.html", context)
+
+
+@router.post("/{guid}/gsa/{stage_number}")
+async def post_test_event_stage_gsa(guid: str,
+                                    stage_number: int,
+                                    first_bounce: str = Form(default=''),
+                                    second_bounce: str = Form(default='')):
+    task = 'gsa'
+    test_event = itf.save_results_serve_test(task, guid, stage_number, first_bounce, second_bounce)
+
+    response = Response(content=f"stage {stage_number} submitted")
+    next_route = f'/coachtesting/{guid}/{task}/{stage_number + 1}'
+    if stage_number == 12:
+        coach_test = CoachTest.get_by_event(test_event)
+        coach_test.finish_gsa = True
+        coach_test.save()
+        next_route = f'/coachtesting/{coach_test.group_test.id_db}/dashboard'
+    response.headers["location"] = next_route
+    response.status_code = status.HTTP_302_FOUND
+    return response
+
+
+@router.get("/{guid}/serve/{stage_number}/{serve}")
+async def get_test_event_stage_serve(guid: str, stage_number: int, serve: int, request: Request):
+    task = 'serve'
+
+    context = itf.prepare_context_get_court(task, guid, stage_number, request, serve)
+
+    context['route_back'] = f'/coachtesting/{guid}/{task}/{stage_number - 1}/1'
+    if serve == 2:
+        context['route_back'] = f'/coachtesting/{guid}/{task}/{stage_number}/1'
+    elif stage_number == 1:
+        coach_test = CoachTest.get_by_event(context['test_event'], context.get('user'))
+        context['route_back'] = f'/coachtesting/{coach_test.group_test.id_db}/dashboard'
+    context['route_submit'] = f'/coachtesting/{guid}/{task}/{stage_number}/{serve}'
+
+    return templates.TemplateResponse("test_serve.html", context)
+
+
+@router.post("/{guid}/serve/{stage_number}/{serve}")
+async def post_test_event_stage_serve(guid: str,
+                                      stage_number: int,
+                                      serve: int,
+                                      first_bounce: str = Form(default=''),
+                                      second_bounce: str = Form(default='')):
+    task = 'serve'
+    test_event = itf.save_results_serve_test(task, guid, stage_number, first_bounce, second_bounce, serve)
+
+    point = itf.get_point_serve(first_bounce, second_bounce, stage_number, serve)
+
+    next_route = f'/coachtesting/{guid}/{task}/{stage_number + 1}/1'
+    if point == 0 and serve == 1:
+        next_route = f'/coachtesting/{guid}/{task}/{stage_number}/2'
+
+    response = Response(content=f"stage {stage_number} submitted")
+
+    if stage_number == 12:
+        coach_test = CoachTest.get_by_event(test_event)
+        coach_test.finish_serve = True
+        coach_test.save()
+        next_route = f'/coachtesting/{coach_test.group_test.id_db}/dashboard'
+    response.headers["location"] = next_route
+    response.status_code = status.HTTP_302_FOUND
+    return response
+
+
+@router.get("/{guid}/mobility")
+async def get_test_event_stage_mobility(guid: str, request: Request):
+    context = get_context(request)
+    task = 'mobility'
+
+    test_event = TestEvent.from_db(guid)
+    coach_test = CoachTest.get_by_event(test_event)
+
+    context['route_back'] = f'/coachtesting/{coach_test.group_test.id_db}/dashboard'
+    context['route_submit'] = f'/coachtesting/{guid}/{task}'
+
+    serving_ball = ServingBall.from_db(guid, 'value_mobility')
+
+    context['first_bounce'] = serving_ball.first_bounce
+
+    return templates.TemplateResponse("test_mobility.html", context)
+
+
+@router.post("/{guid}/mobility")
+async def post_test_event_stage_mobility(guid: str, first_bounce: str = Form(default='')):
+    test_event = itf.save_results_mobility(guid, first_bounce)
+
+    coach_test = CoachTest.get_by_event(test_event)
+    coach_test.finish_mobility = True
+    coach_test.save()
+
+    response = Response(content=f"mobility submitted")
+    response.headers["location"] = f'/coachtesting/{coach_test.group_test.id_db}/dashboard'
     response.status_code = status.HTTP_302_FOUND
     return response
 

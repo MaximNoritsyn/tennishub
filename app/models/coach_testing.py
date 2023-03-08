@@ -99,8 +99,8 @@ class CoachTest(CollectionDB):
 
     def to_dict(self) -> Dict[str, str]:
         d = {
-            "id_test": self.test_event.id_db,
-            "id_group_test": self.group_test.id_db,
+            "id_test": self.test_event.id_obj,
+            "id_group_test": self.group_test.id_obj,
             "finish_gsd": self.finish_gsd,
             "finish_vd": self.finish_vd,
             "finish_gsa": self.finish_gsa,

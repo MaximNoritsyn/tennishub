@@ -1,8 +1,10 @@
+from fastapi import Request
 from typing import Optional
 from bson.objectid import ObjectId
 
 from app.models.person import Person
 from app.models.mongobackend import MongoDBBackend, CollectionDB
+from app.models.cookie import get_context
 
 
 backend = MongoDBBackend()
@@ -458,3 +460,85 @@ def get_point_mobility(first_bounce: str):
     }
 
     return data[first_bounce]
+
+
+def prepare_context_get_court(task: str,
+                              guid: str,
+                              stage_number: int,
+                              request: Request,
+                              serve: int = 0):
+    context = get_context(request)
+
+    test_event = TestEvent.from_db(guid)
+    context['test_event'] = test_event
+    context['gsd'] = task == 'gsd'
+
+    context['forbackhand'] = get_detail_serving(stage_number, task, serve)
+    context['number'] = stage_number
+    context['serve'] = serve
+
+    name_serving = get_name_serving(task, stage_number)
+    serving_ball = ServingBall.from_db(guid, name_serving, serve)
+
+    context['first_bounce'] = serving_ball.first_bounce
+    context['second_bounce'] = serving_ball.second_bounce
+
+    if task == 'gsd':
+        context['title_of_task'] = 'Оцінка глибини удару по землі - включає аспект потужності. ' \
+                               '(10 поперемінних ударів форхендом і бекхендом)'
+    elif task == 'vd':
+        context['title_of_task'] = 'Оцінка глибини залпу - включає аспект сили. ' \
+                                   '(8 поперемінних ударів ударами форхендом і бекхендом)'
+    elif task == 'gsa':
+        context['title_of_task'] = 'Оцінка точності удару з землі - включає аспект сили. ' \
+                                   '(6 поперемінних ударів форхендом і бекхендом по лінії та ' \
+                                   'на кроскорті).'
+
+    return context
+
+
+def save_results_serve_test(task: str,
+                            guid: str,
+                            stage_number: int,
+                            first_bounce: str,
+                            second_bounce: str,
+                            serve: int = 0):
+    test_event = TestEvent.from_db(guid)
+    name_serving = get_name_serving(task, stage_number)
+
+    point = 0
+    if task == 'gsd' or task == 'vd':
+        point = get_point_depth(first_bounce, second_bounce)
+    elif task == 'gsa':
+        point = get_point_accuracy(first_bounce, second_bounce)
+    elif task == 'serve':
+        point = get_point_serve(first_bounce, second_bounce, stage_number, serve)
+    setattr(test_event, name_serving, point)
+    test_event.update()
+    test_event.save()
+
+    if point == 0 and serve == 1:
+        second_bounce = ''
+
+    serving_ball = ServingBall.from_db(test_event.id_db, name_serving, serve)
+    serving_ball.first_bounce = first_bounce
+    serving_ball.second_bounce = second_bounce
+    serving_ball.serve = serve
+    serving_ball.save()
+
+    return test_event
+
+
+def save_results_mobility(guid: str, first_bounce: str):
+    test_event = TestEvent.from_db(guid)
+
+    setattr(test_event, 'value_mobility', get_point_mobility(first_bounce))
+    setattr(test_event, 'time_mobility', int(first_bounce))
+    test_event.update()
+    test_event.save()
+
+    serving_ball = ServingBall.from_db(test_event.id_db, 'value_mobility')
+    serving_ball.first_bounce = first_bounce
+    serving_ball.save()
+
+    return test_event

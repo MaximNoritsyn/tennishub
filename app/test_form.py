@@ -45,27 +45,14 @@ async def post_new(request: Request,
 
 @router.get("/{guid}/gsd/{stage_number}")
 async def get_test_event_stage_gsd(guid: str, stage_number: int, request: Request):
-    context = get_context(request)
     task = 'gsd'
 
-    context['test_event'] = TestEvent.from_db(guid)
-    context['gsd'] = True
+    context = itf.prepare_context_get_court(task, guid, stage_number, request)
 
     context['route_back'] = f'/testing/{guid}/{task}/{stage_number - 1}'
     if stage_number == 1:
         context['route_back'] = f'/testing/new'
     context['route_submit'] = f'/testing/{guid}/{task}/{stage_number}'
-    context['forbackhand'] = itf.get_detail_serving(stage_number, task)
-    context['number'] = stage_number
-
-    name_serving = itf.get_name_serving(task, stage_number)
-    serving_ball = ServingBall.from_db(guid, name_serving)
-
-    context['first_bounce'] = serving_ball.first_bounce
-    context['second_bounce'] = serving_ball.second_bounce
-
-    context['title_of_task'] = 'Оцінка глибини удару по землі - включає аспект потужності. ' \
-                               '(10 поперемінних ударів форхендом і бекхендом)'
 
     return templates.TemplateResponse("test_depth.html", context)
 
@@ -75,18 +62,8 @@ async def post_test_event_stage_gsd(guid: str,
                                     stage_number: int,
                                     first_bounce: str = Form(default=''),
                                     second_bounce: str = Form(default='')):
-    test_event = TestEvent.from_db(guid)
     task = 'gsd'
-    name_serving = itf.get_name_serving(task, stage_number)
-
-    setattr(test_event, name_serving, itf.get_point_depth(first_bounce, second_bounce))
-    test_event.update()
-    test_event.save()
-
-    serving_ball = ServingBall.from_db(test_event.id_db, name_serving)
-    serving_ball.first_bounce = first_bounce
-    serving_ball.second_bounce = second_bounce
-    serving_ball.save()
+    itf.save_results_serve_test(task, guid, stage_number, first_bounce, second_bounce)
 
     response = Response(content=f"stage {stage_number} submitted")
     next_route = f'/testing/{guid}/{task}/{stage_number + 1}'
@@ -99,26 +76,14 @@ async def post_test_event_stage_gsd(guid: str,
 
 @router.get("/{guid}/vd/{stage_number}")
 async def get_test_event_stage_vd(guid: str, stage_number: int, request: Request):
-    context = get_context(request)
     task = 'vd'
 
-    context['test_event'] = TestEvent.from_db(guid)
+    context = itf.prepare_context_get_court(task, guid, stage_number, request)
 
     context['route_back'] = f'/testing/{guid}/{task}/{stage_number - 1}'
     if stage_number == 1:
         context['route_back'] = f'/testing/{guid}/gsd/10'
     context['route_submit'] = f'/testing/{guid}/{task}/{stage_number}'
-    context['forbackhand'] = itf.get_detail_serving(stage_number, task)
-    context['number'] = stage_number
-
-    name_serving = itf.get_name_serving(task, stage_number)
-    serving_ball = ServingBall.from_db(guid, name_serving)
-
-    context['first_bounce'] = serving_ball.first_bounce
-    context['second_bounce'] = serving_ball.second_bounce
-
-    context['title_of_task'] = 'Оцінка глибини залпу - включає аспект сили. ' \
-                               '(8 поперемінних ударів ударами форхендом і бекхендом)'
 
     return templates.TemplateResponse("test_depth.html", context)
 
@@ -128,18 +93,8 @@ async def post_test_event_stage_vd(guid: str,
                                    stage_number: int,
                                    first_bounce: str = Form(default=''),
                                    second_bounce: str = Form(default='')):
-    test_event = TestEvent.from_db(guid)
     task = 'vd'
-    name_serving = itf.get_name_serving(task, stage_number)
-
-    setattr(test_event, name_serving, itf.get_point_depth(first_bounce, second_bounce))
-    test_event.update()
-    test_event.save()
-
-    serving_ball = ServingBall.from_db(test_event.id_db, name_serving)
-    serving_ball.first_bounce = first_bounce
-    serving_ball.second_bounce = second_bounce
-    serving_ball.save()
+    itf.save_results_serve_test(task, guid, stage_number, first_bounce, second_bounce)
 
     response = Response(content=f"stage {stage_number} submitted")
     next_route = f'/testing/{guid}/{task}/{stage_number + 1}'
@@ -152,27 +107,14 @@ async def post_test_event_stage_vd(guid: str,
 
 @router.get("/{guid}/gsa/{stage_number}")
 async def get_test_event_stage_sda(guid: str, stage_number: int, request: Request):
-    context = get_context(request)
     task = 'gsa'
 
-    context['test_event'] = TestEvent.from_db(guid)
+    context = itf.prepare_context_get_court(task, guid, stage_number, request)
 
     context['route_back'] = f'/testing/{guid}/{task}/{stage_number - 1}'
     if stage_number == 1:
         context['route_back'] = f'/testing/{guid}/vd/8'
     context['route_submit'] = f'/testing/{guid}/{task}/{stage_number}'
-    context['forbackhand'] = itf.get_detail_serving(stage_number, task)
-    context['number'] = stage_number
-
-    name_serving = itf.get_name_serving(task, stage_number)
-    serving_ball = ServingBall.from_db(guid, name_serving)
-
-    context['first_bounce'] = serving_ball.first_bounce
-    context['second_bounce'] = serving_ball.second_bounce
-
-    context['title_of_task'] = 'Оцінка точності удару з землі - включає аспект сили. ' \
-                               '(6 поперемінних ударів форхендом і бекхендом по лінії та ' \
-                               'на кроскорті).'
 
     return templates.TemplateResponse("test_accuracy.html", context)
 
@@ -182,18 +124,8 @@ async def post_test_event_stage_gsa(guid: str,
                                     stage_number: int,
                                     first_bounce: str = Form(default=''),
                                     second_bounce: str = Form(default='')):
-    test_event = TestEvent.from_db(guid)
     task = 'gsa'
-    name_serving = itf.get_name_serving(task, stage_number)
-
-    setattr(test_event, name_serving, itf.get_point_accuracy(first_bounce, second_bounce))
-    test_event.update()
-    test_event.save()
-
-    serving_ball = ServingBall.from_db(test_event.id_db, name_serving)
-    serving_ball.first_bounce = first_bounce
-    serving_ball.second_bounce = second_bounce
-    serving_ball.save()
+    itf.save_results_serve_test(task, guid, stage_number, first_bounce, second_bounce)
 
     response = Response(content=f"stage {stage_number} submitted")
     next_route = f'/testing/{guid}/{task}/{stage_number + 1}'
@@ -206,10 +138,9 @@ async def post_test_event_stage_gsa(guid: str,
 
 @router.get("/{guid}/serve/{stage_number}/{serve}")
 async def get_test_event_stage_serve(guid: str, stage_number: int, serve: int, request: Request):
-    context = get_context(request)
     task = 'serve'
 
-    context['test_event'] = TestEvent.from_db(guid)
+    context = itf.prepare_context_get_court(task, guid, stage_number, request, serve)
 
     context['route_back'] = f'/testing/{guid}/{task}/{stage_number - 1}/1'
     if serve == 2:
@@ -217,15 +148,6 @@ async def get_test_event_stage_serve(guid: str, stage_number: int, serve: int, r
     elif stage_number == 1:
         context['route_back'] = f'/testing/{guid}/gsa/12'
     context['route_submit'] = f'/testing/{guid}/{task}/{stage_number}/{serve}'
-    context['forbackhand'] = itf.get_detail_serving(stage_number, task, serve)
-    context['number'] = stage_number
-    context['serve'] = serve
-
-    name_serving = itf.get_name_serving(task, stage_number)
-    serving_ball = ServingBall.from_db(guid, name_serving, serve)
-
-    context['first_bounce'] = serving_ball.first_bounce
-    context['second_bounce'] = serving_ball.second_bounce
 
     return templates.TemplateResponse("test_serve.html", context)
 
@@ -236,26 +158,14 @@ async def post_test_event_stage_serve(guid: str,
                                       serve: int,
                                       first_bounce: str = Form(default=''),
                                       second_bounce: str = Form(default='')):
-    test_event = TestEvent.from_db(guid)
     task = 'serve'
-    name_serving = itf.get_name_serving(task, stage_number)
+    itf.save_results_serve_test(task, guid, stage_number, first_bounce, second_bounce, serve)
 
     point = itf.get_point_serve(first_bounce, second_bounce, stage_number, serve)
-
-    setattr(test_event, name_serving, point)
-    test_event.update()
-    test_event.save()
 
     next_route = f'/testing/{guid}/{task}/{stage_number + 1}/1'
     if point == 0 and serve == 1:
         next_route = f'/testing/{guid}/{task}/{stage_number}/2'
-        second_bounce = ''
-
-    serving_ball = ServingBall.from_db(test_event.id_db, name_serving, serve)
-    serving_ball.first_bounce = first_bounce
-    serving_ball.second_bounce = second_bounce
-    serving_ball.serve = serve
-    serving_ball.save()
 
     response = Response(content=f"stage {stage_number} submitted")
 
@@ -283,17 +193,7 @@ async def get_test_event_stage_mobility(guid: str, request: Request):
 
 @router.post("/{guid}/mobility")
 async def post_test_event_stage_mobility(guid: str, first_bounce: str = Form(default='')):
-    test_event = TestEvent.from_db(guid)
-    name_serving = 'value_mobility'
-
-    setattr(test_event, name_serving, itf.get_point_mobility(first_bounce))
-    setattr(test_event, 'time_mobility', int(first_bounce))
-    test_event.update()
-    test_event.save()
-
-    serving_ball = ServingBall.from_db(test_event.id_db, 'value_mobility')
-    serving_ball.first_bounce = first_bounce
-    serving_ball.save()
+    itf.save_results_mobility(guid, first_bounce)
 
     response = Response(content=f"mobility submitted")
     response.headers["location"] = f'/testing/{guid}/results'
