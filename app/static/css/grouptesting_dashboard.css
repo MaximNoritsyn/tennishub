@@ -21,3 +21,17 @@
     margin: 5px;
     background-color: lightblue;
 }
+
+.tasks-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.task-box {
+  flex: 1 0 20%;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  background-color: #eee;
+  text-align: center;
+  padding: 10px;
+}

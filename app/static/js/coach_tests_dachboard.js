@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
 
     const searchInput = document.getElementById('search');
-    const playersListEl = document.getElementById('players-list');
+    const playersTableEl = document.getElementById('players-list');
     const personsListEl = document.getElementById('persons-list');
     const searchDiv = document.getElementById('search-div');
     const editCoachTest = document.getElementById('edit-coach-test');
@@ -55,13 +55,50 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const playerName = clickedElement.textContent;
 
-        const listItem = document.createElement('li');
-        listItem.setAttribute('id', 'event_' + eventId);
-        listItem.setAttribute('class', 'players-line');
-        listItem.textContent = playerName;
-        listItem.addEventListener('click', beginTaskTest)
+        // Create a new row
+        const newRow = document.createElement('tr');
+        newRow.setAttribute('id', 'event_' + eventId);
+        newRow.setAttribute('class', 'players-line');
+        newRow.addEventListener('click', beginTaskTest)
 
-        playersListEl.appendChild(listItem);
+        // Add cells to the row
+        const nameCell = document.createElement('td');
+        nameCell.textContent = playerName;
+        newRow.appendChild(nameCell);
+
+        const gsdCell = document.createElement('td');
+        if (clickedElement.hasAttribute('finish_gsd')) {
+            gsdCell.textContent = clickedElement.getAttribute('finish_gsd') === 'true' ? '✅' : '❌';
+        }
+        newRow.appendChild(gsdCell);
+
+        const vdCell = document.createElement('td');
+        if (clickedElement.hasAttribute('finish_vd')) {
+            vdCell.textContent = clickedElement.getAttribute('finish_vd') === 'true' ? '✅' : '❌';
+        }
+        newRow.appendChild(vdCell);
+
+        const gsaCell = document.createElement('td');
+        if (clickedElement.hasAttribute('finish_gsa')) {
+            gsaCell.textContent = clickedElement.getAttribute('finish_gsa') === 'true' ? '✅' : '❌';
+        }
+        newRow.appendChild(gsaCell);
+
+        const serveCell = document.createElement('td');
+        if (clickedElement.hasAttribute('finish_serve')) {
+            serveCell.textContent = clickedElement.getAttribute('finish_serve') === 'true' ? '✅' : '❌';
+        }
+        newRow.appendChild(serveCell);
+
+        const mobCell = document.createElement('td');
+        if (clickedElement.hasAttribute('finish_mobility')) {
+            mobCell.textContent = clickedElement.getAttribute('finish_mobility') === 'true' ? '✅' : '❌';
+        }
+        newRow.appendChild(mobCell);
+
+        // Add the row to the tbody
+        playersTableEl.appendChild(newRow);
+
 
         players.push(clickedElement.person_id);
         clickedElement.remove();
@@ -119,6 +156,11 @@ document.addEventListener('DOMContentLoaded', function() {
                         const listItem = document.createElement('li');
                         listItem.setAttribute('id', 'saved-event_' + coach_test.test_event.id_db);
                         listItem.setAttribute('person_id', coach_test.test_event.person.id_db);
+                        listItem.setAttribute('finish_gsd', coach_test.finish_gsd);
+                        listItem.setAttribute('finish_vd', coach_test.finish_vd);
+                        listItem.setAttribute('finish_gsa', coach_test.finish_gsa);
+                        listItem.setAttribute('finish_serve', coach_test.finish_serve);
+                        listItem.setAttribute('finish_mobility', coach_test.finish_mobility);
                         listItem.setAttribute('class', 'players-line');
                         listItem.textContent = coach_test.test_event.person.name;
 

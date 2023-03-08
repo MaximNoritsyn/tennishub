@@ -58,18 +58,29 @@
     </form>
     {% endif %}
 
-    <div id="gsd" class="task-box">Глибина з земли</div>
-	<div id="vd" class="task-box">Глибина з льоту</div>
-	<div id="gsa" class="task-box">Точність з землі</div>
-	<div id="serve" class="task-box">Подача</div>
-	<div id="mobility" class="task-box">Мобільність</div>
+    <div class="tasks-wrapper">
+        <div id="gsd" class="task-box">Глибина з земли</div>
+        <div id="vd" class="task-box">Глибина з льоту</div>
+        <div id="gsa" class="task-box">Точність з землі</div>
+        <div id="serve" class="task-box">Подача</div>
+        <div id="mobility" class="task-box">Мобільність</div>
+    </div>
 
     <label for="players-list">Список спортсменів:</label>
-    <ul id="players-list">
-        {% for person in persons %}
-        <li>{{ person.name }}</li>
-        {% endfor %}
-    </ul>
+    <table>
+        <thead>
+        <tr>
+            <th>Гравець</th>
+            <th>ГЗ</th>
+            <th>ГЛ</th>
+            <th>ТЗ</th>
+            <th>Под</th>
+            <th>Моб</th>
+        </tr>
+        </thead>
+        <tbody id="players-list">
+        </tbody>
+    </table>
 
     <input type="hidden" id="username" value="{{user.username}}">
     <input type="hidden" id="group-test-id" value="{{group_test_id}}">
