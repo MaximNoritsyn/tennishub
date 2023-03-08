@@ -260,3 +260,42 @@ class MongoDBBackend:
         ]
 
         return list(self.db[name_collection_class].aggregate(pipeline))
+
+    def get_coach_test_by_test_event(self, test_event_id: str, name_collection_class: str):
+        pipeline = [
+            {
+                "$match": {
+                    "id_test": ObjectId(test_event_id)
+                }
+            },
+            {
+                "$lookup": {
+                    "from": "grouptest",
+                    "localField": "id_group_test",
+                    "foreignField": "_id",
+                    "as": "grouptest"
+                }
+            },
+            {
+                "$unwind": "$grouptest"
+            },
+            {
+                "$project": {
+                    "id_db": "$_id",
+                    "finish_gsd": 1,
+                    "finish_vd": 1,
+                    "finish_gsa": 1,
+                    "finish_serve": 1,
+                    "finish_mobility": 1,
+                    "id_group_test": "$grouptest._id",
+                    "grouptest.coach_username": 1,
+                    "grouptest.date": 1,
+                    "grouptest.assessor": 1,
+                    "grouptest.venue": 1
+                }
+            }
+        ]
+
+        return list(self.db[name_collection_class].aggregate(pipeline))
+
+

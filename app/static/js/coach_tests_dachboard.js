@@ -19,7 +19,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     let currentTask = null;
     let players = [];
-    let persons = [];
 
     const taskBoxes = document.querySelectorAll('.task-box');
     taskBoxes.forEach((box) => {
@@ -36,31 +35,29 @@ document.addEventListener('DOMContentLoaded', function() {
         if (currentTask) {
 
             const clickedElement = event.target;
-            const playerId = clickedElement.id.split('_')[1];
+            const testEventIdId = clickedElement.id.split('_')[1];
 
-            console.log(currentTask.id)
-            console.log(playerId)
+            const url = `/coachtesting/${testEventIdId}/${currentTask.id}/1`;
+            window.location.href = url;
         }
     }
-
-    let li = null
 
     function addPlayer(event) {
 
         const clickedElement = event.target;
-        const playerId = clickedElement.id.split('_')[1];
+        const eventId = clickedElement.id.split('_')[1];
 
         const playerName = clickedElement.textContent;
 
         const listItem = document.createElement('li');
-        listItem.setAttribute('id', 'player_' + playerId);
+        listItem.setAttribute('id', 'event_' + eventId);
         listItem.setAttribute('class', 'players-line');
         listItem.textContent = playerName;
         listItem.addEventListener('click', beginTaskTest)
 
         playersListEl.appendChild(listItem);
 
-        players.push({id_db: playerId, name: playerName});
+        players.push(clickedElement.person_id);
         clickedElement.remove();
 
     }
@@ -74,6 +71,7 @@ document.addEventListener('DOMContentLoaded', function() {
           li = document.createElement('li');
           li.textContent = person.name;
           li.setAttribute('class', 'person-line');
+          li.setAttribute('person_id', person.id_db);
           li.setAttribute('id', 'person_' + person.id_db);
 
           li.addEventListener('click', addPlayer);
@@ -87,8 +85,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
     function removePersonsFromPlayers(arrayToRemove, array) {
-      const idsToRemove = array.map(l_player => l_player.id_db);
-      return arrayToRemove.filter(l_person => !idsToRemove.includes(l_person.id_db));
+      return arrayToRemove.filter(l_person => !array.includes(l_person));
     }
 
 
@@ -112,12 +109,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 .then(data => {
 
                     data.forEach(coach_test => {
-                        person = coach_test.test_event.person
 
                         const listItem = document.createElement('li');
-                        listItem.setAttribute('id', 'person_' + person.id_db);
+                        listItem.setAttribute('id', 'saved-event_' + coach_test.test_event.id_db);
+                        listItem.setAttribute('person_id', coach_test.test_event.person.id_db);
                         listItem.setAttribute('class', 'players-line');
-                        listItem.textContent = person.name;
+                        listItem.textContent = coach_test.test_event.person.name;
 
                         addPlayer({target: listItem})
 
@@ -153,12 +150,11 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         else {
 
-            const personsIds = players.map(player => player.id_db);
-            const personsInput = document.createElement('input');
-            personsInput.type = 'hidden';
-            personsInput.name = 'persons';
-            personsInput.value = personsIds.join(',');;
-            document.getElementById('form-coach-test').appendChild(personsInput);
+            const playersInput = document.createElement('input');
+            playersInput.type = 'hidden';
+            playersInput.name = 'players';
+            playersInput.value = players.join(',');;
+            document.getElementById('form-coach-test').appendChild(playersInput);
             document.getElementById('form-coach-test').submit();
 
         }

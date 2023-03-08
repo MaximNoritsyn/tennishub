@@ -99,8 +99,8 @@ class CoachTest(CollectionDB):
 
     def to_dict(self) -> Dict[str, str]:
         d = {
-            "id_test": self.test_event.id_obj,
-            "id_group_test": self.group_test.id_obj,
+            "id_test": self.test_event.id_db,
+            "id_group_test": self.group_test.id_db,
             "finish_gsd": self.finish_gsd,
             "finish_vd": self.finish_vd,
             "finish_gsa": self.finish_gsa,
@@ -133,6 +133,28 @@ class CoachTest(CollectionDB):
             coach_test = cls(test_event, group_test)
             coach_test.save()
             return coach_test
+
+    @classmethod
+    def get_by_event(cls, test_event: TestEvent, user: User = None):
+        list_res = backend.get_coach_test_by_test_event(test_event.id_db, CoachTest.name_collection_class())
+        if len(list_res):
+            res = list_res[0]
+            if user is None:
+                user, p = User.from_db(res.get('coach_username'))
+            group_test = GroupTest(user, res.get('assessor'),
+                                   res.get('date'),
+                                   res.get('venue'),
+                                   id_db=res.get('id_group_test'))
+
+            return CoachTest(test_event, group_test,
+                             id_db=str(res.get('_id')),
+                             finish_gsd=res.get('finish_gsd'),
+                             finish_vd=res.get('finish_vd'),
+                             finish_gsa=res.get('finish_gsa'),
+                             finish_serve=res.get('finish_serve'),
+                             finish_mobility=res.get('finish_mobility'))
+
+        return None
 
 
 def get_group_tests_by_coach_username(coach: User):
