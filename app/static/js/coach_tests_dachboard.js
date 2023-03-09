@@ -35,13 +35,13 @@ document.addEventListener('DOMContentLoaded', function() {
         if (currentTask) {
 
             const clickedElement = event.target;
-            const testEventIdId = clickedElement.id.split('_')[1];
+            const testEventIdId = clickedElement.parentNode.id.split('_')[1];
 
             let url = `/coachtesting/${testEventIdId}/${currentTask.id}/1`;
             if (currentTask.id === 'serve') {
                 url = `/coachtesting/${testEventIdId}/${currentTask.id}/1/1`;
             }
-            else if (currentTask.id === 'mobility') {
+            else if (currentTask.id === 'mobility' || currentTask.id === 'results') {
                 url = `/coachtesting/${testEventIdId}/${currentTask.id}`;
             }
             window.location.href = url;
@@ -100,7 +100,7 @@ document.addEventListener('DOMContentLoaded', function() {
         playersTableEl.appendChild(newRow);
 
 
-        players.push(clickedElement.person_id);
+        players.push(eventId);
         clickedElement.remove();
 
     }

@@ -3,6 +3,11 @@
     padding: 10px;
     margin: 5px;
     cursor: pointer;
+    text-align: center;
+    padding: 10px;
+    flex: 1 0 20%;
+    margin-right: 10px;
+    margin-bottom: 10px;
 }
 
 .current-task-box {
@@ -25,13 +30,4 @@
 .tasks-wrapper {
   display: flex;
   flex-wrap: wrap;
-}
-
-.task-box {
-  flex: 1 0 20%;
-  margin-right: 10px;
-  margin-bottom: 10px;
-  background-color: #eee;
-  text-align: center;
-  padding: 10px;
 }

@@ -249,6 +249,18 @@ async def post_test_event_stage_mobility(guid: str, first_bounce: str = Form(def
     return response
 
 
+@router.get("/{guid}/results")
+async def get_test_event_stage_results(guid: str, request: Request):
+    test_event = TestEvent.from_db(guid)
+    coach_test = CoachTest.get_by_event(test_event)
+
+    context = get_context(request)
+
+    context['test_event'] = test_event
+    context['route_back'] = f'/coachtesting/{coach_test.group_test.id_db}/dashboard'
+
+    return templates.TemplateResponse("test_results.html", context)
+
 def edit_group_test(group_test: GroupTest,
                     assessor: str = Form(),
                     v_date: str = Form(),
