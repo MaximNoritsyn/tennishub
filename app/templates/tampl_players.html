@@ -1,8 +1,15 @@
-<div><h1>Гравці</h1>
-    <a href="/players/new">Створити нового</a>
+<div>
+    <h3>Гравці</h3>
+    <a href="/players/new">
+        <button>Створити нового</button>
+    </a>
 </div>
-<ul>
+<ul class="list-items">
     {% for player in players %}
-    <li><a href="players/{{player.id_db}}">{{ player.name }}</a></li>
+    <li><a href="players/{{player.id_db}}">
+        <button class="item">
+            {{ player.name }}
+        </button>
+    </a></li>
     {% endfor %}
 </ul>

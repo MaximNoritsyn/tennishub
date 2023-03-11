@@ -4,11 +4,30 @@
 
 {% block content %}
 <div><h3>Список групових тестів</h3>
-    <a href="/coachtesting/new">Створити новий тест</a>
+    <a href="/coachtesting/new">
+        <button>
+            Створити новий тест
+        </button>
+    </a>
 </div>
-<ul>
+<table class="list-items">
+    <thead>
+    <tr class="item">
+        <th>Дата</th>
+        <th>Місце</th>
+    </tr>
+    </thead>
+    <tbody>
     {% for test in group_tests %}
-    <li><a href="/coachtesting/{{test.id_db}}/dashboard">{{ test.date }} (місце - {{ test.venue }})</a></li>
+    <tr class="item" onclick="window.location='/coachtesting/{{test.id_db}}/dashboard';">
+        <td>
+            {{ test.date }}
+        </td>
+        <td>
+            {{ test.venue }}
+        </td>
+    </tr>
     {% endfor %}
-</ul>
+    </tbody>
+</table>
 {% endblock %}

@@ -1,8 +1,31 @@
 <div><h3>Всі пройдені тести</h3>
-    <a href="/testing/new/{{player_guid}}">Розпочати тест</a>
+    <a href="/testing/new/{{player_guid}}">
+        <button>
+            Розпочати тест
+        </button>
+    </a>
 </div>
-<ul>
+<table class="list-items">
+    <thead>
+    <tr class="item">
+        <th>Дата</th>
+        <th>Локація</th>
+        <th>МТН</th>
+    </tr>
+    </thead>
+    <tbody>
     {% for event in events %}
-    <li><a href="/testing/{{event.id_db}}/results">{{ event.date }} (МТН {{ event.itn }})</a></li>
+    <tr class="item" onclick="window.location='/testing/{{event.id_db}}/results';">
+        <td>
+            {{ event.date }}
+        </td>
+        <td>
+            {{ event.venue }}
+        </td>
+        <td>
+            {{ event.venue }}
+        </td>
+    </tr>
     {% endfor %}
-</ul>
+    </tbody>
+</table>

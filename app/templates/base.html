@@ -1,44 +1,77 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>{% block title %}My Website{% endblock %}</title>
+<head>
+    <title>{% block title %}TennisHub{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ url_for('static', path='/css/base.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', path='/css/results.css') }}">
     {% block styles %}
-      <style>
+    <style>
         /* your styles here */
-      </style>
+    </style>
     {% endblock %}
-  </head>
-  <body>
-    <header>
-      <nav>
+</head>
+<body>
+<header>
+    <nav class="navigation desktop-only">
         <ul>
-          <li><a href="/">Головна</a></li>
-          {% if logged %}
-          {% if user.is_coach %}
-          <li><a href="/coachtesting">Групові тестування</a></li>
-          {% endif %}
-          <li class="dropdown">
-            <a class="dropbtn">{{ name }}</a>
-            <div class="dropdown-content">
-              <form action="/logout" method="post">
-                <input type="submit" value="Вийти">
-              </form>
-            </div>
-          </li>
-          {% else %}
-          <li><a href="/signup">Реєстрація</a></li>
-          <li><a href="/login">Увійти</a></li>
-          {% endif %}
+            <li><a href="/">Головна</a></li>
+            {% if logged %}
+            {% if logged and user.is_coach %}
+            <li><a href="/coachtesting">Групові тестування</a></li>
+            {% endif %}
         </ul>
-      </nav>
-    </header>
-    <main>
-      {% block content %}{% endblock %}
-    </main>
-    <footer>
-      <h6>Робоча назва - ТенісХаб. Працюємо над автоматизацією внесення результатів тестування міжнародного тенісного номеру</h6>
-    </footer>
-  </body>
+        <ul class="user-nav">
+            <li class="dropdown">
+                <a class="dropbtn">{{ name }}</a>
+                <div class="dropdown-content">
+                    <form class="button-form" action="/logout" method="post">
+                        <input type="submit" value="Вийти">
+                    </form>
+                </div>
+            </li>
+            {% endif %}
+        </ul>
+        {% if logged == False %}
+        <ul class="user-nav">
+            <li><a href="/signup">Реєстрація</a></li>
+            <li><a href="/login">Увійти</a></li>
+        </ul>
+        {% endif %}
+    </nav>
+    <nav class="navigation mobile-only">
+        <ul>
+            <li><a href="/">Головна</a></li>
+            {% if logged %}
+            {% if logged and user.is_coach %}
+            <li><a href="/coachtesting">Групові тестування</a></li>
+            {% endif %}
+        </ul>
+        <ul class="user-nav">
+            <li class="dropdown">
+                <a class="dropbtn">{{ name }}</a>
+                <div class="dropdown-content">
+                    <form class="button-form" action="/logout" method="post">
+                        <input type="submit" value="Вийти">
+                    </form>
+                </div>
+            </li>
+            {% endif %}
+        </ul>
+        {% if logged == False %}
+        <ul class="user-nav">
+            <li><a href="/signup">Реєстрація</a></li>
+            <li><a href="/login">Увійти</a></li>
+        </ul>
+        {% endif %}
+    </nav>
+</header>
+<main>
+    {% block content %}{% endblock %}
+</main>
+<footer>
+    <h6>Робоча назва - ТенісХаб. Працюємо над автоматизацією внесення результатів тестування міжнародного тенісного
+        номеру</h6>
+</footer>
+</body>
 </html>
