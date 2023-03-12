@@ -1,32 +1,26 @@
 document.addEventListener('DOMContentLoaded', () => {
 
   function Logout(event) {
-    event.preventDefault();
+      event.preventDefault();
 
-    const xhr = new XMLHttpRequest();
-    xhr.open('POST', '/logout');
+      console.log('test1')
 
-    xhr.noninterchangeable = function() {
-      if (xhr.readyState === XMLHttpRequest.DONE) {
-        if (xhr.status === 200) {
-          console.log(xhr.responseText);
-          location.reload();
-          window.location.href = '/login';
-        } else {
-          console.error('Error:', xhr.status);
-        }
-      }
-    };
+      fetch('/logout', {method: "POST"})
+      .then(() => {
+        window.location.href = '/';
+        console.log('test2')
+      });
+    }
 
-    xhr.send();
-  };
 
   elSignOutDesktop = document.getElementById('sign-out-desktop');
+  console.log(elSignOutDesktop)
   if (elSignOutDesktop) {
      elSignOutDesktop.addEventListener('click', Logout);
   }
 
   elSignOutMobility = document.getElementById('sign-out-mobility');
+  console.log(elSignOutMobility)
   if (elSignOutMobility) {
      elSignOutMobility.addEventListener('click', Logout)
   }
