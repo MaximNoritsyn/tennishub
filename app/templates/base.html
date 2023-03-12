@@ -23,11 +23,9 @@
         </ul>
         <ul class="user-nav">
             <li class="dropdown">
-                <a class="dropbtn">{{ name }}</a>
-                <div class="dropdown-content">
-                    <form class="button-form" action="/logout" method="post">
-                        <input type="submit" value="Вийти">
-                    </form>
+                <button class="drop-btn">{{ name }}</button>
+                <div class="dropdown-menu">
+                    <div id="sign-out-desktop" class="button-form">Вийти</div>
                 </div>
             </li>
             {% endif %}
@@ -51,7 +49,7 @@
             <li class="dropdown">
                 <button class="drop-btn"><ion-icon name="person-sharp"></ion-icon></button>
                 <div class="dropdown-menu">
-                    <div id="sign-out" class="button-form">Вийти</div>
+                    <div id="sign-out-mobility" class="button-form">Вийти</div>
                 </div>
             </li>
             {% endif %}
@@ -74,6 +72,7 @@
 
 <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
 <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+<script src="{{ url_for('static', path='/js/base.js') }}"></script>
 
 </body>
 </html>

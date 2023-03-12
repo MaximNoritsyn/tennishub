@@ -34,6 +34,7 @@ app.middleware("http")(add_user_to_request)
 def logout():
     response = RedirectResponse(url="/", status_code=status.HTTP_303_SEE_OTHER)
     response.delete_cookie(key="access_token")
+    response.headers["refresh"] = f"0; url={'/'}"
     return response
 
 
