@@ -5,9 +5,9 @@
         </button>
     </a>
 </div>
-<table class="list-items">
+<table class="content-table">
     <thead>
-    <tr class="item">
+    <tr>
         <th>Дата</th>
         <th>Локація</th>
         <th>МТН</th>
@@ -15,7 +15,7 @@
     </thead>
     <tbody>
     {% for event in events %}
-    <tr class="item" onclick="window.location='/testing/{{event.id_db}}/results';">
+    <tr onclick="window.location='/testing/{{event.id_db}}/results';">
         <td>
             {{ event.date }}
         </td>

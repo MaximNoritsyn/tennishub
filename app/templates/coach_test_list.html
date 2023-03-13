@@ -10,16 +10,16 @@
         </button>
     </a>
 </div>
-<table class="list-items">
+<table class="content-table">
     <thead>
-    <tr class="item">
+    <tr>
         <th>Дата</th>
         <th>Місце</th>
     </tr>
     </thead>
     <tbody>
     {% for test in group_tests %}
-    <tr class="item" onclick="window.location='/coachtesting/{{test.id_db}}/dashboard';">
+    <tr onclick="window.location='/coachtesting/{{test.id_db}}/dashboard';">
         <td>
             {{ test.date }}
         </td>
