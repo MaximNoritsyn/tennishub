@@ -100,7 +100,7 @@ document.addEventListener('DOMContentLoaded', function() {
         playersTableEl.appendChild(newRow);
 
 
-        players.push(eventId);
+        players.push(clickedElement.getAttribute('person_id'));
         clickedElement.remove();
 
     }
