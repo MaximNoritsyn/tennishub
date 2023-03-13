@@ -58,7 +58,6 @@ document.addEventListener('DOMContentLoaded', function() {
         // Create a new row
         const newRow = document.createElement('tr');
         newRow.setAttribute('id', 'event_' + eventId);
-        newRow.setAttribute('class', 'players-line');
         newRow.addEventListener('click', beginTaskTest)
 
         // Add cells to the row
@@ -113,7 +112,6 @@ document.addEventListener('DOMContentLoaded', function() {
         removePersonsFromPlayers(personsFromDb, players).forEach(person => {
           li = document.createElement('li');
           li.textContent = person.name;
-          li.setAttribute('class', 'person-line');
           li.setAttribute('person_id', person.id_db);
           li.setAttribute('id', 'person_' + person.id_db);
 
@@ -128,7 +126,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
     function removePersonsFromPlayers(arrayToRemove, array) {
-      return arrayToRemove.filter(l_person => !array.includes(l_person));
+        console.log(array)
+        console.log(arrayToRemove)
+      return arrayToRemove.filter(l_person => !array.includes(l_person.id_db));
     }
 
 

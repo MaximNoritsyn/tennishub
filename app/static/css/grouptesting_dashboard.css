@@ -9,6 +9,7 @@
     flex: 1 0 20%;
     margin-right: 10px;
     margin-bottom: 10px;
+    border-radius: 10px;
 }
 
 .current-task-box {
@@ -16,12 +17,12 @@
     color: var(--fclr10);
 }
 
-.players-line {
-    cursor: pointer;
+.search-block li {
+    display: flex;
     margin: 5px;
 }
 
-.person-line {
+.search-block li {
     cursor: pointer;
     margin: 5px;
 }

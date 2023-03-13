@@ -293,6 +293,7 @@ input[readonly] {
   color: var(--fclr30);
   text-align: left;
   font-weight: bold;
+  cursor: default;
 }
 
 .content-table th,
@@ -304,10 +305,10 @@ input[readonly] {
   border-bottom: 3px solid var(--clr30);
 }
 
-.content-table a:hover,
 .content-table tbody tr:hover {
   background: var(--clr10);
-  color: var(--fclr10)
+  color: var(--fclr10);
+  cursor: pointer;
 }
 
 .content-table a {

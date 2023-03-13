@@ -32,11 +32,17 @@
             <input type="text" id="venue" name="venue" value="{{ venue }}">
         </div>
 
-        <dev id="search-div">
-            <label for="search">Пошук спортсмена:</label>
-            <input type="text" id="search" name="search" placeholder="Введіть Ім'я"/>
-            <label for="persons-list">Доступні спортсмени:</label>
-            <ul id="persons-list"></ul>
+        <dev id="search-div" class="search-block">
+            <div>
+                <label for="search">
+                    <ion-icon size="large" name="search-circle-sharp"></ion-icon>
+                </label>
+                <input type="text" id="search" name="search" placeholder="Введіть Ім'я"/>
+            </div>
+            <div>
+                <label for="persons-list">Доступні спортсмени:</label>
+                <ul id="persons-list"></ul>
+            </div>
         </dev>
 
         <button id="edit-coach-test">Зберегти</button>
@@ -59,11 +65,17 @@
             <input type="text" id="venue" readonly name="venue" value="{{ group_test.venue }}">
         </div>
 
-        <dev id="search-div" style="display: none;">
-            <label for="search">Пошук спортсмена:</label>
-            <input type="text" id="search" name="search" placeholder="Введіть Ім'я"/>
-            <label for="persons-list">Доступні спортсмени:</label>
-            <ul id="persons-list"></ul>
+        <dev id="search-div" class="search-block" style="display: none;">
+            <div>
+                <label for="search">
+                    <ion-icon size="large" name="search-circle-sharp"></ion-icon>
+                </label>
+                <input type="text" id="search" name="search" placeholder="Введіть Ім'я"/>
+            </div>
+            <div>
+                <label for="persons-list">Доступні спортсмени:</label>
+                <ul id="persons-list"></ul>
+            </div>
         </dev>
 
         <button id="edit-coach-test">Редагувати</button>
