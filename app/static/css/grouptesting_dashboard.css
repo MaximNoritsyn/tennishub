@@ -10,6 +10,11 @@
     margin-right: 10px;
     margin-bottom: 10px;
     border-radius: 10px;
+  border: 2px solid var(--clr30)
+}
+
+.task-box:hover {
+  border: 2px solid var(--clr10)
 }
 
 .current-task-box {
@@ -17,9 +22,24 @@
     color: var(--fclr10);
 }
 
+.search-block {
+  border: 2px solid var(--clr10);
+  border-radius: 10px;
+  margin: 10px;
+  padding: 10px;
+}
+
 .search-block li {
-    display: flex;
-    margin: 5px;
+  display: flex;
+  margin: 5px;
+  border: 1px solid var(--clr10);
+  border-radius: 5px;
+  padding: 5px;
+}
+
+.search-block li:hover {
+  background: var(--clr10);
+  color: var(--fclr10);
 }
 
 .search-block li {
