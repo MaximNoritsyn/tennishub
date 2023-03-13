@@ -192,6 +192,11 @@ document.addEventListener('DOMContentLoaded', function() {
             dateInput.removeAttribute('readonly');
             venueInput.removeAttribute('readonly');
 
+            const formCoachTest = document.getElementById('form-coach-test');
+            if (formCoachTest) {
+                formCoachTest.classList.add('edit-form');
+            }
+
             // Change the submit button text
             editCoachTest.innerText = 'Зберегти';
 

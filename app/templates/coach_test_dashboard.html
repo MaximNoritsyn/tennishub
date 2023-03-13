@@ -15,16 +15,22 @@
 <div>
 
     {% if edit %}
-    <form method="post" id="form-coach-test">
+    <form method="post" id="form-coach-test" class="edit-form">
 
-        <label for="assessor">Інспектор:</label>
-        <input type="text" id="assessor" name="assessor" value="{{assessor}}"><br><br>
+        <div>
+            <label for="assessor">Інспектор:</label>
+            <input type="text" id="assessor" name="assessor" value="{{assessor}}">
+        </div>
 
-        <label for="v_date">Дата:</label>
-        <input type="date" id="v_date" name="v_date" value="{{ today }}"><br><br>
+        <div>
+            <label for="v_date">Дата:</label>
+            <input type="date" id="v_date" name="v_date" value="{{ today }}">
+        </div>
 
-        <label for="venue">Місце проведення:</label>
-        <input type="text" id="venue" name="venue" value="{{ venue }}"><br><br>
+        <div>
+            <label for="venue">Місце проведення:</label>
+            <input type="text" id="venue" name="venue" value="{{ venue }}">
+        </div>
 
         <dev id="search-div">
             <label for="search">Пошук спортсмена:</label>
@@ -38,14 +44,20 @@
     {% else %}
     <form method="post" id="form-coach-test" action="/coachtesting/{{group_test.id_db}}/edit">
 
-        <label for="assessor">Інспектор:</label>
-        <input type="text" id="assessor" readonly name="assessor" value="{{group_test.assessor}}"><br><br>
+        <div>
+            <label for="assessor">Інспектор:</label>
+            <input type="text" id="assessor" readonly name="assessor" value="{{group_test.assessor}}">
+        </div>
 
-        <label for="v_date">Дата:</label>
-        <input type="date" id="v_date" readonly name="v_date" value="{{ group_test.date }}"><br><br>
+        <div>
+            <label for="v_date">Дата:</label>
+            <input type="date" id="v_date" readonly name="v_date" value="{{ group_test.date }}">
+        </div>
 
-        <label for="venue">Місце проведення:</label>
-        <input type="text" id="venue" readonly name="venue" value="{{ group_test.venue }}"><br><br>
+        <div>
+            <label for="venue">Місце проведення:</label>
+            <input type="text" id="venue" readonly name="venue" value="{{ group_test.venue }}">
+        </div>
 
         <dev id="search-div" style="display: none;">
             <label for="search">Пошук спортсмена:</label>

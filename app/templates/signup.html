@@ -3,30 +3,45 @@
 {% block title %}TH Зареєструватися{% endblock %}
 
 {% block content %}
-  <h1>Sign up</h1>
-  <form method="POST">
+<h1>Sign up</h1>
+<form method="POST" class="edit-form">
 
-    <label for="name">Ім'я</label>
-    <input type="text" name="name" id="name" required>
+    <div>
+        <label for="name">Ім'я</label>
+        <input type="text" name="name" id="name" required>
+    </div>
 
-    <label for="date_b">Дата народження</label>
-    <input type="date" name="date_b" id="date_b">
+    <div>
+        <label for="date_b">Дата народження</label>
+        <input type="date" name="date_b" id="date_b">
+    </div>
 
-    <label for="sex">Стать</label>
-    <select name="sex" id="sex">
-      <option value="F">Жіноча</option>
-      <option value="M">Чоловіча</option>
-    </select>
+    <div>
+        <label for="sex">Стать</label>
+        <div class="point-boxes" id="sex">
+            <input type="radio" id="female" name="sex" value="F" checked>
+            <label for="female" class="point-box">Жіноча</label>
+            <br>
+            <input type="radio" id="male" name="sex" value="M">
+            <label for="male" class="point-box">Чоловіча</label>
+        </div>
+    </div>
 
-    <label for="email">Email</label>
-    <input type="email" name="email" id="email" required>
+    <div>
+        <label for="email">Email</label>
+        <input type="email" name="email" id="email" required>
+    </div>
 
-    <label for="username">Username</label>
-    <input type="text" name="username" id="username" required>
+    <div>
+        <label for="username">Username</label>
+        <input type="text" name="username" id="username" required>
+    </div>
 
-    <label for="password">Password</label>
-    <input type="password" name="password" id="password" required>
+    <div>
+        <label for="password">Password</label>
+        <input type="password" name="password" id="password" required>
+    </div>
 
     <button type="submit">Зареєструватися</button>
-  </form>
+</form>
 {% endblock %}

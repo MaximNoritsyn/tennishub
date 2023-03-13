@@ -261,6 +261,7 @@ async def get_test_event_stage_results(guid: str, request: Request):
 
     return templates.TemplateResponse("test_results.html", context)
 
+
 def edit_group_test(group_test: GroupTest,
                     assessor: str = Form(),
                     v_date: str = Form(),

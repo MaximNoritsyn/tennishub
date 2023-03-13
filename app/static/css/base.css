@@ -7,9 +7,9 @@
 
 :root
 {
-  --clr60: #f4f3f3; 
-  --clr30: #303c39; 
-  --clr10: #1d1e20; 
+  --clr60: #f7bf92; 
+  --clr30: #195d40; 
+  --clr10: #ff8901; 
   --fclr60: #333333;
   --fclr30: #f4f8f6;
   --fclr10: #f2f0f1;
@@ -124,14 +124,17 @@ form {
   margin: 20px;
   padding: 20px;
   border-radius: 10px;
-  border: 1px solid var(--fclr60);
-  background: var(--clr30);
-  color: var(--fclr30);
+  border: 1px solid var(--clr10);
 }
 
 form div {
   display: flex;
   align-items: center;
+}
+
+.edit-form {
+  background: var(--clr30);
+  color: var(--fclr30);
 }
 
 .button-form {
@@ -196,6 +199,7 @@ label {
   font-weight: bold;
 }
 
+input[type="email"],
 input[type="text"],
 input[type="date"] {
   width: 200px;
@@ -229,7 +233,8 @@ input[type="submit"]:hover {
 }
 
 input[readonly] {
-  background-color: #f2f2f2;
+  background-color: var(--clr60);
+  color: var(--fclr60);
 }
 
 .training-route-container {
