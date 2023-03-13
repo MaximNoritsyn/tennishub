@@ -5,18 +5,27 @@
 {% block content %}
 <form method="POST">
 
-    <label for="name">Ім'я</label>
-    <input type="text" name="name" id="name" required>
+    <div>
+        <label for="name">Ім'я</label>
+        <input type="text" name="name" id="name" required>
+    </div>
 
-    <label for="date_b">Дата народження</label>
-    <input type="date" name="date_b" id="date_b">
+    <div>
+        <label for="date_b">Дата народження</label>
+        <input type="date" name="date_b" id="date_b">
+    </div>
 
-    <label for="sex">Стать</label>
-    <select name="sex" id="sex">
-      <option value="F">Жіноча</option>
-      <option value="M">Чоловіча</option>
-    </select>
+    <div>
+        <label for="sex">Стать</label>
+        <div class="point-boxes" id="sex">
+            <input type="radio" id="female" name="sex" value="F" checked>
+            <label for="female" class="point-box">Жіноча</label>
+            <br>
+            <input type="radio" id="male" name="sex" value="M">
+            <label for="male" class="point-box">Чоловіча</label>
+        </div>
+    </div>
 
     <button type="submit">Створити</button>
-  </form>
+</form>
 {% endblock %}
