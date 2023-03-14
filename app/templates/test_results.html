@@ -15,18 +15,9 @@
     <div>
         <h3>Міжнародний тенісний номер - оцінка на корті</h3>
     </div>
-    <table>
-        <thead>
-        <tr>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th></th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <td colspan="4" style="border: 2px solid black; padding: 5px">
+    <div class="full-table-result">
+        <div class="row-result">
+            <div class="column-result" style="border: 2px solid black; padding: 5px">
                 <div>
                     <label for="name">Ім'я:</label>
                     <input id="name" type="text" readonly value="{{test_event.person.name}}">
@@ -43,250 +34,243 @@
                     <label for="vanue">Місце проведення:</label>
                     <input id="vanue" type="text" readonly value="{{test_event.venue}}">
                 </div>
-            </td>
-        </tr>
-        <tr>
-            <td>{% include "res_gsd.html" %}</td>
-            <td>{% include "res_vd.html" %}</td>
-            <td rowspan="2">{% include "res_accuracy.html" %}</td>
-            <td rowspan="2">{% include "res_serve.html" %}</td>
-        </tr>
-        <tr>
-            <td colspan="2">
-                <div style="display: inline-flex;">
-                    <h3 style="align-self: end; margin: auto;">Таблиця мобільності</h3>
-                    <table style="height: 10px; align-self: end;">
+            </div>
+        </div>
+        <div class="row-result">
+            <div class="column-result">{% include "res_gsd.html" %}</div>
+            <div class="column-result">{% include "res_vd.html" %}</div>
+            <div class="column-result">{% include "res_accuracy.html" %}</div>
+            <div class="column-result">{% include "res_serve.html" %}</div>
+        </div>
+        <div class="row-result">
+            <div class="column-result" style="display: inline-flex;">
+                <h3 style="align-self: end; margin: auto;">Таблиця мобільності</h3>
+                <table style="height: 10px; align-self: end;">
+                    <tbody>
+                    <tr>
+                        <td class="table_mobility_row1" style="width: 110px;">Час в секундах</td>
+                        <td class="table_mobility_row2" style="width: 110px;">Бали</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row-result">
+            <div class="column-result">{% include "res_mobility.html" %}</div>
+        </div>
+        <div class="row-result">
+            <div class="table_mobility column-result" style="margin: 0px">
+                <div class="itn-block">
+                    <table>
                         <tbody>
                         <tr>
-                            <td class="table_mobility_row1" style="width: 110px;">Час в секундах</td>
-                            <td class="table_mobility_row2" style="width: 110px;">Бали</td>
+                            <th class="itn-res" style="background-color: #ccecff;">Бали Ж</th>
+                        </tr>
+                        <tr>
+                            <td class="itn-res brown-back">Бали М</td>
+                        </tr>
+                        <tr>
+                            <td class="itn-res brown-back">МТН</td>
                         </tr>
                         </tbody>
                     </table>
                 </div>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="4">{% include "res_mobility.html" %}</td>
-        </tr>
-        <tr>
-            <td colspan="4">
-                <div class="table_mobility">
-                    <div class="itn-block">
-                        <table>
-                            <tbody>
-                            <tr>
-                                <th class="itn-res" style="background-color: #ccecff;">Бали Ж</th>
-                            </tr>
-                            <tr>
-                                <td class="itn-res brown-back">Бали М</td>
-                            </tr>
-                            <tr>
-                                <td class="itn-res brown-back">МТН</td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="itn-block" id="itn_10">
-                        <table>
-                            <tbody>
-                            <tr>
-                                <th class="itn-res">57-79</th>
-                            </tr>
-                            <tr>
-                                <td class="itn-res">75-104</td>
-                            </tr>
-                            <tr>
-                                <td class="itn-res brown-back">МТН 10</td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="itn-block" id="itn_9">
-                        <table>
-                            <tbody>
-                            <tr>
-                                <th class="itn-res">80-108</th>
-                            </tr>
-                            <tr>
-                                <td class="itn-res">105-139</td>
-                            </tr>
-                            <tr>
-                                <td class="itn-res brown-back">МТН 9</td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="itn-block" id="itn_8">
-                        <table>
-                            <tbody>
-                            <tr>
-                                <th class="itn-res">109-140</th>
-                            </tr>
-                            <tr>
-                                <td class="itn-res">140-175</td>
-                            </tr>
-                            <tr>
-                                <td class="itn-res brown-back">МТН 8</td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="itn-block" id="itn_7">
-                        <table>
-                            <tbody>
-                            <tr>
-                                <th class="itn-res">141-171</th>
-                            </tr>
-                            <tr>
-                                <td class="itn-res">176-209</td>
-                            </tr>
-                            <tr>
-                                <td class="itn-res brown-back">МТН 7</td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="itn-block" id="itn_6">
-                        <table>
-                            <tbody>
-                            <tr>
-                                <th class="itn-res">172-205</th>
-                            </tr>
-                            <tr>
-                                <td class="itn-res">210-244</td>
-                            </tr>
-                            <tr>
-                                <td class="itn-res brown-back">МТН 6</td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="itn-block" id="itn_5">
-                        <table>
-                            <tbody>
-                            <tr>
-                                <th class="itn-res">206-230</th>
-                            </tr>
-                            <tr>
-                                <td class="itn-res">245-268</td>
-                            </tr>
-                            <tr>
-                                <td class="itn-res brown-back">МТН 5</td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="itn-block" id="itn_4">
-                        <table>
-                            <tbody>
-                            <tr>
-                                <th class="itn-res">231-258</th>
-                            </tr>
-                            <tr>
-                                <td class="itn-res">269-293</td>
-                            </tr>
-                            <tr>
-                                <td class="itn-res brown-back">МТН 4</td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="itn-block" id="itn_3">
-                        <table>
-                            <tbody>
-                            <tr>
-                                <th class="itn-res">259-303</th>
-                            </tr>
-                            <tr>
-                                <td class="itn-res">294-337</td>
-                            </tr>
-                            <tr>
-                                <td class="itn-res brown-back">МТН 3</td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="itn-block" id="itn_2">
-                        <table>
-                            <tbody>
-                            <tr>
-                                <th class="itn-res">304-344</th>
-                            </tr>
-                            <tr>
-                                <td class="itn-res">338-362</td>
-                            </tr>
-                            <tr>
-                                <td class="itn-res brown-back">МТН 2</td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="itn-block" id="itn_1">
-                        <table>
-                            <tbody>
-                            <tr>
-                                <th class="itn-res">345-430</th>
-                            </tr>
-                            <tr>
-                                <td class="itn-res">363-430</td>
-                            </tr>
-                            <tr>
-                                <td class="itn-res brown-back">МТН 1</td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="4">
-                <div class="table_mobility">
-                    <table class="itn-block" style="border-spacing: 0px">
-                        <thead>
-                        <tr>
-                            <th class="itn-res blue-back" style="width: 100px;">Ударів всього</th>
-                            <th class="itn-res blue-back" style="width: 100px;">Бали мобільності</th>
-                            <th class="itn-res blue-back" style="width: 100px;">Всього</th>
-                        </tr>
-                        </thead>
+                <div class="itn-block" id="itn_10">
+                    <table>
                         <tbody>
                         <tr>
-                            <td class="itn-res"> {{test_event.strokes_total}}
-                            </td>
-                            <td class="itn-res">
-                                {{test_event.value_mobility}}
-                            </td>
-                            <td class="itn-res">
-                                {{test_event.total_score}}
-                            </td>
+                            <th class="itn-res">57-79</th>
                         </tr>
-                        </tbody>
-                    </table>
-                    <table style="margin-left: 100px; border-spacing: 0px">
-                        <thead>
                         <tr>
-                            <th class="itn-res blue-back" style="width: 100px;">Бали оцінки</th>
-                            <th class="itn-res blue-back" style="width: 100px;">Новий МТН рейтинг</th>
+                            <td class="itn-res">75-104</td>
                         </tr>
-                        </thead>
-                        <tbody>
                         <tr>
-                            <td class="itn-res">
-                                {{test_event.total_score}}
-                            </td>
-                            <td class="itn-res">
-                                {{test_event.itn}}
-                            </td>
+                            <td class="itn-res brown-back">МТН 10</td>
                         </tr>
                         </tbody>
                     </table>
                 </div>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+                <div class="itn-block" id="itn_9">
+                    <table>
+                        <tbody>
+                        <tr>
+                            <th class="itn-res">80-108</th>
+                        </tr>
+                        <tr>
+                            <td class="itn-res">105-139</td>
+                        </tr>
+                        <tr>
+                            <td class="itn-res brown-back">МТН 9</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="itn-block" id="itn_8">
+                    <table>
+                        <tbody>
+                        <tr>
+                            <th class="itn-res">109-140</th>
+                        </tr>
+                        <tr>
+                            <td class="itn-res">140-175</td>
+                        </tr>
+                        <tr>
+                            <td class="itn-res brown-back">МТН 8</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="itn-block" id="itn_7">
+                    <table>
+                        <tbody>
+                        <tr>
+                            <th class="itn-res">141-171</th>
+                        </tr>
+                        <tr>
+                            <td class="itn-res">176-209</td>
+                        </tr>
+                        <tr>
+                            <td class="itn-res brown-back">МТН 7</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="itn-block" id="itn_6">
+                    <table>
+                        <tbody>
+                        <tr>
+                            <th class="itn-res">172-205</th>
+                        </tr>
+                        <tr>
+                            <td class="itn-res">210-244</td>
+                        </tr>
+                        <tr>
+                            <td class="itn-res brown-back">МТН 6</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="itn-block" id="itn_5">
+                    <table>
+                        <tbody>
+                        <tr>
+                            <th class="itn-res">206-230</th>
+                        </tr>
+                        <tr>
+                            <td class="itn-res">245-268</td>
+                        </tr>
+                        <tr>
+                            <td class="itn-res brown-back">МТН 5</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="itn-block" id="itn_4">
+                    <table>
+                        <tbody>
+                        <tr>
+                            <th class="itn-res">231-258</th>
+                        </tr>
+                        <tr>
+                            <td class="itn-res">269-293</td>
+                        </tr>
+                        <tr>
+                            <td class="itn-res brown-back">МТН 4</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="itn-block" id="itn_3">
+                    <table>
+                        <tbody>
+                        <tr>
+                            <th class="itn-res">259-303</th>
+                        </tr>
+                        <tr>
+                            <td class="itn-res">294-337</td>
+                        </tr>
+                        <tr>
+                            <td class="itn-res brown-back">МТН 3</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="itn-block" id="itn_2">
+                    <table>
+                        <tbody>
+                        <tr>
+                            <th class="itn-res">304-344</th>
+                        </tr>
+                        <tr>
+                            <td class="itn-res">338-362</td>
+                        </tr>
+                        <tr>
+                            <td class="itn-res brown-back">МТН 2</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="itn-block" id="itn_1">
+                    <table>
+                        <tbody>
+                        <tr>
+                            <th class="itn-res">345-430</th>
+                        </tr>
+                        <tr>
+                            <td class="itn-res">363-430</td>
+                        </tr>
+                        <tr>
+                            <td class="itn-res brown-back">МТН 1</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="row-result">
+            <div class="table_mobility column-result">
+                <table class="itn-block" style="border-spacing: 0px">
+                    <thead>
+                    <tr>
+                        <th class="itn-res blue-back" style="width: 100px;">Ударів всього</th>
+                        <th class="itn-res blue-back" style="width: 100px;">Бали мобільності</th>
+                        <th class="itn-res blue-back" style="width: 100px;">Всього</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td class="itn-res"> {{test_event.strokes_total}}
+                        </td>
+                        <td class="itn-res">
+                            {{test_event.value_mobility}}
+                        </td>
+                        <td class="itn-res">
+                            {{test_event.total_score}}
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <table style="margin-left: 100px; border-spacing: 0px">
+                    <thead>
+                    <tr>
+                        <th class="itn-res blue-back" style="width: 100px;">Бали оцінки</th>
+                        <th class="itn-res blue-back" style="width: 100px;">Новий МТН рейтинг</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td class="itn-res">
+                            {{test_event.total_score}}
+                        </td>
+                        <td class="itn-res">
+                            {{test_event.itn}}
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
     <input type="hidden" id="test_event_mobility" value="{{test_event.time_mobility}}">
     <input type="hidden" id="test_event_itn" value="{{test_event.itn}}">
 </div>

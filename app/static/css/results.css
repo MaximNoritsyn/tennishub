@@ -3,6 +3,7 @@
 }
 
 .page-res {
+  display: block;
   text-align: center;
 }
 
@@ -134,4 +135,23 @@
   margin: 0px;
   margin-left: 20px;
   align-self: baseline;
+}
+
+.full-table-result {
+  display: flex;
+  align-content: space-around;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.full-table-result .row-result {
+  display: flex;
+  margin: 5px;
+  padding: 5px;
+  flex-wrap: wrap;
+}
+
+.full-table-result .row-result .column-result {
+  margin: 0px;
+  padding: 2px;
 }
