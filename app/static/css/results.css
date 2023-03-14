@@ -44,6 +44,7 @@
   background-color: var(--clr10);
   border: 2px solid black;
   color: var(--fclr10);
+  height: 4em;
 }
 
 .block-res th, .table-res td {
@@ -62,7 +63,7 @@
 }
 
 .block-res tbody tr:nth-last-child(3) {
-  background-color: var(--clr30);
+  background-color: var(--clr30light);
   color: var(--fclr30);
 }
 
@@ -96,7 +97,7 @@
 }
 
 .page-res td {
-  vertical-align: top;
+  /* vertical-align: top; */
 }
 
 .yellow_back {

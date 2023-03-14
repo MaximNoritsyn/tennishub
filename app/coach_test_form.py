@@ -57,8 +57,7 @@ async def post_edit(request: Request,
     return edit_group_test(group_test, assessor, v_date, venue, players)
 
 
-@router.get("/{guid}/dashboard")
-async def new_tests(guid: str, request: Request = {}):
+async def dashboard(guid: str, request: Request = {}):
     group_test = GroupTest.from_db(guid)
     context = get_context(request)
     context['edit'] = False
@@ -68,6 +67,8 @@ async def new_tests(guid: str, request: Request = {}):
     return templates.TemplateResponse("coach_test_dashboard.html", context)
 
 
+@router.get("/{guid}/dashboard/{task}")(dashboard)
+@router.get("/{guid}/dashboard")(dashboard)
 @router.get("/{guid}/gsd/{stage_number}")
 async def get_test_event_stage_gsd(guid: str, stage_number: int, request: Request):
     task = 'gsd'
@@ -77,7 +78,7 @@ async def get_test_event_stage_gsd(guid: str, stage_number: int, request: Reques
     context['route_back'] = f'/coachtesting/{guid}/{task}/{stage_number - 1}'
     if stage_number == 1:
         coach_test = CoachTest.get_by_event(context['test_event'], context.get('user'))
-        context['route_back'] = f'/coachtesting/{coach_test.group_test.id_db}/dashboard'
+        context['route_back'] = f'/coachtesting/{coach_test.group_test.id_db}/dashboard/{task}'
     context['route_submit'] = f'/coachtesting/{guid}/{task}/{stage_number}'
 
     return templates.TemplateResponse("test_depth.html", context)
@@ -97,7 +98,7 @@ async def post_test_event_stage_gsd(guid: str,
         coach_test = CoachTest.get_by_event(test_event)
         coach_test.finish_gsd = True
         coach_test.save()
-        next_route = f'/coachtesting/{coach_test.group_test.id_db}/dashboard'
+        next_route = f'/coachtesting/{coach_test.group_test.id_db}/dashboard/{task}'
     response.headers["location"] = next_route
     response.status_code = status.HTTP_302_FOUND
     return response
@@ -112,7 +113,7 @@ async def get_test_event_stage_vd(guid: str, stage_number: int, request: Request
     context['route_back'] = f'/coachtesting/{guid}/{task}/{stage_number - 1}'
     if stage_number == 1:
         coach_test = CoachTest.get_by_event(context['test_event'], context.get('user'))
-        context['route_back'] = f'/coachtesting/{coach_test.group_test.id_db}/dashboard'
+        context['route_back'] = f'/coachtesting/{coach_test.group_test.id_db}/dashboard/{task}'
     context['route_submit'] = f'/coachtesting/{guid}/{task}/{stage_number}'
 
     return templates.TemplateResponse("test_depth.html", context)
@@ -132,7 +133,7 @@ async def post_test_event_stage_vd(guid: str,
         coach_test = CoachTest.get_by_event(test_event)
         coach_test.finish_vd = True
         coach_test.save()
-        next_route = f'/coachtesting/{coach_test.group_test.id_db}/dashboard'
+        next_route = f'/coachtesting/{coach_test.group_test.id_db}/dashboard/{task}'
     response.headers["location"] = next_route
     response.status_code = status.HTTP_302_FOUND
     return response
@@ -147,7 +148,7 @@ async def get_test_event_stage_sda(guid: str, stage_number: int, request: Reques
     context['route_back'] = f'/coachtesting/{guid}/{task}/{stage_number - 1}'
     if stage_number == 1:
         coach_test = CoachTest.get_by_event(context['test_event'], context.get('user'))
-        context['route_back'] = f'/coachtesting/{coach_test.group_test.id_db}/dashboard'
+        context['route_back'] = f'/coachtesting/{coach_test.group_test.id_db}/dashboard/{task}'
     context['route_submit'] = f'/coachtesting/{guid}/{task}/{stage_number}'
 
     return templates.TemplateResponse("test_accuracy.html", context)
@@ -167,7 +168,7 @@ async def post_test_event_stage_gsa(guid: str,
         coach_test = CoachTest.get_by_event(test_event)
         coach_test.finish_gsa = True
         coach_test.save()
-        next_route = f'/coachtesting/{coach_test.group_test.id_db}/dashboard'
+        next_route = f'/coachtesting/{coach_test.group_test.id_db}/dashboard/{task}'
     response.headers["location"] = next_route
     response.status_code = status.HTTP_302_FOUND
     return response
@@ -184,7 +185,7 @@ async def get_test_event_stage_serve(guid: str, stage_number: int, serve: int, r
         context['route_back'] = f'/coachtesting/{guid}/{task}/{stage_number}/1'
     elif stage_number == 1:
         coach_test = CoachTest.get_by_event(context['test_event'], context.get('user'))
-        context['route_back'] = f'/coachtesting/{coach_test.group_test.id_db}/dashboard'
+        context['route_back'] = f'/coachtesting/{coach_test.group_test.id_db}/dashboard/{task}'
     context['route_submit'] = f'/coachtesting/{guid}/{task}/{stage_number}/{serve}'
 
     return templates.TemplateResponse("test_serve.html", context)
@@ -211,7 +212,7 @@ async def post_test_event_stage_serve(guid: str,
         coach_test = CoachTest.get_by_event(test_event)
         coach_test.finish_serve = True
         coach_test.save()
-        next_route = f'/coachtesting/{coach_test.group_test.id_db}/dashboard'
+        next_route = f'/coachtesting/{coach_test.group_test.id_db}/dashboard/{task}'
     response.headers["location"] = next_route
     response.status_code = status.HTTP_302_FOUND
     return response
@@ -225,7 +226,7 @@ async def get_test_event_stage_mobility(guid: str, request: Request):
     test_event = TestEvent.from_db(guid)
     coach_test = CoachTest.get_by_event(test_event)
 
-    context['route_back'] = f'/coachtesting/{coach_test.group_test.id_db}/dashboard'
+    context['route_back'] = f'/coachtesting/{coach_test.group_test.id_db}/dashboard/{task}'
     context['route_submit'] = f'/coachtesting/{guid}/{task}'
 
     serving_ball = ServingBall.from_db(guid, 'value_mobility')
@@ -244,7 +245,7 @@ async def post_test_event_stage_mobility(guid: str, first_bounce: str = Form(def
     coach_test.save()
 
     response = Response(content=f"mobility submitted")
-    response.headers["location"] = f'/coachtesting/{coach_test.group_test.id_db}/dashboard'
+    response.headers["location"] = f'/coachtesting/{coach_test.group_test.id_db}/dashboard/mobility'
     response.status_code = status.HTTP_302_FOUND
     return response
 
@@ -257,7 +258,7 @@ async def get_test_event_stage_results(guid: str, request: Request):
     context = get_context(request)
 
     context['test_event'] = test_event
-    context['route_back'] = f'/coachtesting/{coach_test.group_test.id_db}/dashboard'
+    context['route_back'] = f'/coachtesting/{coach_test.group_test.id_db}/dashboard/results'
 
     return templates.TemplateResponse("test_results.html", context)
 

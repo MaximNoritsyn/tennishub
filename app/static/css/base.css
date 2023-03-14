@@ -1,6 +1,6 @@
 :root
 {
-  --clr60: #f7bf92; 
+  --clr60: #bea383; 
   --clr30: #195d40;
   --clr30light: #487d6b;
   --clr10: #ff8901;
@@ -17,6 +17,11 @@ body {
   justify-content:center;
   background: var(--clr60);
   color: var(--fclr60);
+}
+
+body,
+input,
+button {
   font-family: 'Jura', sans-serif;
 }
 
@@ -296,6 +301,7 @@ input[readonly] {
 .content-table th,
 .content-table td {
   padding: 10px 10px;
+  min-width: 40px;
 }
 
 .content-table tbody tr {

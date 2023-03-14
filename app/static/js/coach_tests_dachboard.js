@@ -126,8 +126,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
     function removePersonsFromPlayers(arrayToRemove, array) {
-        console.log(array)
-        console.log(arrayToRemove)
       return arrayToRemove.filter(l_person => !array.includes(l_person.id_db));
     }
 
@@ -173,6 +171,18 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     handleSearch()
+
+    const urlPath = window.location.pathname;
+    const urlParts = urlPath.split('/');
+    const task = urlParts[urlParts.length - 1];
+
+    const elTask = document.getElementById(task);
+
+    if (elTask) {
+        elTask.classList.add('current-task-box');
+        currentTask = elTask;
+    }
+
 
     // Add a click event listener to the button
     editCoachTest.addEventListener('click', function(event) {

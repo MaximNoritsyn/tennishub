@@ -12,7 +12,11 @@
     <h3>{{group_test.venue}} - {{group_test.date}}</h3>
     {% endif %}
 </div>
-<div>
+<div style="
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    flex-direction: column;">
 
     {% if edit %}
     <form method="post" id="form-coach-test" class="edit-form">
@@ -82,9 +86,9 @@
     </form>
 
     <div class="tasks-wrapper">
-        <div id="gsd" class="task-box">Глибина з земли</div>
-        <div id="vd" class="task-box">Глибина з льоту</div>
-        <div id="gsa" class="task-box">Точність з землі</div>
+        <div id="gsd" class="task-box">Глибина ударів з відскоку</div>
+        <div id="vd" class="task-box">Глибина ударів з льоту</div>
+        <div id="gsa" class="task-box">Точність ударів з відскоку</div>
         <div id="serve" class="task-box">Подача</div>
         <div id="mobility" class="task-box">Мобільність</div>
         <div id="results" class="task-box">Результати</div>
@@ -96,11 +100,11 @@
         <thead>
         <tr>
             <th>Тестуючий</th>
-            <th>ГЗ</th>
-            <th>ГЛ</th>
-            <th>ТЗ</th>
-            <th>Под</th>
-            <th>Моб</th>
+            <th>ГУзВ</th>
+            <th>ГУзЛ</th>
+            <th>ТУзВ</th>
+            <th>Подача</th>
+            <th>Мобільн.</th>
         </tr>
         </thead>
         <tbody id="players-list">
