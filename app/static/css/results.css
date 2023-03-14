@@ -31,7 +31,6 @@
   border-collapse: collapse;
   width: 200px;
   text-align: center;
-  font-family: Arial, sans-serif;
 }
 
 
@@ -106,7 +105,7 @@
 
 .itn-res {
   border: 1px solid black;
-  width: 66px;
+  width: 70px;
   padding: 4px;
   font-weight: bold;
 }

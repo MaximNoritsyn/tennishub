@@ -1,10 +1,3 @@
-{
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: 'Poppins', sans-serif
-}
-
 :root
 {
   --clr60: #f7bf92; 
@@ -23,7 +16,8 @@
 body {
   justify-content:center;
   background: var(--clr60);
-  color: var(--fclr60)
+  color: var(--fclr60);
+  font-family: 'Jura', sans-serif;
 }
 
 main {
