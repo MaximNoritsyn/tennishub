@@ -12,7 +12,8 @@
 
 .table_mobility_row2 {
   border: 1px solid black;
-  background-color: #ccecff;
+  background-color: var(--clr30light);
+  color: var(--fclr30);
   padding: 4px;
   text-align: center;
 }

@@ -8,8 +8,9 @@
 :root
 {
   --clr60: #f7bf92; 
-  --clr30: #195d40; 
-  --clr10: #ff8901; 
+  --clr30: #195d40;
+  --clr30light: #487d6b;
+  --clr10: #ff8901;
   --fclr60: #333333;
   --fclr30: #f4f8f6;
   --fclr10: #f2f0f1;
@@ -242,6 +243,7 @@ input[readonly] {
   display: flex;
   justify-content: flex-start;
   width: 100%;
+  padding: 10px;
 }
 
 .back-point a {
