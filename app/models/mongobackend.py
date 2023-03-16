@@ -61,16 +61,18 @@ class MongoDBBackend:
             {"$unwind": "$person"},
             {"$project": {
                 "username": 1,
-                "email": 1,
                 "is_active": 1,
-                "is_coach": 1,
                 "is_superuser": 1,
                 "password_hash": 1,
                 "person": {
                     "id_obj": "$person._id",
-                    "name": "$person.name",
-                    "date_b": "$person.date_b",
+                    "first_name": "$person.first_name",
+                    "last_name": "$person.last_name",
+                    "email": "$person.email",
+                    "tel": "$person.tel",
+                    "birthday": "$person.birthday",
                     "sex": "$person.sex",
+                    "is_coach": "$person.is_coach",
                 }
             }}
         ])
@@ -209,9 +211,14 @@ class MongoDBBackend:
             {
                 "$project": {
                     "_id": 0,
-                    "person.name": 1,
+                    "person.first_name": 1,
+                    "person.last_name": 1,
+                    "person.email": 1,
+                    "person.tel": 1,
                     "person._id": 1,
-                    "person.date_b": 1,
+                    "person.birthday": 1,
+                    "person.sex": 1,
+                    "person.is_coach": 1,
                     "coach.username": 1,
                     "coach.email": 1
                 }
@@ -221,7 +228,15 @@ class MongoDBBackend:
         return self.db[name_collection_class].aggregate(pipeline)
 
     def get_persons_by_part_of_name(self, search_text, name_collection_class):
-        return list(self.db[name_collection_class].find({"name": {"$regex": search_text, "$options": "i"}}))
+        return list(self.db[name_collection_class].find({
+          "$or": [
+            {"last_name": {"$regex": search_text, "$options": "i"}},
+            {"first_name": {"$regex": search_text, "$options": "i"}},
+            {"tel": {"$regex": search_text, "$options": "i"}},
+            {"email": {"$regex": search_text, "$options": "i"}}
+          ],
+            "is_coach": False
+        }))
 
     def get_coach_test_by_person_group(self, person_id: str, group_test_id: str, name_collection_class: str):
         pipeline = [

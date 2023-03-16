@@ -29,7 +29,7 @@ async def list_pull_tests(request: Request = {}):
 async def new_tests(request: Request = {}):
     context = get_context(request)
     context['edit'] = True
-    context['assessor'] = context.get('user').person.name
+    context['assessor'] = str(context.get('user').person)
     context['today'] = date.today()
     context['group_test_id'] = ''
 

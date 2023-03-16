@@ -111,7 +111,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         removePersonsFromPlayers(personsFromDb, players).forEach(person => {
           li = document.createElement('li');
-          li.textContent = person.name;
+          li.textContent = person.first_name + ' ' + person.last_name;
           li.setAttribute('person_id', person.id_db);
           li.setAttribute('id', 'person_' + person.id_db);
 
@@ -160,7 +160,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         listItem.setAttribute('finish_serve', coach_test.finish_serve);
                         listItem.setAttribute('finish_mobility', coach_test.finish_mobility);
                         listItem.setAttribute('class', 'players-line');
-                        listItem.textContent = coach_test.test_event.person.name;
+                        listItem.textContent = coach_test.test_event.person.first_name + " " + coach_test.test_event.person.last_name;
 
                         addPlayer({target: listItem})
 
@@ -212,13 +212,20 @@ document.addEventListener('DOMContentLoaded', function() {
 
         }
         else {
-
-            const playersInput = document.createElement('input');
-            playersInput.type = 'hidden';
-            playersInput.name = 'players';
-            playersInput.value = players.join(',');;
-            document.getElementById('form-coach-test').appendChild(playersInput);
-            document.getElementById('form-coach-test').submit();
+            const formCoachTest = document.getElementById('form-coach-test')
+            if (formCoachTest.checkValidity()) {
+                const playersInput = document.createElement('input');
+                playersInput.type = 'hidden';
+                playersInput.name = 'players';
+                playersInput.value = players.join(',');;
+                formCoachTest.appendChild(playersInput);
+                formCoachTest.submit();
+            }
+            else
+            {
+                var message = document.querySelector('#message');
+                message.innerHTML = "Не все обов'язкові поля заповнені";
+            }
 
         }
     });

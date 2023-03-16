@@ -43,7 +43,7 @@
         <ul>
             <li><a href="/"><ion-icon name="home-sharp"></ion-icon></a></li>
             {% if logged %}
-            {% if logged and user.is_coach %}
+            {% if logged and user.person.is_coach %}
             <li><a href="/coachtesting"><ion-icon name="grid-sharp"></ion-icon></a></li>
             {% endif %}
         </ul>

@@ -3,34 +3,59 @@
 {% block title %}Розпочати тест{% endblock %}
 
 {% block styles %}
-  <style>
+<style>
     /* your styles for this template here */
-  </style>
+
+
+</style>
 {% endblock %}
 
 
 {% block content %}
 
-<form class="form_table" method="post">
-  <label for="name">Ім'я:</label>
-  <input type="text" id="name" name="name" readonly value="{{ name_player }}"><br><br>
+<form class="edit-form" method="post">
+    <div>
+        <label for="nfirst_nameame">Ім'я:</label>
+        <input type="text" id="first_name" name="first_name" readonly value="{{ person.first_name }}">
+    </div>
 
-  <label for="dob">Дата народження:</label>
-  <input type="text" id="dob" name="dob" readonly value=" {{ date_b }}"><br><br>
+    <div>
+        <label for="last_name">Прізвище:</label>
+        <input type="text" id="last_name" name="last_name" readonly value="{{ person.last_name }}">
+    </div>
 
-  <label for="sex">Стать:</label>
-  <input type="text" id="sex" name="sex" readonly value="{{ sex }}"><br><br>
+    <div>
+        <label for="birthday">Дата народження:</label>
+        <input type="date" id="birthday" name="birthday" readonly value="{{person.birthday}}">
+    </div>
 
-  <label for="assessor">Інспектор:</label>
-  <input type="text" id="assessor" name="assessor"><br><br>
+    <div>
+        <label for="sex">Стать:</label>
+        {% if person.sex == 'F' %}
+        <input type="text" id="sex" name="sex" readonly value="Жіноча">
+        {% elif person.sex == 'M' %}
+        <input type="text" id="sex" name="sex" readonly value="Чоловіча">
+        {% else %}
+        <input type="text" id="sex" name="sex" readonly value="{{ person.sex }}">
+        {% endif %}
+    </div>
 
-  <label for="date">Дата:</label>
-  <input type="date" id="date" name="date" value="{{ today }}"><br><br>
+    <div>
+        <label for="assessor">Інспектор:</label>
+        <input type="text" id="assessor" name="assessor">
+    </div>
 
-  <label for="venue">Місце проведення:</label>
-  <input type="text" id="venue" name="venue"><br><br>
+    <div>
+        <label for="date">Дата:</label>
+        <input type="date" id="date" name="date" value="{{ today }}">
+    </div>
 
-  <input type="submit" value="Розпочати">
+    <div>
+        <label for="venue">Місце проведення:</label>
+        <input type="text" id="venue" name="venue">
+    </div>
+
+    <button type="submit">Розпочати</button>
 </form>
 
 {% endblock %}

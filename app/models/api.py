@@ -1,15 +1,12 @@
 import json
 
 from bson import ObjectId
-from fastapi.encoders import jsonable_encoder
-from fastapi.responses import JSONResponse
-from fastapi import Query, Request
+from fastapi import Query
 from fastapi.routing import APIRouter
 
 from app.models.person import get_persons_by_part_of_name
 from app.models.coach_ref import get_persons_by_coach
 from app.models.coach_testing import GroupTest, get_coach_test_by_group
-from app.models.testing_itf import TestEvent
 
 
 class JSONEncoder(json.JSONEncoder):

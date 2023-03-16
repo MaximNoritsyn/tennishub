@@ -18,9 +18,7 @@ templates = Jinja2Templates(directory="app/templates")
 async def new_test(guid: str, request: Request = {}):
     context = get_context(request)
     person = Person.from_db(guid)
-    context['name_player'] = person.name
-    context['sex'] = person.sex
-    context['date_b'] = person.date_b
+    context['person'] = person
     context['today'] = date.today()
     return templates.TemplateResponse("new_testing.html", context)
 

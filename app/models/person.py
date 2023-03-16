@@ -1,4 +1,5 @@
 from typing import Dict, Optional
+from pydantic import EmailStr
 from datetime import date
 from bson.objectid import ObjectId
 
@@ -9,15 +10,23 @@ backend = MongoDBBackend()
 
 
 class Person(CollectionDB):
-    name: str
-    date_b: Optional[date] = None
+    first_name: str
+    last_name: str
+    email: Optional[EmailStr] = None
+    tel: Optional[int] = None
+    birthday: Optional[date] = None
     sex: Optional[str] = None
+    is_coach: bool = False
 
     def __init__(self, **kwargs):
         super().__init__()
-        self.name = kwargs.get("name")
-        self.date_b = kwargs.get("date_b", None)
-        self.sex = kwargs.get("sex")
+        self.first_name = kwargs.get("first_name")
+        self.last_name = kwargs.get("last_name")
+        self.email = kwargs.get("email", None)
+        self.tel = kwargs.get("tel", None)
+        self.birthday = kwargs.get("birthday", None)
+        self.sex = kwargs.get("sex", 'M')
+        self.is_coach = kwargs.get("is_coach", False)
         self.id_db = kwargs.get("id_db", '')
         id_obj = kwargs.get("id_obj", None)
         if id_obj is not None:
@@ -27,7 +36,7 @@ class Person(CollectionDB):
     def from_dict(cls, data: dict):
         person = cls()
         for key, value in data.items():
-            if key == 'date_b':
+            if key == 'birthday':
                 if value:
                     setattr(person, key, date.fromisoformat(value))
             elif key == '_id':
@@ -48,16 +57,20 @@ class Person(CollectionDB):
 
     def to_dict(self) -> Dict[str, str]:
         d = {
-            "name": self.name,
+            "first_name": self.first_name,
+            "last_name": self.last_name,
+            "email": self.email,
+            "tel": self.tel,
+            "is_coach": self.is_coach,
             "sex": self.sex
         }
 
-        if self.date_b is None:
-            d['date_b'] = ''
-        elif type(self.date_b) == str:
-            d['date_b'] = self.date_b
+        if self.birthday is None:
+            d['birthday'] = ''
+        elif type(self.birthday) == str:
+            d['birthday'] = self.birthday
         else:
-            d['date_b'] = self.date_b.isoformat()
+            d['birthday'] = self.birthday.isoformat()
 
         if len(self.id_db):
             d['_id'] = self.id_obj
@@ -76,7 +89,7 @@ class Person(CollectionDB):
         return Person.from_dict(document)
 
     def __str__(self):
-        return self.name
+        return f'{self.first_name} {self.last_name}'
 
 
 def get_persons_by_part_of_name(search_text):

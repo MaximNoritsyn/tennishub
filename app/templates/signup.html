@@ -7,13 +7,18 @@
 <form method="POST" class="edit-form">
 
     <div>
-        <label for="name">Ім'я</label>
-        <input type="text" name="name" id="name" required>
+        <label for="first_name">Ім'я</label>
+        <input type="text" name="first_name" id="first_name" required>
     </div>
 
     <div>
-        <label for="date_b">Дата народження</label>
-        <input type="date" name="date_b" id="date_b">
+        <label for="last_name">Прізвище</label>
+        <input type="text" name="last_name" id="last_name" required>
+    </div>
+
+    <div>
+        <label for="birthday">Дата народження</label>
+        <input type="date" name="birthday" id="birthday">
     </div>
 
     <div>
@@ -29,7 +34,12 @@
 
     <div>
         <label for="email">Email</label>
-        <input type="email" name="email" id="email" required>
+        <input type="email" name="email" id="email">
+    </div>
+
+    <div>
+        <label for="tel">Телефон</label>
+        <input type="text" name="tel" id="tel" placeholder="3801234567890">
     </div>
 
     <div>
@@ -42,6 +52,47 @@
         <input type="password" name="password" id="password" required>
     </div>
 
-    <button type="submit">Зареєструватися</button>
+    <div>
+        <label for="repeat_password">Repeat password</label>
+        <input type="password" id="repeat_password" required>
+    </div>
+
+    <div id="message"></div>
+
+    <div>
+        <label for="is_coach">Роль</label>
+        <div class="point-boxes" id="is_coach">
+            <input type="radio" id="is_coach_false" name="is_coach_str" value="false" checked>
+            <label for="is_coach_false" class="point-box">Спортсмен</label>
+            <br>
+            <input type="radio" id="is_coach_true" name="is_coach_str" value="true">
+            <label for="is_coach_true" class="point-box">Тренер</label>
+        </div>
+    </div>
+
+    <button type="submit" disabled id="submit_button">Зареєструватися</button>
 </form>
+
+<script>
+  document.querySelector('#password').addEventListener('keyup', checkPasswords);
+  document.querySelector('#repeat_password').addEventListener('keyup', checkPasswords);
+
+  function checkPasswords() {
+    var password = document.querySelector('#password');
+    var repeatPassword = document.querySelector('#repeat_password');
+    var message = document.querySelector('#message');
+    var Submit = document.querySelector('#submit_button');
+
+    if (password.value !== repeatPassword.value) {
+      message.innerHTML = 'Passwords do not match';
+      repeatPassword.setCustomValidity('Passwords do not match');
+      Submit.disabled = true;
+    } else {
+      message.innerHTML = '';
+      repeatPassword.setCustomValidity('');
+      Submit.disabled = false;
+    }
+  }
+</script>
+
 {% endblock %}

@@ -4,6 +4,7 @@ from fastapi.routing import APIRouter
 from fastapi import Request
 from typing import Optional
 from datetime import date
+from pydantic import EmailStr
 
 from app.models.cookie import get_context
 from app.models.person import Person
@@ -22,16 +23,23 @@ def new_person(request: Request = {}):
 
 
 @router.post("/new")
-async def create_new_person(request: Request, name: str = Form(),
-                            date_b: Optional[date] = Form(None),
+async def create_new_person(request: Request, first_name: str = Form(),
+                            last_name: str = Form(),
+                            email: Optional[EmailStr] = Form(None),
+                            tel: Optional[str] = Form(None),
+                            birthday: Optional[date] = Form(None),
                             sex: Optional[str] = Form(None)):
 
-    context = get_context(request)
     if getattr(request.state, "logged", False):
-        person = Person(name=name, date_b=date_b, sex=sex)
-        person.save()
+        cur_person = Person(first_name=first_name,
+                            last_name=last_name,
+                            email=email,
+                            tel=tel,
+                            birthday=birthday,
+                            sex=sex)
+        cur_person.save()
 
-        coach_ref = CoachRef(person, getattr(request.state, "user", None))
+        coach_ref = CoachRef(cur_person, getattr(request.state, "user", None))
         coach_ref.save()
 
     response = Response(content="Create new person")
@@ -44,9 +52,8 @@ async def create_new_person(request: Request, name: str = Form(),
 def person(guid: str, request: Request = {}):
     context = get_context(request)
     cur_person = Person.from_db(guid)
-    print(cur_person)
     if cur_person:
-        context['player_name'] = cur_person.name
+        context['player_name'] = cur_person.first_name + " " + cur_person.last_name
         context['player_guid'] = cur_person.id_db
     context['events'] = get_test_events_by_person(guid)
 

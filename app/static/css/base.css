@@ -1,6 +1,7 @@
 :root
 {
-  --clr60: #fefefe; 
+  --clr60: #fefefe;
+  --clr60gray: #c6c5c5; 
   --clr30: #195d40;
   --clr30light: #487d6b;
   --clr10: #ff8901;
@@ -188,12 +189,6 @@ button:focus {
   box-shadow: 0px 5px 5px 0px rgba(0,0,0,0.2);
 }
 
-.form_table {
-  width: 50%;
-  margin: 0 auto;
-  box-shadow: 0px 5px 5px 0px rgba(0,0,0,0.2);
-}
-
 label {
   display: inline-block;
   width: 130px;
@@ -202,6 +197,7 @@ label {
   font-weight: bold;
 }
 
+input[type="password"],
 input[type="email"],
 input[type="text"],
 input[type="date"] {
@@ -236,7 +232,7 @@ input[type="submit"]:hover {
 }
 
 input[readonly] {
-  background-color: var(--clr60);
+  background-color: var(--clr60gray);
   color: var(--fclr60);
 }
 

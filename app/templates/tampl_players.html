@@ -15,7 +15,7 @@
     {% for player in players %}
     <tr>
         <td onclick="window.location='/players/{{player.id_db}}'">
-            {{ player.name }}
+            {{ player.first_name }} {{ player.last_name }}
         </td>
     </tr>
     {% endfor %}

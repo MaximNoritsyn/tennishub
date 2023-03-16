@@ -20,17 +20,24 @@
             <div class="column-result" style="border: 2px solid black; padding: 5px">
                 <div>
                     <label for="name">Ім'я:</label>
-                    <input id="name" type="text" readonly value="{{test_event.person.name}}">
-                    <label for="date_b">Дата народження:</label>
-                    <input type="text" id="date_b" readonly name="date" value="{{ test_event.person.date_b }}">
+                    <input id="name" type="text" readonly
+                           value="{{test_event.person.first_name}} test_event.person.last_name">
+                    <label for="birthday">Дата народження:</label>
+                    <input type="date" id="birthday" readonly name="birthday" value="{{ test_event.person.birthday }}">
                     <label for="sex">Стать:</label>
-                    <input id="sex" type="text" readonly value="{{test_event.person.sex}}">
+                    {% if test_event.person.sex == 'F' %}
+                    <input type="text" id="sex" name="sex" readonly value="Жіноча">
+                    {% elif test_event.person.sex == 'M' %}
+                    <input type="text" id="sex" name="sex" readonly value="Чоловіча">
+                    {% else %}
+                    <input type="text" id="sex" name="sex" readonly value="{{ test_event.person.sex }}">
+                    {% endif %}
                 </div>
                 <div>
                     <label for="assessor">Інспектор:</label>
                     <input id="assessor" type="text" readonly value="{{test_event.assessor}}">
                     <label for="date">Дата:</label>
-                    <input type="text" id="date" readonly name="date" value="{{ test_event.data }}">
+                    <input type="date" id="date" readonly name="date" value="{{ test_event.date }}">
                     <label for="vanue">Місце проведення:</label>
                     <input id="vanue" type="text" readonly value="{{test_event.venue}}">
                 </div>

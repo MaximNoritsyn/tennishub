@@ -5,7 +5,7 @@
 {% block content %}
 {% if logged==False %}
   <h3>Ласкаво просимо на сайт. Зареєструйтеся для початку користування або увійдіть в свій аккаунт</h3>
-{% elif user.is_coach %}
+{% elif user.person.is_coach %}
   {% include "tampl_players.html" %}
 {% else %}
   {% include "tampl_list_of_test.html" %}

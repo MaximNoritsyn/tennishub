@@ -28,6 +28,7 @@ async def login_form(request: Request = {}):
 
 def verify_password(username: str, password: str) -> str:
     user, hashed_password = User.from_db(username)
+    print(user)
     verified = False
     if user is not None:
         verified = bcrypt.checkpw(password.encode('utf-8'), hashed_password)

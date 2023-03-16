@@ -23,17 +23,17 @@
 
         <div>
             <label for="assessor">Інспектор:</label>
-            <input type="text" id="assessor" name="assessor" value="{{assessor}}">
+            <input type="text" id="assessor" name="assessor" value="{{assessor}}" required>
         </div>
 
         <div>
             <label for="v_date">Дата:</label>
-            <input type="date" id="v_date" name="v_date" value="{{ today }}">
+            <input type="date" id="v_date" name="v_date" value="{{ today }}" required>
         </div>
 
         <div>
             <label for="venue">Місце проведення:</label>
-            <input type="text" id="venue" name="venue" value="{{ venue }}">
+            <input type="text" id="venue" name="venue" value="{{ venue }}" required>
         </div>
 
         <dev id="search-div" class="search-block">
@@ -41,7 +41,7 @@
                 <label for="search">
                     <ion-icon size="large" name="search-circle-sharp"></ion-icon>
                 </label>
-                <input type="text" id="search" name="search" placeholder="Введіть Ім'я"/>
+                <input type="text" id="search" name="search" placeholder="Введіть Ім'я або телефон, email"/>
             </div>
             <div>
                 <label for="persons-list">Доступні спортсмени:</label>
@@ -49,6 +49,7 @@
             </div>
         </dev>
 
+        <div id="message"></div>
         <button id="edit-coach-test">Зберегти</button>
     </form>
     {% else %}
@@ -56,17 +57,17 @@
 
         <div>
             <label for="assessor">Інспектор:</label>
-            <input type="text" id="assessor" readonly name="assessor" value="{{group_test.assessor}}">
+            <input type="text" id="assessor" readonly name="assessor" value="{{group_test.assessor}}" required>
         </div>
 
         <div>
             <label for="v_date">Дата:</label>
-            <input type="date" id="v_date" readonly name="v_date" value="{{ group_test.date }}">
+            <input type="date" id="v_date" readonly name="v_date" value="{{ group_test.date }}" required>
         </div>
 
         <div>
             <label for="venue">Місце проведення:</label>
-            <input type="text" id="venue" readonly name="venue" value="{{ group_test.venue }}">
+            <input type="text" id="venue" readonly name="venue" value="{{ group_test.venue }}" required>
         </div>
 
         <dev id="search-div" class="search-block" style="display: none;">
@@ -74,7 +75,7 @@
                 <label for="search">
                     <ion-icon size="large" name="search-circle-sharp"></ion-icon>
                 </label>
-                <input type="text" id="search" name="search" placeholder="Введіть Ім'я"/>
+                <input type="text" id="search" name="search" placeholder="Введіть Ім'я або телефон, email"/>
             </div>
             <div>
                 <label for="persons-list">Доступні спортсмени:</label>
@@ -82,6 +83,7 @@
             </div>
         </dev>
 
+        <div id="message"></div>
         <button id="edit-coach-test">Редагувати</button>
     </form>
 

@@ -15,7 +15,7 @@ def index(request: Request = {}):
     context = get_context(request)
     if context.get('logged'):
         user = context.get('user')
-        if user.is_coach:
+        if user.person.is_coach:
             context['players'] = get_persons_by_coach(user.username)
         else:
             context['events'] = get_test_events_by_person(user.person.id_db)

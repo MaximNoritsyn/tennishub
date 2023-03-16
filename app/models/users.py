@@ -12,18 +12,14 @@ backend = MongoDBBackend()
 class User(CollectionDB):
     username: str
     person: Person
-    email: EmailStr
     is_active: bool = True
-    is_coach: bool = False
     is_superuser: bool = False
 
-    def __init__(self, username: str, email: EmailStr, name: str, **kwargs):
+    def __init__(self, username: str, **kwargs):
         self.username = username
-        self.email = email
         self.is_active = kwargs.get('is_active', True)
-        self.is_coach = kwargs.get('is_coach', False)
         self.is_superuser = kwargs.get('is_superuser', False)
-        self.person = Person(name=name, **kwargs)
+        self.person = Person(**kwargs)
         super().__init__()
 
     @classmethod
@@ -34,6 +30,8 @@ class User(CollectionDB):
         if user_doc is None:
             return None, ''
 
+        print(user_doc)
+
         user = cls.from_dict(user_doc)
 
         return user, user_doc.get("password_hash")
@@ -41,20 +39,21 @@ class User(CollectionDB):
     @classmethod
     def from_dict(cls, data: dict):
         person_doc = data.pop("person")
-        required_fields = ["username", "email"]
-        if not all(field in data for field in required_fields):
+        required_fields = ["first_name", "last_name"]
+        if not ("username" in data):
             return None
 
-        if not ("name" in person_doc):
+        if not all(field in person_doc for field in required_fields):
             return None
 
         user = User(data.get("username"),
-                    data.get("email"),
-                    person_doc.get("name"),
+                    email=person_doc.get("email"),
+                    first_name=person_doc.get("first_name"),
+                    last_name=person_doc.get("last_name"),
                     is_active=data.get("is_active"),
-                    is_coach=data.get("is_coach"),
+                    is_coach=person_doc.get("is_coach"),
                     is_superuser=data.get("is_superuser"),
-                    date_b=person_doc.get("date_b"),
+                    birthday=person_doc.get("birthday"),
                     sex=person_doc.get("sex"),
                     id_obj=person_doc.get("id_obj"),
                     id_db=person_doc.get("id_db"))
@@ -74,9 +73,7 @@ class User(CollectionDB):
     def to_dict(self) -> Dict[str, Any]:
         d = {
             "username": self.username,
-            "email": self.email,
             "is_active": self.is_active,
-            "is_coach": self.is_coach,
             "is_superuser": self.is_superuser,
         }
 
