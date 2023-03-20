@@ -216,8 +216,7 @@ class TestEvent(CollectionDB):
                               + self.total_gsd \
                               + self.total_vd \
                               + self.total_gsa \
-                              + self.total_serve \
-                             + self.value_mobility
+                              + self.total_serve
 
         self.total_score = self.strokes_total + self.value_mobility
         self.itn = get_itn_number(self.person.sex, self.total_score)
