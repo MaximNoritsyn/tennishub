@@ -208,7 +208,7 @@ async def post_test_event_stage_serve(guid: str,
 
     response = Response(content=f"stage {stage_number} submitted")
 
-    if stage_number == 12:
+    if stage_number == 12 and (point > 0 or serve == 2):
         coach_test = CoachTest.get_by_event(test_event)
         coach_test.finish_serve = True
         coach_test.save()
