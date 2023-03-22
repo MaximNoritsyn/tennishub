@@ -1,8 +1,23 @@
-<div><h1>Гравці</h1>
-    <a href="/players/new">Створити нового</a>
-</div>
-<ul>
+<table class="content-table">
+    <thead>
+    <tr>
+        <th>
+            <div>
+                <div>Гравці</div>
+                <div><a href="/players/new">
+                    <button>Додати</button>
+                </a></div>
+
+            </div>
+        </th>
+    </tr>
+    <tbody>
     {% for player in players %}
-    <li><a href="players/{{player.id_db}}">{{ player.name }}</a></li>
+    <tr>
+        <td onclick="window.location='/players/{{player.id_db}}'">
+            {{ player.first_name }} {{ player.last_name }}
+        </td>
+    </tr>
     {% endfor %}
-</ul>
+    </tbody>
+</table>

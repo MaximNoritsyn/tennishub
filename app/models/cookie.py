@@ -56,5 +56,5 @@ def get_context(request: Request = {}):
     user = getattr(request.state, "user", None)
     name = ''
     if logged:
-        name = user.person.name
+        name = str(user.person)
     return {"request": request, "logged": logged, "name": name, "user": user}

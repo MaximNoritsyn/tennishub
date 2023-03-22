@@ -49,3 +49,268 @@ class MongoDBBackend:
     def create_username_index_in_collection(self):
         self.db.users.create_index([("username", pymongo.ASCENDING)], unique=True)
 
+    def get_full_user_by_username(self, username):
+        return self.db.users.aggregate([
+            {"$match": {"username": username}},
+            {"$lookup": {
+                "from": "persons",
+                "localField": "person_id",
+                "foreignField": "_id",
+                "as": "person"
+            }},
+            {"$unwind": "$person"},
+            {"$project": {
+                "username": 1,
+                "is_active": 1,
+                "is_superuser": 1,
+                "password_hash": 1,
+                "person": {
+                    "id_obj": "$person._id",
+                    "first_name": "$person.first_name",
+                    "last_name": "$person.last_name",
+                    "email": "$person.email",
+                    "tel": "$person.tel",
+                    "birthday": "$person.birthday",
+                    "sex": "$person.sex",
+                    "is_coach": "$person.is_coach",
+                }
+            }}
+        ])
+
+    def get_full_test_event_by_person(self, person_id, name_collection_class):
+        pipeline = [
+            {"$match": {"person_id": ObjectId(person_id)}},
+            {
+                "$lookup": {
+                    "from": "persons",
+                    "localField": "person_id",
+                    "foreignField": "_id",
+                    "as": "person"
+                }
+            },
+            {
+                "$unwind": "$person"
+            },
+            {
+                "$project": {
+                    "id_db": "$_id",
+                    "person": 1,
+                    "assessor": 1,
+                    "date": 1,
+                    "venue": 1,
+                    "strokes_total": 1,
+                    "total_score": 1,
+                    "itn": 1
+                }
+            }
+        ]
+
+        return self.db[name_collection_class].aggregate(pipeline)
+
+    def get_full_test_event_by_id(self, id_db, name_collection_class):
+        pipeline = [
+            {"$match": {"_id": ObjectId(id_db)}},
+            {
+                "$lookup": {
+                    "from": "persons",
+                    "localField": "person_id",
+                    "foreignField": "_id",
+                    "as": "person"
+                }
+            },
+            {
+                "$unwind": "$person"
+            },
+            {
+                "$project": {
+                    "id_db": "$_id",
+                    "person": 1,
+                    "assessor": 1,
+                    "date": 1,
+                    "venue": 1,
+                    "strokes_total": 1,
+                    "total_score": 1,
+                    "itn": 1,
+                    "value_gsd01": 1,
+                    "value_gsd02": 1,
+                    "value_gsd03": 1,
+                    "value_gsd04": 1,
+                    "value_gsd05": 1,
+                    "value_gsd06": 1,
+                    "value_gsd07": 1,
+                    "value_gsd08": 1,
+                    "value_gsd09": 1,
+                    "value_gsd10": 1,
+                    "total_gsd": 1,
+                    "consistency_gsd": 1,
+                    "value_vd01": 1,
+                    "value_vd02": 1,
+                    "value_vd03": 1,
+                    "value_vd04": 1,
+                    "value_vd05": 1,
+                    "value_vd06": 1,
+                    "value_vd07": 1,
+                    "value_vd08": 1,
+                    "total_vd": 1,
+                    "consistency_vd": 1,
+                    "value_gsa01": 1,
+                    "value_gsa02": 1,
+                    "value_gsa03": 1,
+                    "value_gsa04": 1,
+                    "value_gsa05": 1,
+                    "value_gsa06": 1,
+                    "value_gsa07": 1,
+                    "value_gsa08": 1,
+                    "value_gsa09": 1,
+                    "value_gsa10": 1,
+                    "value_gsa11": 1,
+                    "value_gsa12": 1,
+                    "total_gsa": 1,
+                    "consistency_gsa": 1,
+                    "value_serve01": 1,
+                    "value_serve02": 1,
+                    "value_serve03": 1,
+                    "value_serve04": 1,
+                    "value_serve05": 1,
+                    "value_serve06": 1,
+                    "value_serve07": 1,
+                    "value_serve08": 1,
+                    "value_serve09": 1,
+                    "value_serve10": 1,
+                    "value_serve11": 1,
+                    "value_serve12": 1,
+                    "total_serve": 1,
+                    "consistency_serve": 1,
+                    "value_mobility": 1,
+                    "time_mobility": 1
+                }
+            }
+        ]
+
+        return list(self.db[name_collection_class].aggregate(pipeline))[0]
+
+    def get_persons_by_coach(self, coach_username, name_collection_class):
+
+        pipeline = [
+            {
+                "$match": {
+                    "coach_username": coach_username
+                }
+            },
+            {
+                "$lookup": {
+                    "from": "persons",
+                    "localField": "id_person",
+                    "foreignField": "_id",
+                    "as": "person"
+                }
+            },
+            {
+                "$unwind": "$person"
+            },
+            {
+                "$project": {
+                    "_id": 0,
+                    "person.first_name": 1,
+                    "person.last_name": 1,
+                    "person.email": 1,
+                    "person.tel": 1,
+                    "person._id": 1,
+                    "person.birthday": 1,
+                    "person.sex": 1,
+                    "person.is_coach": 1,
+                    "coach.username": 1,
+                    "coach.email": 1
+                }
+            }
+        ]
+
+        return self.db[name_collection_class].aggregate(pipeline)
+
+    def get_persons_by_part_of_name(self, search_text, name_collection_class):
+        return list(self.db[name_collection_class].find({
+          "$or": [
+            {"last_name": {"$regex": search_text, "$options": "i"}},
+            {"first_name": {"$regex": search_text, "$options": "i"}},
+            {"tel": {"$regex": search_text, "$options": "i"}},
+            {"email": {"$regex": search_text, "$options": "i"}}
+          ],
+            "is_coach": False
+        }))
+
+    def get_coach_test_by_person_group(self, person_id: str, group_test_id: str, name_collection_class: str):
+        pipeline = [
+            {
+                "$match": {
+                    "person_id": ObjectId(person_id)
+                }
+            },
+            {
+                "$lookup": {
+                    "from": "coachtest",
+                    "localField": "_id",
+                    "foreignField": "id_test",
+                    "as": "coachtest"
+                }
+            },
+            {
+                "$unwind": "$coachtest"
+            },
+            {
+                "$match": {
+                    "coachtest.id_group_test": ObjectId(group_test_id)
+                }
+            },
+            {
+                "$project": {
+                    "id_event": "$_id",
+                    "id_db": "$coachtest._id",
+                    "coachtest.finish_gsd": 1,
+                    "coachtest.finish_vd": 1,
+                    "coachtest.finish_gsa": 1,
+                    "coachtest.finish_serve": 1,
+                    "coachtest.finish_mobility": 1
+                }
+            }
+        ]
+
+        return list(self.db[name_collection_class].aggregate(pipeline))
+
+    def get_coach_test_by_test_event(self, test_event_id: str, name_collection_class: str):
+        pipeline = [
+            {
+                "$match": {
+                    "id_test": ObjectId(test_event_id)
+                }
+            },
+            {
+                "$lookup": {
+                    "from": "grouptest",
+                    "localField": "id_group_test",
+                    "foreignField": "_id",
+                    "as": "grouptest"
+                }
+            },
+            {
+                "$unwind": "$grouptest"
+            },
+            {
+                "$project": {
+                    "id_db": "$_id",
+                    "finish_gsd": 1,
+                    "finish_vd": 1,
+                    "finish_gsa": 1,
+                    "finish_serve": 1,
+                    "finish_mobility": 1,
+                    "id_group_test": "$grouptest._id",
+                    "grouptest.coach_username": 1,
+                    "grouptest.date": 1,
+                    "grouptest.assessor": 1,
+                    "grouptest.venue": 1
+                }
+            }
+        ]
+
+        return list(self.db[name_collection_class].aggregate(pipeline))
+
+

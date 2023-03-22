@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+
+{% block title %}{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', path='/css/grouptesting_dashboard.css') }}">
+{% endblock %}
+
+{% block content %}
+<div>
+    {% if edit==False %}
+    <h3>{{group_test.venue}} - {{group_test.date}}</h3>
+    {% endif %}
+</div>
+<div style="
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    flex-direction: column;">
+
+    {% if edit %}
+    <form method="post" id="form-coach-test" class="edit-form">
+
+        <div>
+            <label for="assessor">Інспектор:</label>
+            <input type="text" id="assessor" name="assessor" value="{{assessor}}" required>
+        </div>
+
+        <div>
+            <label for="v_date">Дата:</label>
+            <input type="date" id="v_date" name="v_date" value="{{ today }}" required>
+        </div>
+
+        <div>
+            <label for="venue">Місце проведення:</label>
+            <input type="text" id="venue" name="venue" value="{{ venue }}" required>
+        </div>
+
+        <dev id="search-div" class="search-block">
+            <div>
+                <label for="search">
+                    <ion-icon size="large" name="search-circle-sharp"></ion-icon>
+                </label>
+                <input type="text" id="search" name="search" placeholder="Введіть Ім'я або телефон, email"/>
+            </div>
+            <div>
+                <label for="persons-list">Доступні спортсмени:</label>
+                <ul id="persons-list"></ul>
+            </div>
+        </dev>
+
+        <div id="message"></div>
+        <button id="edit-coach-test">Зберегти</button>
+    </form>
+    {% else %}
+    <form method="post" id="form-coach-test" action="/coachtesting/{{group_test.id_db}}/edit">
+
+        <div>
+            <label for="assessor">Інспектор:</label>
+            <input type="text" id="assessor" readonly name="assessor" value="{{group_test.assessor}}" required>
+        </div>
+
+        <div>
+            <label for="v_date">Дата:</label>
+            <input type="date" id="v_date" readonly name="v_date" value="{{ group_test.date }}" required>
+        </div>
+
+        <div>
+            <label for="venue">Місце проведення:</label>
+            <input type="text" id="venue" readonly name="venue" value="{{ group_test.venue }}" required>
+        </div>
+
+        <dev id="search-div" class="search-block" style="display: none;">
+            <div>
+                <label for="search">
+                    <ion-icon size="large" name="search-circle-sharp"></ion-icon>
+                </label>
+                <input type="text" id="search" name="search" placeholder="Введіть Ім'я або телефон, email"/>
+            </div>
+            <div>
+                <label for="persons-list">Доступні спортсмени:</label>
+                <ul id="persons-list"></ul>
+            </div>
+        </dev>
+
+        <div id="message"></div>
+        <button id="edit-coach-test">Редагувати</button>
+    </form>
+
+    <div class="tasks-wrapper">
+        <div id="gsd" class="task-box">Глибина ударів з відскоку</div>
+        <div id="vd" class="task-box">Глибина ударів з льоту</div>
+        <div id="gsa" class="task-box">Точність ударів з відскоку</div>
+        <div id="serve" class="task-box">Подача</div>
+        <div id="mobility" class="task-box">Мобільність</div>
+        <div id="results" class="task-box">Результати</div>
+    </div>
+
+    {% endif %}
+
+    <table class="content-table">
+        <thead>
+        <tr>
+            <th>Тестуючий</th>
+            <th>ГУзВ</th>
+            <th>ГУзЛ</th>
+            <th>ТУзВ</th>
+            <th>Подача</th>
+            <th>Мобільн.</th>
+        </tr>
+        </thead>
+        <tbody id="players-list">
+        </tbody>
+    </table>
+
+    <input type="hidden" id="username" value="{{user.username}}">
+    <input type="hidden" id="group-test-id" value="{{group_test_id}}">
+
+</div>
+
+<script src="{{ url_for('static', path='/js/coach_tests_dachboard.js') }}"></script>
+
+{% endblock %}
+
+{% block scripts %}
+
+{% endblock %}

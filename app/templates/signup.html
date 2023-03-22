@@ -1,32 +1,98 @@
 {% extends "base.html" %}
 
-{% block title %}Sign up{% endblock %}
+{% block title %}TH Зареєструватися{% endblock %}
 
 {% block content %}
-  <h1>Sign up</h1>
-  <form method="POST">
+<h1>Sign up</h1>
+<form method="POST" class="edit-form">
 
-    <label for="name">Ім'я</label>
-    <input type="text" name="name" id="name" required>
+    <div>
+        <label for="first_name">Ім'я</label>
+        <input type="text" name="first_name" id="first_name" required>
+    </div>
 
-    <label for="date_b">Дата народження</label>
-    <input type="date" name="date_b" id="date_b">
+    <div>
+        <label for="last_name">Прізвище</label>
+        <input type="text" name="last_name" id="last_name" required>
+    </div>
 
-    <label for="sex">Стать</label>
-    <select name="sex" id="sex">
-      <option value="F">Жіноча</option>
-      <option value="M">Чоловіча</option>
-    </select>
+    <div>
+        <label for="birthday">Дата народження</label>
+        <input type="date" name="birthday" id="birthday">
+    </div>
 
-    <label for="email">Email</label>
-    <input type="email" name="email" id="email" required>
+    <div>
+        <label for="sex">Стать</label>
+        <div class="point-boxes" id="sex">
+            <input type="radio" id="female" name="sex" value="F" checked>
+            <label for="female" class="point-box">Жіноча</label>
+            <br>
+            <input type="radio" id="male" name="sex" value="M">
+            <label for="male" class="point-box">Чоловіча</label>
+        </div>
+    </div>
 
-    <label for="username">Username</label>
-    <input type="text" name="username" id="username" required>
+    <div>
+        <label for="email">Email</label>
+        <input type="email" name="email" id="email">
+    </div>
 
-    <label for="password">Password</label>
-    <input type="password" name="password" id="password" required>
+    <div>
+        <label for="tel">Телефон</label>
+        <input type="text" name="tel" id="tel" placeholder="3801234567890">
+    </div>
 
-    <button type="submit">Зареєструватися</button>
-  </form>
+    <div>
+        <label for="username">Username</label>
+        <input type="text" name="username" id="username" required>
+    </div>
+
+    <div>
+        <label for="password">Password</label>
+        <input type="password" name="password" id="password" required>
+    </div>
+
+    <div>
+        <label for="repeat_password">Repeat password</label>
+        <input type="password" id="repeat_password" required>
+    </div>
+
+    <div id="message"></div>
+
+    <div>
+        <label for="is_coach">Роль</label>
+        <div class="point-boxes" id="is_coach">
+            <input type="radio" id="is_coach_false" name="is_coach_str" value="false" checked>
+            <label for="is_coach_false" class="point-box">Спортсмен</label>
+            <br>
+            <input type="radio" id="is_coach_true" name="is_coach_str" value="true">
+            <label for="is_coach_true" class="point-box">Тренер</label>
+        </div>
+    </div>
+
+    <button type="submit" disabled id="submit_button">Зареєструватися</button>
+</form>
+
+<script>
+  document.querySelector('#password').addEventListener('keyup', checkPasswords);
+  document.querySelector('#repeat_password').addEventListener('keyup', checkPasswords);
+
+  function checkPasswords() {
+    var password = document.querySelector('#password');
+    var repeatPassword = document.querySelector('#repeat_password');
+    var message = document.querySelector('#message');
+    var Submit = document.querySelector('#submit_button');
+
+    if (password.value !== repeatPassword.value) {
+      message.innerHTML = 'Passwords do not match';
+      repeatPassword.setCustomValidity('Passwords do not match');
+      Submit.disabled = true;
+    } else {
+      message.innerHTML = '';
+      repeatPassword.setCustomValidity('');
+      Submit.disabled = false;
+    }
+  }
+</script>
+
 {% endblock %}

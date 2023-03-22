@@ -3,7 +3,7 @@
     <a href="{{ route_back }}">Назад</a>
   </div>
   <div class="submit-point">
-    <form action="{{ route_submit }}" method="post" id="result_serving_ball">
+    <form style='display: none' action="{{ route_submit }}" method="post" id="result_serving_ball">
       <input type="hidden" id="first_bounce" name="first_bounce" value="{{first_bounce}}">
       <input type="hidden" id="second_bounce" name="second_bounce" value="{{second_bounce}}">
     </form>

@@ -16,11 +16,24 @@ templates = Jinja2Templates(directory="app/templates")
 @router.post("/")
 async def signup(username: str = Form(),
                  password: str = Form(),
-                 name: str = Form(),
-                 date_b: Optional[date] = Form(None),
+                 first_name: str = Form(),
+                 last_name: str = Form(),
+                 birthday: Optional[date] = Form(None),
                  sex: Optional[str] = Form(None),
-                 email: EmailStr = Form()):
-    user = User(username, email, name, date_b=date_b, sex=sex)
+                 tel: Optional[str] = Form(None),
+                 is_coach_str: str = Form(),
+                 email: Optional[EmailStr] = Form(None)):
+    is_coach = False
+    if is_coach_str == 'true':
+        is_coach = True
+    user = User(username,
+                first_name=first_name,
+                last_name=last_name,
+                tel=tel,
+                is_coach=is_coach,
+                birthday=birthday,
+                email=email,
+                sex=sex)
     user.save(password=password)
     access_token = create_access_token(user)
     response = Response(content="Logged in")

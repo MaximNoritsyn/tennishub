@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Log in up{% endblock %}
+{% block title %}TH Увійти{% endblock %}
 
 {% block styles %}
   <style>
@@ -9,18 +9,17 @@
 {% endblock %}
 
 {% block content %}
-    <h1>Login</h1>
-    <form method="post">
+    <form method="post" class="edit-form">
       <div>
         <label for="username">Username:</label>
-        <input type="text" name="username" required>
+        <input type="text" id="username" name="username" required>
       </div>
       <div>
         <label for="password">Password:</label>
-        <input type="password" name="password" required>
+        <input type="password" id="password" name="password" required>
       </div>
       <div>
-        <button type="submit">Login</button>
+        <button type="submit">Увійти</button>
       </div>
     </form>
 {% endblock %}

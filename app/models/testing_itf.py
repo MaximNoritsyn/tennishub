@@ -1,8 +1,10 @@
+from fastapi import Request
 from typing import Optional
 from bson.objectid import ObjectId
 
 from app.models.person import Person
 from app.models.mongobackend import MongoDBBackend, CollectionDB
+from app.models.cookie import get_context
 
 
 backend = MongoDBBackend()
@@ -77,87 +79,8 @@ class TestEvent(CollectionDB):
 
     @classmethod
     def from_db(cls, id_db: str):
-        pipeline = [
-            {"$match": {"_id": ObjectId(id_db)}},
-            {
-                "$lookup": {
-                    "from": "persons",
-                    "localField": "person_id",
-                    "foreignField": "_id",
-                    "as": "person"
-                }
-            },
-            {
-                "$unwind": "$person"
-            },
-            {
-                "$project": {
-                    "id_db": "$_id",
-                    "person": 1,
-                    "assessor": 1,
-                    "date": 1,
-                    "venue": 1,
-                    "strokes_total": 1,
-                    "total_score": 1,
-                    "itn": 1,
-                    "value_gsd01": 1,
-                    "value_gsd02": 1,
-                    "value_gsd03": 1,
-                    "value_gsd04": 1,
-                    "value_gsd05": 1,
-                    "value_gsd06": 1,
-                    "value_gsd07": 1,
-                    "value_gsd08": 1,
-                    "value_gsd09": 1,
-                    "value_gsd10": 1,
-                    "total_gsd": 1,
-                    "consistency_gsd": 1,
-                    "value_vd01": 1,
-                    "value_vd02": 1,
-                    "value_vd03": 1,
-                    "value_vd04": 1,
-                    "value_vd05": 1,
-                    "value_vd06": 1,
-                    "value_vd07": 1,
-                    "value_vd08": 1,
-                    "total_vd": 1,
-                    "consistency_vd": 1,
-                    "value_gsa01": 1,
-                    "value_gsa02": 1,
-                    "value_gsa03": 1,
-                    "value_gsa04": 1,
-                    "value_gsa05": 1,
-                    "value_gsa06": 1,
-                    "value_gsa07": 1,
-                    "value_gsa08": 1,
-                    "value_gsa09": 1,
-                    "value_gsa10": 1,
-                    "value_gsa11": 1,
-                    "value_gsa12": 1,
-                    "total_gsa": 1,
-                    "consistency_gsa": 1,
-                    "value_serve01": 1,
-                    "value_serve02": 1,
-                    "value_serve03": 1,
-                    "value_serve04": 1,
-                    "value_serve05": 1,
-                    "value_serve06": 1,
-                    "value_serve07": 1,
-                    "value_serve08": 1,
-                    "value_serve09": 1,
-                    "value_serve10": 1,
-                    "value_serve11": 1,
-                    "value_serve12": 1,
-                    "total_serve": 1,
-                    "consistency_serve": 1,
-                    "value_mobility": 1,
-                    "time_mobility": 1
-                }
-            }
-        ]
-
-        result = list(backend.db[cls.name_collection_class()].aggregate(pipeline))
-        inst = cls.from_dict(result[0])
+        t = backend.get_full_test_event_by_id(id_db, cls.name_collection_class())
+        inst = cls.from_dict(t)
         return inst
 
     @classmethod
@@ -169,6 +92,8 @@ class TestEvent(CollectionDB):
             if key != 'person':
                 if key == 'id_db':
                     setattr(test_event, key, str(value))
+                elif key == '_id':
+                    setattr(test_event, 'id_db', str(value))
                 else:
                     setattr(test_event, key, value)
         return test_event
@@ -291,8 +216,7 @@ class TestEvent(CollectionDB):
                               + self.total_gsd \
                               + self.total_vd \
                               + self.total_gsa \
-                              + self.total_serve \
-                             + self.value_mobility
+                              + self.total_serve
 
         self.total_score = self.strokes_total + self.value_mobility
         self.itn = get_itn_number(self.person.sex, self.total_score)
@@ -405,37 +329,215 @@ def get_itn_number(sex, score):
         else: 1
 
 
-def get_test_events(person_id):
-    pipeline = [
-        {"$match": {"person_id": ObjectId(person_id)}},
-        {
-            "$lookup": {
-                "from": "persons",
-                "localField": "person_id",
-                "foreignField": "_id",
-                "as": "person"
-            }
-        },
-        {
-            "$unwind": "$person"
-        },
-        {
-            "$project": {
-                "id_db": "$_id",
-                "person": 1,
-                "assessor": 1,
-                "date": 1,
-                "venue": 1,
-                "strokes_total": 1,
-                "total_score": 1,
-                "itn": 1
-            }
-        }
-    ]
-
-    result = list(backend.db[TestEvent.name_collection_class()].aggregate(pipeline))
+def get_test_events_by_person(person_id):
     list_return = []
-    for r in result:
+    for r in list(backend.get_full_test_event_by_person(person_id, TestEvent.name_collection_class())):
         list_return.append(TestEvent.from_dict(r))
 
     return list_return
+
+
+def get_detail_serving(stage_number: int, task: str, serve: int = 0):
+    res = 'Форхенд'
+    if stage_number % 2 == 0:
+        res = 'Бекхенд'
+
+    if task == 'gsa':
+        suf = 'по лінії'
+        if stage_number > 6:
+            suf = 'по кроскорту'
+        res = f'{res} / {suf}'
+
+    if task == 'serve':
+        res = f'{serve} подача'
+
+    return res
+
+
+def get_point_depth(first_bounce, second_bounce):
+    p = 0
+    if first_bounce == 'area_left_service' or first_bounce == 'area_right_service':
+        p = 1
+    elif first_bounce == 'area_central1':
+        p = 2
+    elif first_bounce == 'area_central2':
+        p = 3
+    elif first_bounce == 'area_central3':
+        p = 4
+
+    if p > 0:
+        if second_bounce == 'area_out_line':
+            p += 1
+        elif second_bounce == 'area_out_powerline':
+            p *= 2
+
+    return p
+
+
+def get_point_accuracy(first_bounce, second_bounce):
+    p = 0
+    if first_bounce == 'area_center_service' or first_bounce == 'area_central_center':
+        p = 1
+    elif first_bounce == 'area_left_service' or first_bounce == 'area_right_service':
+        p = 2
+    elif first_bounce == 'area_central_left' or first_bounce == 'area_central_right':
+        p = 3
+
+    if p > 0:
+        if second_bounce == 'area_out_line':
+            p += 1
+        elif second_bounce == 'area_out_powerline':
+            p *= 2
+
+    return p
+
+
+def get_point_serve(first_bounce, second_bounce, stage_number, serve):
+    p = 0
+    if stage_number < 4 and serve == 1:
+        if first_bounce == 'area_right_middle_service': p = 2
+        if first_bounce == 'area_right_wide_service': p = 4
+    elif stage_number < 4 and serve == 2:
+        if first_bounce == 'area_right_middle_service': p = 1
+        if first_bounce == 'area_right_wide_service': p = 2
+    elif stage_number < 7 and serve == 1:
+        if first_bounce == 'area_right_wide_service': p = 2
+        if first_bounce == 'area_right_middle_service': p = 4
+    elif stage_number < 7 and serve == 2:
+        if first_bounce == 'area_right_wide_service': p = 1
+        if first_bounce == 'area_right_middle_service': p = 2
+    elif stage_number < 10 and serve == 1:
+        if first_bounce == 'area_left_wide_service': p = 2
+        if first_bounce == 'area_left_middle_service': p = 4
+    elif stage_number < 10 and serve == 2:
+        if first_bounce == 'area_left_wide_service': p = 1
+        if first_bounce == 'area_left_middle_service': p = 2
+    elif stage_number < 13 and serve == 1:
+        if first_bounce == 'area_left_middle_service': p = 2
+        if first_bounce == 'area_left_wide_service': p = 4
+    elif stage_number < 13 and serve == 2:
+        if first_bounce == 'area_left_middle_service': p = 1
+        if first_bounce == 'area_left_wide_service': p = 2
+
+    if p > 0:
+        if second_bounce == 'area_out_line':
+            p += 1
+        elif second_bounce == 'area_out_powerline':
+            p *= 2
+
+    return p
+
+
+def get_point_mobility(first_bounce: str):
+    data = {
+        '40': 1,
+        '39': 2,
+        '38': 3,
+        '37': 4,
+        '36': 5,
+        '35': 6,
+        '34': 7,
+        '33': 8,
+        '32': 9,
+        '31': 10,
+        '30': 11,
+        '29': 12,
+        '28': 12,
+        '27': 14,
+        '26': 15,
+        '25': 16,
+        '24': 18,
+        '23': 19,
+        '22': 21,
+        '21': 26,
+        '20': 32,
+        '19': 39,
+        '18': 45,
+        '17': 52,
+        '16': 61,
+        '15': 76
+    }
+
+    return data[first_bounce]
+
+
+def prepare_context_get_court(task: str,
+                              guid: str,
+                              stage_number: int,
+                              request: Request,
+                              serve: int = 0):
+    context = get_context(request)
+
+    test_event = TestEvent.from_db(guid)
+    context['test_event'] = test_event
+    context['gsd'] = task == 'gsd'
+
+    context['forbackhand'] = get_detail_serving(stage_number, task, serve)
+    context['number'] = stage_number
+    context['serve'] = serve
+
+    name_serving = get_name_serving(task, stage_number)
+    serving_ball = ServingBall.from_db(guid, name_serving, serve)
+
+    context['first_bounce'] = serving_ball.first_bounce
+    context['second_bounce'] = serving_ball.second_bounce
+
+    if task == 'gsd':
+        context['title_of_task'] = 'Оцінка глибини удару по землі - включає аспект потужності. ' \
+                               '(10 поперемінних ударів форхендом і бекхендом)'
+    elif task == 'vd':
+        context['title_of_task'] = 'Оцінка глибини залпу - включає аспект сили. ' \
+                                   '(8 поперемінних ударів ударами форхендом і бекхендом)'
+    elif task == 'gsa':
+        context['title_of_task'] = 'Оцінка точності удару з землі - включає аспект сили. ' \
+                                   '(6 поперемінних ударів форхендом і бекхендом по лінії та ' \
+                                   'на кроскорті).'
+
+    return context
+
+
+def save_results_serve_test(task: str,
+                            guid: str,
+                            stage_number: int,
+                            first_bounce: str,
+                            second_bounce: str,
+                            serve: int = 0):
+    test_event = TestEvent.from_db(guid)
+    name_serving = get_name_serving(task, stage_number)
+
+    point = 0
+    if task == 'gsd' or task == 'vd':
+        point = get_point_depth(first_bounce, second_bounce)
+    elif task == 'gsa':
+        point = get_point_accuracy(first_bounce, second_bounce)
+    elif task == 'serve':
+        point = get_point_serve(first_bounce, second_bounce, stage_number, serve)
+    setattr(test_event, name_serving, point)
+    test_event.update()
+    test_event.save()
+
+    if point == 0 and serve == 1:
+        second_bounce = ''
+
+    serving_ball = ServingBall.from_db(test_event.id_db, name_serving, serve)
+    serving_ball.first_bounce = first_bounce
+    serving_ball.second_bounce = second_bounce
+    serving_ball.serve = serve
+    serving_ball.save()
+
+    return test_event
+
+
+def save_results_mobility(guid: str, first_bounce: str):
+    test_event = TestEvent.from_db(guid)
+
+    setattr(test_event, 'value_mobility', get_point_mobility(first_bounce))
+    setattr(test_event, 'time_mobility', int(first_bounce))
+    test_event.update()
+    test_event.save()
+
+    serving_ball = ServingBall.from_db(test_event.id_db, 'value_mobility')
+    serving_ball.first_bounce = first_bounce
+    serving_ball.save()
+
+    return test_event

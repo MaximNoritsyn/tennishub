@@ -1,0 +1,60 @@
+.task-box {
+    background-color: var(--clr30);
+    color: var(--fclr30);
+    padding: 10px;
+    margin: 5px;
+    cursor: pointer;
+    text-align: center;
+    padding: 10px;
+    flex: 1 0 20%;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+  border: 2px solid var(--clr30)
+}
+
+.task-box:hover {
+  border: 2px solid var(--clr10)
+}
+
+.current-task-box {
+    background-color: var(--clr10);
+    color: var(--fclr10);
+}
+
+.search-block {
+  border: 2px solid var(--clr10);
+  border-radius: 10px;
+  margin: 10px;
+  padding: 10px;
+}
+
+.search-block li {
+  display: flex;
+  margin: 5px;
+  border: 1px solid var(--clr10);
+  border-radius: 5px;
+  padding: 5px;
+}
+
+.search-block li:hover {
+  background: var(--clr10);
+  color: var(--fclr10);
+}
+
+.search-block li {
+    cursor: pointer;
+    margin: 5px;
+}
+
+.tasks-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  width: 75%;
+  justify-content: center;
+  border: 1px solid var(--clr10);
+  border-radius: 10px;
+  box-shadow: 0px 10px 10px 0px rgba(0,0,0,0.2);
+}
+
+.tasks-wrapper {}

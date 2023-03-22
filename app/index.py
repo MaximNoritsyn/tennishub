@@ -3,7 +3,7 @@ from fastapi.routing import APIRouter
 from fastapi import Request
 
 from app.models.cookie import get_context
-from app.models.testing_itf import get_test_events
+from app.models.testing_itf import get_test_events_by_person
 from app.models.coach_ref import get_persons_by_coach
 
 router = APIRouter()
@@ -15,10 +15,10 @@ def index(request: Request = {}):
     context = get_context(request)
     if context.get('logged'):
         user = context.get('user')
-        if user.is_coach:
+        if user.person.is_coach:
             context['players'] = get_persons_by_coach(user.username)
         else:
-            context['events'] = get_test_events(user.person.id_db)
+            context['events'] = get_test_events_by_person(user.person.id_db)
             context['player_guid'] = user.person.id_db
 
     return templates.TemplateResponse("index.html", context)

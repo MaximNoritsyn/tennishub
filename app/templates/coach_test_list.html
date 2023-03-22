@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}{% endblock %}
+
+{% block content %}
+<div><h3>Список групових тестів</h3>
+    <a href="/coachtesting/new">
+        <button>
+            Створити новий тест
+        </button>
+    </a>
+</div>
+<table class="content-table">
+    <thead>
+    <tr>
+        <th>Дата</th>
+        <th>Місце</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for test in group_tests %}
+    <tr onclick="window.location='/coachtesting/{{test.id_db}}/dashboard';">
+        <td>
+            {{ test.date }}
+        </td>
+        <td>
+            {{ test.venue }}
+        </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

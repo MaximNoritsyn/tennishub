@@ -1,41 +1,80 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>{% block title %}My Website{% endblock %}</title>
+<head>
+    <meta charset="utf-8">
+    <link href="https://fonts.googleapis.com/css2?family=Jura:wght@500&display=swap" rel="stylesheet">
+    <title>{% block title %}TennisHub{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ url_for('static', path='/css/base.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', path='/css/results.css') }}">
     {% block styles %}
-      <style>
+    <style>
         /* your styles here */
-      </style>
+    </style>
     {% endblock %}
-  </head>
-  <body>
-    <header>
-      <nav>
+</head>
+<body>
+<header>
+    <nav class="navigation desktop-only">
         <ul>
-          <li><a href="/">Головна</a></li>
-          {% if logged %}
-          <li class="dropdown">
-            <a class="dropbtn">{{ name }}</a>
-            <div class="dropdown-content">
-              <form action="/logout" method="post">
-                <input type="submit" value="Вийти">
-              </form>
-            </div>
-          </li>
-          {% else %}
-          <li><a href="/signup">Реєстрація</a></li>
-          <li><a href="/login">Увійти</a></li>
-          {% endif %}
+            <li><a href="/">Головна</a></li>
+            {% if logged %}
+            {% if logged and user.is_coach %}
+            <li><a href="/coachtesting">Групові тестування</a></li>
+            {% endif %}
         </ul>
-      </nav>
-    </header>
-    <main>
-      {% block content %}{% endblock %}
-    </main>
-    <footer>
-      Робоча назва - ТенісХаб. Працюємо над автоматизацією внесення результатів тестування міжнародного тенісного номеру
-    </footer>
-  </body>
+        <ul class="user-nav">
+            <li class="dropdown">
+                <button class="drop-btn">{{ name }}</button>
+                <div class="dropdown-menu">
+                    <div id="sign-out-desktop" class="button-form">Вийти</div>
+                </div>
+            </li>
+            {% endif %}
+        </ul>
+        {% if logged == False %}
+        <ul class="user-nav">
+            <li><a href="/signup">Реєстрація</a></li>
+            <li><a href="/login">Увійти</a></li>
+        </ul>
+        {% endif %}
+    </nav>
+    <nav class="navigation mobile-only">
+        <ul>
+            <li><a href="/"><ion-icon name="home-sharp"></ion-icon></a></li>
+            {% if logged %}
+            {% if logged and user.person.is_coach %}
+            <li><a href="/coachtesting"><ion-icon name="grid-sharp"></ion-icon></a></li>
+            {% endif %}
+        </ul>
+        <ul class="user-nav">
+            <li class="dropdown">
+                <button class="drop-btn"><ion-icon name="person-sharp"></ion-icon></button>
+                <div class="dropdown-menu">
+                    <div id="sign-out-mobility" class="button-form">Вийти</div>
+                </div>
+            </li>
+            {% endif %}
+        </ul>
+        {% if logged == False %}
+        <ul class="user-nav">
+            <li><a href="/signup"><ion-icon name="log-in-sharp"></ion-icon></a></li>
+            <li><a href="/login">Увійти</a></li>
+        </ul>
+        {% endif %}
+    </nav>
+</header>
+<main>
+    {% block content %}{% endblock %}
+</main>
+<footer>
+    <h6>Робоча назва - ТенісХаб. Працюємо над автоматизацією внесення результатів тестування міжнародного тенісного
+        номеру</h6>
+</footer>
+
+<script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+<script src="{{ url_for('static', path='/js/base.js') }}"></script>
+
+</body>
 </html>
